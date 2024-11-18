@@ -5,7 +5,7 @@
         android:icon="@drawable/camera"
         android:id="@+id/scan"/>
     <item android:title="Frigo"
-        android:icon="@drawable/icon_course"
+        android:icon="@drawable/fridge"
         android:id="@+id/frigo"/>
     <item android:title="Liste"
         android:icon="@drawable/icon_course"
