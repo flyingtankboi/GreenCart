@@ -53,6 +53,8 @@ public class MainActivity extends AppCompatActivity {
             }
             return true;
         });
+        nav_bar.setSelectedItemId(R.id.liste);
+
 
 
     }
