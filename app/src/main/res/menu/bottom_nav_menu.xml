@@ -2,7 +2,7 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item android:title="Scan"
-        android:icon="@drawable/icon_course"
+        android:icon="@drawable/camera"
         android:id="@+id/scan"/>
     <item android:title="Frigo"
         android:icon="@drawable/icon_course"
@@ -11,9 +11,9 @@
         android:icon="@drawable/icon_course"
         android:id="@+id/liste"/>
     <item android:title="Recette"
-        android:icon="@drawable/icon_course"
+        android:icon="@drawable/recette"
         android:id="@+id/recette"/>
     <item android:title="Profile"
-        android:icon="@drawable/icon_course"
+        android:icon="@drawable/baseline_person_24"
         android:id="@+id/profile"/>
 </menu>
