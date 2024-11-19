@@ -18,6 +18,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.SearchView;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -40,6 +41,10 @@ public class Liste extends Fragment {
             "  \"date\": \"\",\n" +
             "  \"items\": [{\"name\" : \"Pomme\", \"isbought\":false}]\n" +
             "}";
+    Vector<Item> items;
+    SearchView searchView;
+    RecyclerView recyclerView;
+    ResearchAdapter adapter;
 
     JSONObject liste;
     Vector<Item> shoppingList;
@@ -114,6 +119,48 @@ public class Liste extends Fragment {
 
             }
         });
+
+        searchView = findViewById(R.id.searchView);
+        searchView.clearFocus();
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                filterlist(newText);
+                return false;
+            }
+        });
+
+        items = new Vector<Item>();
+        items.add(new Item("caca", R.drawable.caca));
+        items.add(new Item("caco", R.drawable.caca));
+        items.add(new Item("coca", R.drawable.caca));
+        items.add(new Item("coco", R.drawable.caca));
+        items.add(new Item("ca", R.drawable.caca));
+        items.add(new Item("co", R.drawable.caca));
+
+
+        recyclerView = findViewById(R.id.recyclerView);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+
+        adapter = new Adapter(getApplicationContext(), items);
+        recyclerView.setAdapter(adapter);
+    }
+
+    private void filterlist(String text) {
+        Vector<Item> filtereditems = new Vector<Item>();
+        for (Item item : items){
+            if (item.product.toLowerCase().contains(text.toLowerCase())){
+                filtereditems.add(item);
+            }
+        }
+        adapter.setFilteredList(filtereditems);
+    }
+
         FloatingActionButton reset_button = view.findViewById(R.id.reset_button);
         reset_button.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -255,6 +302,8 @@ public class Liste extends Fragment {
         writeJson(getContext().getApplicationContext(), liste.toString());
         super.onPause();
     }
+
+
 
 
 }
