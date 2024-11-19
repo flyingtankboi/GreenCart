@@ -1,8 +1,14 @@
 package com.example.navbar;
 
 import android.content.Context;
+import android.graphics.Canvas;
+import android.graphics.Color;
+import android.graphics.Paint;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -92,6 +98,7 @@ public class Liste extends Fragment {
         }
     }
 
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -102,8 +109,8 @@ public class Liste extends Fragment {
             @Override
             public void onClick(View view) {
                 Random r = new Random();
-                shoppingList.add(new Item(String.valueOf(r.nextInt(100)),false));
-                adapter.notifyItemChanged(shoppingList.size() -1);
+                shoppingList.add(new Item(String.valueOf(r.nextInt(100)), false));
+                adapter.notifyItemChanged(shoppingList.size() - 1);
 
             }
         });
@@ -117,7 +124,6 @@ public class Liste extends Fragment {
         });
 
 
-
         super.onCreate(savedInstanceState);
         RecyclerView recyclerView = view.findViewById(R.id.recyclerView);
 
@@ -126,14 +132,13 @@ public class Liste extends Fragment {
         try {
             liste = new JSONObject(readJson(getActivity().getApplicationContext()));
             JSONArray items = liste.getJSONArray("items");
-            for( int i = 0; i< items.length(); i ++){
+            for (int i = 0; i < items.length(); i++) {
                 JSONObject item = items.getJSONObject(i);
-                shoppingList.add(new Item(item.getString("name"),item.getBoolean("isbought")));
+                shoppingList.add(new Item(item.getString("name"), item.getBoolean("isbought")));
             }
         } catch (JSONException e) {
             throw new RuntimeException(e);
         }
-
 
 
         adapter = new ShoppingListAdapter(shoppingList);
@@ -148,27 +153,68 @@ public class Liste extends Fragment {
             }
 
             @Override
+            public void onChildDraw(Canvas c, RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder, float dX, float dY, int actionState, boolean isCurrentlyActive) {
+                if (actionState == ItemTouchHelper.ACTION_STATE_SWIPE) {
+                    Paint paint = new Paint();
+
+                    if (dX > 0) {
+                        Drawable icon = ContextCompat.getDrawable(getContext(), R.drawable.ic_check);
+                        int iconMargin = (viewHolder.itemView.getHeight() - icon.getIntrinsicHeight()) / 2;
+                        int iconLeft = viewHolder.itemView.getLeft() + iconMargin;
+                        int iconRight = iconLeft + icon.getIntrinsicWidth();
+                        int iconTop = viewHolder.itemView.getTop() + iconMargin;
+                        int iconBottom = iconTop + icon.getIntrinsicHeight();
+                        icon.setBounds(iconLeft, iconTop, iconRight, iconBottom);
+
+                        paint.setColor(Color.parseColor("#91c9a2"));
+                        c.drawRect((float) viewHolder.itemView.getLeft(), (float) viewHolder.itemView.getTop(), dX, (float) viewHolder.itemView.getBottom(), paint);
+
+                        icon.draw(c);
+
+                    } else if (dX < 0) {
+                        Drawable icon = ContextCompat.getDrawable(getContext(), R.drawable.ic_delete);
+                        int iconMargin = (viewHolder.itemView.getHeight() - icon.getIntrinsicHeight()) / 2;
+                        int iconRight = viewHolder.itemView.getRight() - iconMargin;
+                        int iconLeft = iconRight - icon.getIntrinsicWidth();
+                        int iconTop = viewHolder.itemView.getTop() + iconMargin;
+                        int iconBottom = iconTop + icon.getIntrinsicHeight();
+                        icon.setBounds(iconLeft, iconTop, iconRight, iconBottom);
+
+                        paint.setColor(Color.parseColor("#9c5959"));
+                        c.drawRect((float) viewHolder.itemView.getRight() + dX, (float) viewHolder.itemView.getTop(), (float) viewHolder.itemView.getRight(), (float) viewHolder.itemView.getBottom(), paint);
+
+                        icon.draw(c);
+
+                    } else {
+                        super.onChildDraw(c, recyclerView, viewHolder, 0, 0, actionState, isCurrentlyActive);
+                    }
+                }
+
+                super.onChildDraw(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive);
+            }
+
+
+            @Override
             public void onSwiped(RecyclerView.ViewHolder viewHolder, int direction) {
                 int position = viewHolder.getAdapterPosition();
 
-                if (direction == ItemTouchHelper.RIGHT){
-                Item item = shoppingList.get(position);
-                item.setBought(!item.isBought());
-                int newPosition;
-                if (item.isBought()) { // Selon si l'article est coché ou non, on l'ajoute au début ou à la fin de la liste.
-                    newPosition = shoppingList.size() - 1;
+                if (direction == ItemTouchHelper.RIGHT) {
+                    Item item = shoppingList.get(position);
+                    item.setBought(!item.isBought());
+                    int newPosition;
+                    if (item.isBought()) { // Selon si l'article est coché ou non, on l'ajoute au début ou à la fin de la liste.
+                        newPosition = shoppingList.size() - 1;
+                    } else {
+                        newPosition = 0;
+                    }
+
+
+                    shoppingList.remove(position);
+                    shoppingList.add(newPosition, item);
+
+                    adapter.notifyItemMoved(position, newPosition);
+                    adapter.notifyItemChanged(newPosition);
                 } else {
-                    newPosition = 0;
-                }
-
-
-
-                shoppingList.remove(position);
-                shoppingList.add(newPosition, item);
-
-                adapter.notifyItemMoved(position, newPosition);
-                adapter.notifyItemChanged(newPosition);
-            }else{
                     shoppingList.remove(position);
                     adapter.notifyItemRemoved(position);
                 }
@@ -178,14 +224,17 @@ public class Liste extends Fragment {
         ItemTouchHelper itemTouchHelper = new ItemTouchHelper(simpleCallback);
         itemTouchHelper.attachToRecyclerView(recyclerView);
 
+        //permet de rajouter un fonds de couleur derriere les boutons quand on commence à les swipe
+
+
         return view;
     }
 
-    public void updateJSONList(){
+    public void updateJSONList() {
         // Copy shopping list to the jsonOBJECT
         JSONArray items_array = new JSONArray();
         try {
-            for(Item item : shoppingList){
+            for (Item item : shoppingList) {
                 JSONObject item_json = new JSONObject();
 
                 item_json.put("name", item.getName());
@@ -201,12 +250,11 @@ public class Liste extends Fragment {
 
 
     @Override
-    public void onPause(){
+    public void onPause() {
         updateJSONList();
         writeJson(getContext().getApplicationContext(), liste.toString());
         super.onPause();
     }
-
 
 
 }
