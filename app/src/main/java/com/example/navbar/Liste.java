@@ -38,6 +38,9 @@ public class Liste extends Fragment {
             "  \"items\": [{\"name\" : \"Pomme\", \"isbought\":false}]\n" +
             "}";
 
+    JSONObject liste;
+    Vector<Item> shoppingList;
+
     public Liste() {
     }
 
@@ -96,7 +99,7 @@ public class Liste extends Fragment {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_liste, container, false);
 
-        Vector<Item> shoppingList;
+
         ShoppingListAdapter adapter;
 
         super.onCreate(savedInstanceState);
@@ -105,7 +108,7 @@ public class Liste extends Fragment {
         shoppingList = new Vector<Item>();
 
         try {
-            JSONObject liste = new JSONObject(readJson(getActivity().getApplicationContext()));
+            liste = new JSONObject(readJson(getActivity().getApplicationContext()));
             JSONArray items = liste.getJSONArray("items");
             for( int i = 0; i< items.length(); i ++){
                 JSONObject item = items.getJSONObject(i);
@@ -155,5 +158,32 @@ public class Liste extends Fragment {
 
         return view;
     }
+
+    public void updateJSONList(){
+        // Copy shopping list to the jsonOBJECT
+        JSONArray items_array = new JSONArray();
+        try {
+            for(Item item : shoppingList){
+                JSONObject item_json = new JSONObject();
+
+                item_json.put("name", item.getName());
+                item_json.put("isbought", item.isBought());
+
+                items_array.put(item_json);
+            }
+            liste.put("items", items_array);
+        } catch (JSONException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+
+    @Override
+    public void onPause(){
+        updateJSONList();
+        writeJson(getContext().getApplicationContext(), liste.toString());
+        super.onPause();
+    }
+
 
 }
