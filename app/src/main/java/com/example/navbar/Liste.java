@@ -100,8 +100,7 @@ public class Liste extends Fragment {
 
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_liste, container, false);
 
         FloatingActionButton debug_button = view.findViewById(R.id.debug_button);
@@ -114,7 +113,7 @@ public class Liste extends Fragment {
 
             }
         });
-        FloatingActionButton reset_button = view.findViewById(R.id.reset_button);
+        FloatingActionButton reset_button = view.findViewById(R.id.nouvelle_recette);
         reset_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

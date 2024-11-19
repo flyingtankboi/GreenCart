@@ -1,0 +1,59 @@
+package com.example.navbar;
+
+import android.graphics.Color;
+import android.view.KeyEvent;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.EditText;
+import android.widget.TextView;
+import android.widget.Toast;
+
+import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.RecyclerView;
+import java.util.List;
+
+public class RecetteAdapter extends RecyclerView.Adapter<RecetteAdapter.ViewHolder> {
+
+    private List<String> names;
+
+    public RecetteAdapter(List<String> names) {
+        this.names = names;
+    }
+
+    @Override
+    public ViewHolder onCreateViewHolder( ViewGroup parent, int viewType) {
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.recette, parent, false);
+        return new ViewHolder(view);
+    }
+
+    @Override
+    public void onBindViewHolder( ViewHolder holder, int position) {
+        String name = names.get(position);
+        holder.textViewName.setText(name);
+        holder.textViewName.setTextColor(Color.parseColor("#000000"));
+        holder.textViewName.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                //TODO
+                Toast.makeText(view.getContext(), "TODO", Toast.LENGTH_SHORT).show();
+
+            }
+        });
+    }
+
+
+    public int getItemCount() {
+        return names.size();
+    }
+
+    static class ViewHolder extends RecyclerView.ViewHolder {
+        TextView textViewName;
+
+
+        ViewHolder(View view) {
+            super(view);
+            textViewName = view.findViewById(R.id.text_view_name);
+        }
+    }
+}
