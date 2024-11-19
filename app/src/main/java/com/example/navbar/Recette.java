@@ -4,12 +4,10 @@ import android.content.Context;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.util.JsonReader;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -23,9 +21,7 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.Vector;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
+
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -38,7 +34,6 @@ public class Recette extends Fragment {
         // Required empty public constructor
     }
 
-    Vector<String> names = new Vector<String>();
     RecetteAdapter adapter;
     Vector<RecetteCard> liste_recettes;
     final String FILENAME = "recipes.json";

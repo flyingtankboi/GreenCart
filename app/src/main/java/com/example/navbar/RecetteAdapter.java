@@ -1,15 +1,12 @@
 package com.example.navbar;
 
 import android.graphics.Color;
-import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 import java.util.List;
 
@@ -32,13 +29,10 @@ public class RecetteAdapter extends RecyclerView.Adapter<RecetteAdapter.ViewHold
         RecetteCard recette = recettes.get(position);
         holder.textViewName.setText(recette.getTitre());
         holder.textViewName.setTextColor(Color.parseColor("#000000"));
-        holder.textViewName.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                //TODO
-                Toast.makeText(view.getContext(), "TODO fiche recette", Toast.LENGTH_SHORT).show();
+        holder.textViewName.setOnClickListener(view -> {
+            //TODO
+            Toast.makeText(view.getContext(), "TODO fiche recette", Toast.LENGTH_SHORT).show();
 
-            }
         });
     }
 
