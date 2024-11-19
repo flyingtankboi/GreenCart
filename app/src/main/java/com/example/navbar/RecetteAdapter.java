@@ -15,10 +15,10 @@ import java.util.List;
 
 public class RecetteAdapter extends RecyclerView.Adapter<RecetteAdapter.ViewHolder> {
 
-    private List<String> names;
+    private List<RecetteCard> recettes;
 
-    public RecetteAdapter(List<String> names) {
-        this.names = names;
+    public RecetteAdapter(List<RecetteCard> recettes) {
+        this.recettes = recettes;
     }
 
     @Override
@@ -29,14 +29,14 @@ public class RecetteAdapter extends RecyclerView.Adapter<RecetteAdapter.ViewHold
 
     @Override
     public void onBindViewHolder( ViewHolder holder, int position) {
-        String name = names.get(position);
-        holder.textViewName.setText(name);
+        RecetteCard recette = recettes.get(position);
+        holder.textViewName.setText(recette.getTitre());
         holder.textViewName.setTextColor(Color.parseColor("#000000"));
         holder.textViewName.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 //TODO
-                Toast.makeText(view.getContext(), "TODO", Toast.LENGTH_SHORT).show();
+                Toast.makeText(view.getContext(), "TODO fiche recette", Toast.LENGTH_SHORT).show();
 
             }
         });
@@ -44,7 +44,7 @@ public class RecetteAdapter extends RecyclerView.Adapter<RecetteAdapter.ViewHold
 
 
     public int getItemCount() {
-        return names.size();
+        return recettes.size();
     }
 
     static class ViewHolder extends RecyclerView.ViewHolder {

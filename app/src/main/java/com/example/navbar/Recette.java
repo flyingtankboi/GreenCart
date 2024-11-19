@@ -27,6 +27,8 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
+import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 
@@ -39,11 +41,10 @@ public class Recette extends Fragment {
     Vector<String> names = new Vector<String>();
     RecetteAdapter adapter;
     Vector<RecetteCard> liste_recettes;
-    final String FILENAME = "current_list.json";
-    final String DEFAULT_JSON = "{\n" +
+    final String FILENAME = "recipes.json";
+    final String DEFAULT_JSON = "[{\"title\" : \"Lasagnes\",\n" +
+            "                       \"ingredients\" : [\"Pomme\", \"Poire\"]}]\n";
 
-            "  \"tab\": [{\"Lasagnes\" : [\"Pomme\", \"Poire\"}]\n" +
-            "}";
 
     private String readJson(Context context) {
 
@@ -87,14 +88,32 @@ public class Recette extends Fragment {
 
         liste_recettes = new Vector<RecetteCard>();
         //TODO Recupérer les recettes dans un JSON et les afficher
+        try {
+            JSONArray recettes = new JSONArray(readJson(getActivity().getApplicationContext()));
+            for (int i = 0; i < recettes.length(); i++){
+                JSONObject recette = recettes.getJSONObject(i);
+                JSONArray ingredients_json = recette.getJSONArray("ingredients");
+                Vector<String> ingredients_vector = new Vector<>();
 
+                for(int ing = 0 ; ing < ingredients_json.length(); ing ++){
+
+                    ingredients_vector.add(ingredients_json.get(ing).toString());
+
+                }
+                liste_recettes.add(new RecetteCard(recette.getString("title"),ingredients_vector));
+            }
+        } catch (JSONException e) {
+            throw new RuntimeException(e);
+        }
 
 
         View view = inflater.inflate(R.layout.fragment_recette, container, false);
         RecyclerView recyclerView = view.findViewById(R.id.recyclerView);
-        adapter = new RecetteAdapter(names);
+        adapter = new RecetteAdapter(liste_recettes);
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext().getApplicationContext()));
+
+
 
         FloatingActionButton recette_button = view.findViewById(R.id.nouvelle_recette);
         recette_button.setOnClickListener(new View.OnClickListener() {
