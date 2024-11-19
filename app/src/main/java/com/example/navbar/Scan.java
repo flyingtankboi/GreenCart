@@ -11,6 +11,7 @@ import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.camera.core.AspectRatio;
 import androidx.camera.core.CameraSelector;
+import androidx.camera.core.ImageAnalysis;
 import androidx.camera.core.ImageCapture;
 import androidx.camera.core.Preview;
 import androidx.camera.lifecycle.ProcessCameraProvider;
@@ -31,6 +32,7 @@ import androidx.camera.core.Camera;
 
 
 import com.google.common.util.concurrent.ListenableFuture;
+
 
 import java.util.Objects;
 
@@ -83,8 +85,13 @@ public class Scan extends Fragment {
                 ImageCapture imageCapture = new ImageCapture.Builder().setCaptureMode(ImageCapture.CAPTURE_MODE_MINIMIZE_LATENCY).build();
                 CameraSelector cameraSelector = new CameraSelector.Builder().requireLensFacing(CameraSelector.LENS_FACING_BACK).build();
 
+                ImageAnalysis imageAnalysis = new ImageAnalysis.Builder()
+                        .setBackpressureStrategy(ImageAnalysis.STRATEGY_KEEP_ONLY_LATEST)
+                        .build();
+                imageAnalysis.setAnalyzer(ContextCompat.getMainExecutor(requireContext()), new BarcodeAnalyzer());
+
                 CP.unbindAll();
-                Camera camera = CP.bindToLifecycle(getViewLifecycleOwner(), cameraSelector, preview, imageCapture);
+                Camera camera = CP.bindToLifecycle(getViewLifecycleOwner(), cameraSelector, preview, imageAnalysis);
                 preview.setSurfaceProvider(PW.getSurfaceProvider());
             } catch (Exception e) {
                 Log.e("CameraError", "Error initializing camera", e);
