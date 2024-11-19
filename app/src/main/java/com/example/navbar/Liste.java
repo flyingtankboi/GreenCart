@@ -1,6 +1,5 @@
 package com.example.navbar;
 
-import android.annotation.SuppressLint;
 import android.content.Context;
 import android.os.Bundle;
 
@@ -17,13 +16,11 @@ import android.view.ViewGroup;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
-import java.io.IOError;
 import java.io.IOException;
+import java.util.Random;
 import java.util.Vector;
-import java.io.FileOutputStream;
-import java.io.IOException;
 
-import android.content.Context;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -40,6 +37,7 @@ public class Liste extends Fragment {
 
     JSONObject liste;
     Vector<Item> shoppingList;
+    ShoppingListAdapter adapter;
 
     public Liste() {
     }
@@ -99,8 +97,26 @@ public class Liste extends Fragment {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_liste, container, false);
 
+        FloatingActionButton debug_button = view.findViewById(R.id.debug_button);
+        debug_button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Random r = new Random();
+                shoppingList.add(new Item(String.valueOf(r.nextInt(100)),false));
+                adapter.notifyItemChanged(shoppingList.size() -1);
 
-        ShoppingListAdapter adapter;
+            }
+        });
+        FloatingActionButton reset_button = view.findViewById(R.id.reset_button);
+        reset_button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                shoppingList.clear();
+                adapter.notifyDataSetChanged();
+            }
+        });
+
+
 
         super.onCreate(savedInstanceState);
         RecyclerView recyclerView = view.findViewById(R.id.recyclerView);
@@ -124,16 +140,18 @@ public class Liste extends Fragment {
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext().getApplicationContext()));
         recyclerView.setAdapter(adapter);
 
+
         ItemTouchHelper.SimpleCallback simpleCallback = new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT) {
             @Override
             public boolean onMove(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder, RecyclerView.ViewHolder target) {
                 return false;
             }
 
-            @SuppressLint("NotifyDataSetChanged")
             @Override
             public void onSwiped(RecyclerView.ViewHolder viewHolder, int direction) {
                 int position = viewHolder.getAdapterPosition();
+
+                if (direction == ItemTouchHelper.RIGHT){
                 Item item = shoppingList.get(position);
                 item.setBought(!item.isBought());
                 int newPosition;
@@ -150,6 +168,10 @@ public class Liste extends Fragment {
 
                 adapter.notifyItemMoved(position, newPosition);
                 adapter.notifyItemChanged(newPosition);
+            }else{
+                    shoppingList.remove(position);
+                    adapter.notifyItemRemoved(position);
+                }
             }
         };
 
@@ -184,6 +206,7 @@ public class Liste extends Fragment {
         writeJson(getContext().getApplicationContext(), liste.toString());
         super.onPause();
     }
+
 
 
 }
