@@ -159,17 +159,6 @@ public class Liste extends Fragment {
 
         });
 
-        items = new Vector<Item>();
-        items.add(new Item("caca", false));
-        items.add(new Item("caco", false));
-        items.add(new Item("coca", false));
-        items.add(new Item("coco", false));
-        items.add(new Item("ca", false));
-        items.add(new Item("co", false));
-
-
-
-
         researchAdapter = new ResearchAdapter(getContext(), items, shoppingList, adapter);
         researchRecyclerView.setAdapter(researchAdapter);
 

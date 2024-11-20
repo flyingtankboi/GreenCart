@@ -32,6 +32,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         // Gérez les mises à jour si nécessaire
         Log.d("DatabaseHelper", "Database version updated from " + oldVersion + " to " + newVersion);
+        deleteDatabase();
+        copyDatabase();
     }
 
     /**
@@ -80,4 +82,13 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public SQLiteDatabase openDatabase() {
         return SQLiteDatabase.openDatabase(databasePath, null, SQLiteDatabase.OPEN_READWRITE);
     }
+
+    public void deleteDatabase() {
+        File dbFile = new File(databasePath);
+        if (dbFile.exists()) {
+            dbFile.delete();
+            Log.d("DatabaseHelper", "Old database deleted.");
+        }
+    }
+
 }
