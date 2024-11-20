@@ -18,8 +18,10 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.Random;
 import java.util.Vector;
 
 
@@ -36,12 +38,12 @@ public class Recette extends Fragment {
 
     RecetteAdapter adapter;
     Vector<RecetteCard> liste_recettes;
-    final String FILENAME = "recipes.json";
-    final String DEFAULT_JSON = "[{\"title\" : \"Lasagnes\",\n" +
+    static final String FILENAME = "recipes.json";
+    static final String DEFAULT_JSON = "[{\"title\" : \"Lasagnes\",\n" +
             "                       \"ingredients\" : [\"Pomme\", \"Poire\"]}]\n";
 
 
-    private String readJson(Context context) {
+    public static String readJson(Context context) {
 
         File list = new File(context.getFilesDir(), FILENAME);
         if (!list.exists()) {
@@ -81,23 +83,44 @@ public class Recette extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
         liste_recettes = new Vector<RecetteCard>();
+
+        JSONArray recettes = null;
         try {
-            JSONArray recettes = new JSONArray(readJson(getActivity().getApplicationContext()));
-            for (int i = 0; i < recettes.length(); i++){
-                JSONObject recette = recettes.getJSONObject(i);
-                JSONArray ingredients_json = recette.getJSONArray("ingredients");
+            recettes = new JSONArray(readJson(getActivity().getApplicationContext()));
+        } catch (JSONException e) {
+            throw new RuntimeException(e);
+        }
+        for (int i = 0; i < recettes.length(); i++) {
+            JSONObject recette = null;
+            try {
+                recette = recettes.getJSONObject(i);
+            } catch (JSONException e) {
+                throw new RuntimeException(e);
+            }
+            JSONArray ingredients_json;
+            try {
+                ingredients_json = recette.getJSONArray("ingredients");
                 Vector<String> ingredients_vector = new Vector<>();
 
-                for(int ing = 0 ; ing < ingredients_json.length(); ing ++){
+                for (int ing = 0; ing < ingredients_json.length(); ing++) {
 
                     ingredients_vector.add(ingredients_json.get(ing).toString());
 
                 }
-                liste_recettes.add(new RecetteCard(recette.getString("title"),ingredients_vector));
+
+                liste_recettes.add(new RecetteCard(recette.getString("title"), ingredients_vector));
+            } catch (JSONException e) {
+                try {
+                    liste_recettes.add(new RecetteCard(recette.getString("title")));
+                } catch (JSONException ex) {
+                    throw new RuntimeException(ex);
+                }
             }
-        } catch (JSONException e) {
-            throw new RuntimeException(e);
+
+
+
         }
+
 
 
         View view = inflater.inflate(R.layout.fragment_recette, container, false);
@@ -114,6 +137,31 @@ public class Recette extends Fragment {
             public void onClick(View view) {
 
                 openRecipeCreator();
+            }
+        });
+
+        FloatingActionButton debug_button = view.findViewById(R.id.debug_button);
+        debug_button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                try {
+                    JSONArray recettes  = new JSONArray(readJson(getActivity().getApplicationContext()));
+                    Random r = new Random();
+                    JSONObject newRecette = new JSONObject();
+                    newRecette.put("title",r.nextInt());
+                    newRecette.put(" ingredients",new JSONArray());
+                    recettes.put(newRecette);
+                    FileOutputStream file = getContext().openFileOutput(FILENAME, Context.MODE_PRIVATE);
+                    file.write(recettes.toString().getBytes());
+                    liste_recettes.add(new RecetteCard(String.valueOf(r.nextInt())));
+                    adapter.notifyItemInserted(liste_recettes.size() -1);
+                } catch (JSONException e) {
+                    throw new RuntimeException(e);
+                } catch (FileNotFoundException e) {
+                    throw new RuntimeException(e);
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
             }
         });
 

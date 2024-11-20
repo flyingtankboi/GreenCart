@@ -1,5 +1,6 @@
 package com.example.navbar;
 
+import android.content.Context;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -11,6 +12,14 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+
 /**
  * A simple {@link Fragment} subclass.
  * Use the {@link Fiche_recette#newInstance} factory method to
@@ -21,18 +30,19 @@ public class Fiche_recette extends Fragment {
 
     private static RecetteCard fiche_recette;
     FicheRecetteAdapter adapter;
-
-
+    int position;
+    final static String FILENAME = "recipes.json";
 
     public Fiche_recette() {
         // Required empty public constructor
     }
 
 
-    public static Fiche_recette newInstance(RecetteCard recetteCard) {
+    public static Fiche_recette newInstance(RecetteCard recetteCard,int position) {
         Fiche_recette fragment = new Fiche_recette();
         Bundle args = new Bundle();
         args.putSerializable("arg_recipe", recetteCard);
+        args.putInt("position", position);
         fragment.setArguments(args);
         return fragment;
     }
@@ -42,6 +52,7 @@ public class Fiche_recette extends Fragment {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
             fiche_recette = (RecetteCard) getArguments().getSerializable("arg_recipe");
+            position = getArguments().getInt("position");
         }
     }
 
@@ -59,10 +70,41 @@ public class Fiche_recette extends Fragment {
 
 
 
+
+        View delete_view = view.findViewById(R.id.imageView);
+        delete_view.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                JSONArray recettes  = null;
+                try {
+                    recettes = new JSONArray(Recette.readJson(getActivity().getApplicationContext()));
+                } catch (JSONException e) {
+                    throw new RuntimeException(e);
+                }
+                recettes.remove(position);
+                FileOutputStream file = null;
+                try {
+                    file = getContext().openFileOutput(FILENAME, Context.MODE_PRIVATE);
+                } catch (FileNotFoundException e) {
+                    throw new RuntimeException(e);
+                }
+                try {
+                    file.write(recettes.toString().getBytes());
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
+                getParentFragmentManager().popBackStack();
+
+            }
+        });
         return view;
+
     }
 
-    public void supprime_recette(View view){
+
+
+    public void supprime_recette(View view) throws JSONException, IOException {
+
 
     }
 }

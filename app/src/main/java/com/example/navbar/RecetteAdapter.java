@@ -36,7 +36,7 @@ public class RecetteAdapter extends RecyclerView.Adapter<RecetteAdapter.ViewHold
         holder.textViewName.setTextColor(Color.parseColor("#000000"));
         holder.textViewName.setOnClickListener(view -> {
 
-            Fiche_recette fragment = Fiche_recette.newInstance(recette);
+            Fiche_recette fragment = Fiche_recette.newInstance(recette,position);
             FragmentTransaction transaction = fragmentManager.beginTransaction();
 
             transaction.replace(R.id.frameLayout, fragment);
