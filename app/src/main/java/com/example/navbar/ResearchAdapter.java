@@ -1,5 +1,7 @@
 package com.example.navbar;
 
+import static com.example.navbar.Liste.adapter;
+
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,11 +16,13 @@ public class ResearchAdapter extends RecyclerView.Adapter<ResearchViewHolder> {
     Context context;
     Vector<Item> items;
     Vector<Item> shopping_list;
+    ShoppingListAdapter adapter;
 
-    public ResearchAdapter(Context context, Vector<Item> items, Vector<Item> shopping_list){
+    public ResearchAdapter(Context context, Vector<Item> items, Vector<Item> shopping_list, ShoppingListAdapter adapter){
         this.context = context;
         this.items = items;
         this.shopping_list = shopping_list;
+        this.adapter = adapter;
     }
 
     @Override
@@ -32,8 +36,8 @@ public class ResearchAdapter extends RecyclerView.Adapter<ResearchViewHolder> {
         holder.textView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                shopping_list.add(new Item(items.elementAt(position).getName(), true));
-                notifyItemChanged(shopping_list.size() - 1);
+                shopping_list.add(new Item(items.elementAt(position).getName(), false));
+                adapter.notifyItemChanged(shopping_list.size() - 1);
             }
         });
     }

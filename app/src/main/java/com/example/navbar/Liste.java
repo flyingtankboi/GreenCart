@@ -125,6 +125,15 @@ public class Liste extends Fragment {
         });
         shoppingList = new Vector<>();
 
+        adapter = new ShoppingListAdapter(shoppingList);
+
+        recyclerView = view.findViewById(R.id.recyclerView);
+        recyclerView.setLayoutManager(new LinearLayoutManager(getContext().getApplicationContext()));
+        recyclerView.setAdapter(adapter);
+
+        researchRecyclerView = view.findViewById(R.id.researchRecyclerView);
+        researchRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+
         databaseHelper = new DatabaseHelper(getContext());
         SQLiteDatabase db = databaseHelper.getReadableDatabase();
 
@@ -158,10 +167,9 @@ public class Liste extends Fragment {
         items.add(new Item("co", false));
 
 
-        researchRecyclerView = view.findViewById(R.id.researchRecyclerView);
-        researchRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 
-        researchAdapter = new ResearchAdapter(getContext(), items, shoppingList);
+
+        researchAdapter = new ResearchAdapter(getContext(), items, shoppingList, adapter);
         researchRecyclerView.setAdapter(researchAdapter);
 
         closeSuggestions();
@@ -177,7 +185,6 @@ public class Liste extends Fragment {
 
 
         super.onCreate(savedInstanceState);
-        RecyclerView recyclerView = view.findViewById(R.id.recyclerView);
 
         try {
             liste = new JSONObject(readJson(getActivity().getApplicationContext()));
@@ -189,12 +196,6 @@ public class Liste extends Fragment {
         } catch (JSONException e) {
             throw new RuntimeException(e);
         }
-
-
-        adapter = new ShoppingListAdapter(shoppingList);
-        recyclerView.setLayoutManager(new LinearLayoutManager(getContext().getApplicationContext()));
-        recyclerView.setAdapter(adapter);
-
 
         ItemTouchHelper.SimpleCallback simpleCallback = new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT) {
             @Override
