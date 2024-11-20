@@ -21,6 +21,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.SearchView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import java.io.File;
@@ -57,6 +58,7 @@ public class Liste extends Fragment {
     RecyclerView recyclerView;
     RecyclerView researchRecyclerView;
     ResearchAdapter researchAdapter;
+    TextView compteurView;
     private DatabaseHelper databaseHelper;
 
     JSONObject liste;
@@ -182,6 +184,8 @@ public class Liste extends Fragment {
 
         adapter = new ShoppingListAdapter(shoppingList);
 
+        compteurView = view.findViewById(R.id.compteur);
+
         recyclerView = view.findViewById(R.id.recyclerView);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext().getApplicationContext()));
         recyclerView.setAdapter(adapter);
@@ -214,7 +218,7 @@ public class Liste extends Fragment {
 
         });
 
-        researchAdapter = new ResearchAdapter(getContext(), items, shoppingList, adapter);
+        researchAdapter = new ResearchAdapter(getContext(), items, shoppingList, adapter, requireActivity());
         researchRecyclerView.setAdapter(researchAdapter);
 
         closeSuggestions();
@@ -352,7 +356,12 @@ public class Liste extends Fragment {
                     shoppingList.remove(position);
                     adapter.notifyItemRemoved(position);
                 }
-                if(listIsFinished()){
+
+
+                int[] progress = getProgress();
+                String stringCompteur = progress[0] + "/" + progress[1];
+                compteurView.setText(stringCompteur);
+                if(progress[0] == progress[1]){
                     Toast.makeText(getContext().getApplicationContext(), "Les courses sont finies !", Toast.LENGTH_SHORT).show();
                 }
 
@@ -404,13 +413,14 @@ public class Liste extends Fragment {
         }
     }
 
-    public boolean listIsFinished(){
-        for(Item item : shoppingList){
-            if(!item.isBought()){
-                return false;
+    public int[] getProgress() {
+        int a = 0;
+        for (Item item : shoppingList) {
+            if (!item.isBought()) {
+                a++;
             }
         }
-        return true;
+        return new int[]{a, shoppingList.size()};
     }
 
     @Override
