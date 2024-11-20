@@ -1,8 +1,9 @@
 package com.example.navbar;
 
+import java.io.Serializable;
 import java.util.Vector;
 
-public class RecetteCard {
+public class RecetteCard implements Serializable {
     String titre;
     Vector<String> ingredients;
 

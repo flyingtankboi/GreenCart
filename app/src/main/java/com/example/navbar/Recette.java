@@ -79,10 +79,8 @@ public class Recette extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
 
         liste_recettes = new Vector<RecetteCard>();
-        //TODO Recupérer les recettes dans un JSON et les afficher
         try {
             JSONArray recettes = new JSONArray(readJson(getActivity().getApplicationContext()));
             for (int i = 0; i < recettes.length(); i++){
@@ -104,7 +102,7 @@ public class Recette extends Fragment {
 
         View view = inflater.inflate(R.layout.fragment_recette, container, false);
         RecyclerView recyclerView = view.findViewById(R.id.recyclerView);
-        adapter = new RecetteAdapter(liste_recettes);
+        adapter = new RecetteAdapter(liste_recettes,getParentFragmentManager());
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext().getApplicationContext()));
 

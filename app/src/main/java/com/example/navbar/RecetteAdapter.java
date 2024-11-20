@@ -7,32 +7,43 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.RecyclerView;
+
 import java.util.List;
 
 public class RecetteAdapter extends RecyclerView.Adapter<RecetteAdapter.ViewHolder> {
 
     private List<RecetteCard> recettes;
+    private FragmentManager fragmentManager;
 
-    public RecetteAdapter(List<RecetteCard> recettes) {
+    public RecetteAdapter(List<RecetteCard> recettes, FragmentManager fragmentManager) {
         this.recettes = recettes;
+        this.fragmentManager = fragmentManager;
     }
 
     @Override
-    public ViewHolder onCreateViewHolder( ViewGroup parent, int viewType) {
+    public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.recette, parent, false);
         return new ViewHolder(view);
     }
 
     @Override
-    public void onBindViewHolder( ViewHolder holder, int position) {
+    public void onBindViewHolder(ViewHolder holder, int position) {
         RecetteCard recette = recettes.get(position);
         holder.textViewName.setText(recette.getTitre());
         holder.textViewName.setTextColor(Color.parseColor("#000000"));
         holder.textViewName.setOnClickListener(view -> {
-            //TODO
-            Toast.makeText(view.getContext(), "TODO fiche recette", Toast.LENGTH_SHORT).show();
 
+            Fiche_recette fragment = Fiche_recette.newInstance(recette);
+            FragmentTransaction transaction = fragmentManager.beginTransaction();
+
+            transaction.replace(R.id.frameLayout, fragment);
+
+            transaction.addToBackStack(null);
+
+            transaction.commit();
         });
     }
 
