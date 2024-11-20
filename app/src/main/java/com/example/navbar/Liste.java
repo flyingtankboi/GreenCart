@@ -20,6 +20,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.SearchView;
 import android.widget.Toast;
 
 import java.io.File;
@@ -39,6 +40,9 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
+
 public class Liste extends Fragment {
 
     final String FILENAME = "current_list.json";
@@ -48,10 +52,16 @@ public class Liste extends Fragment {
             "  \"date\": \"\",\n" +
             "  \"items\": [{\"name\" : \"Pomme\", \"isbought\":false}]\n" +
             "}";
+    Vector<Item> items;
+    SearchView searchView;
+    RecyclerView recyclerView;
+    RecyclerView researchRecyclerView;
+    ResearchAdapter researchAdapter;
+    private DatabaseHelper databaseHelper;
 
     JSONObject liste;
     Vector<Item> shoppingList;
-    ShoppingListAdapter adapter;
+    static ShoppingListAdapter adapter;
 
     public Liste() {
     }
@@ -163,12 +173,56 @@ public class Liste extends Fragment {
             @Override
             public void onClick(View view) {
                 Random r = new Random();
-                shoppingList.add(new Item(String.valueOf(r.nextInt(100)), false));
+                shoppingList.add(new Item(String.valueOf(r.nextInt(100)), true));
                 adapter.notifyItemChanged(shoppingList.size() - 1);
-
             }
         });
+<<<<<<< app/src/main/java/com/example/navbar/Liste.java
+        shoppingList = new Vector<>();
+
+        adapter = new ShoppingListAdapter(shoppingList);
+
+        recyclerView = view.findViewById(R.id.recyclerView);
+        recyclerView.setLayoutManager(new LinearLayoutManager(getContext().getApplicationContext()));
+        recyclerView.setAdapter(adapter);
+
+        researchRecyclerView = view.findViewById(R.id.researchRecyclerView);
+        researchRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+
+        databaseHelper = new DatabaseHelper(getContext());
+        databaseHelper.copyDatabase();
+        SQLiteDatabase db = databaseHelper.openDatabase();
+
+        searchView = view.findViewById(R.id.searchView);
+        searchView.clearFocus();
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                    if (!newText.isEmpty()) {
+                        researchRecyclerView.setVisibility(View.VISIBLE);
+                        loadSuggestions(db, newText);
+                    } else {
+                        closeSuggestions();
+                    }
+                return true;
+            }
+
+        });
+
+        researchAdapter = new ResearchAdapter(getContext(), items, shoppingList, adapter);
+        researchRecyclerView.setAdapter(researchAdapter);
+
+        closeSuggestions();
+
+        FloatingActionButton reset_button = view.findViewById(R.id.reset_button);
+=======
         FloatingActionButton reset_button = view.findViewById(R.id.nouvelle_recette);
+>>>>>>> app/src/main/java/com/example/navbar/Liste.java
         reset_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -189,9 +243,6 @@ public class Liste extends Fragment {
 
 
         super.onCreate(savedInstanceState);
-        RecyclerView recyclerView = view.findViewById(R.id.recyclerView);
-
-        shoppingList = new Vector<Item>();
 
         try {
             liste = new JSONObject(readJson(getActivity().getApplicationContext()));
@@ -203,12 +254,6 @@ public class Liste extends Fragment {
         } catch (JSONException e) {
             throw new RuntimeException(e);
         }
-
-
-        adapter = new ShoppingListAdapter(shoppingList);
-        recyclerView.setLayoutManager(new LinearLayoutManager(getContext().getApplicationContext()));
-        recyclerView.setAdapter(adapter);
-
 
         ItemTouchHelper.SimpleCallback simpleCallback = new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT) {
             @Override
@@ -323,6 +368,26 @@ public class Liste extends Fragment {
         return view;
     }
 
+    private void closeSuggestions() {
+        researchRecyclerView.setVisibility(View.GONE);
+    }
+
+    public void loadSuggestions(SQLiteDatabase database, String query) {
+        Vector<Item> filtereditems = new Vector<>();
+
+        String sqlQuery = "SELECT name FROM items WHERE name LIKE ?";
+        Cursor cursor = database.rawQuery(sqlQuery, new String[]{"%" + query + "%"});
+
+        if (cursor.moveToFirst()) {
+            do {
+                String itemName = cursor.getString(0);
+                filtereditems.add(new Item(itemName, false));
+            } while (cursor.moveToNext());
+        }
+        cursor.close();
+        researchAdapter.setFilteredList(filtereditems);
+    }
+
     public void updateJSONList() {
         // Copy shopping list to the jsonOBJECT
         JSONArray items_array = new JSONArray();
@@ -356,6 +421,8 @@ public class Liste extends Fragment {
         writeJson(getContext().getApplicationContext(), liste.toString());
         super.onPause();
     }
+
+
 
 
 }
