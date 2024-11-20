@@ -243,7 +243,6 @@ public class Liste extends Fragment {
             }
         });
 
-
         super.onCreate(savedInstanceState);
 
         try {
@@ -361,7 +360,7 @@ public class Liste extends Fragment {
                 int[] progress = getProgress();
                 String stringCompteur = progress[0] + "/" + progress[1];
                 compteurView.setText(stringCompteur);
-                if(progress[0] == progress[1]){
+                if(progress[0] == 0){
                     Toast.makeText(getContext().getApplicationContext(), "Les courses sont finies !", Toast.LENGTH_SHORT).show();
                 }
 
@@ -371,6 +370,10 @@ public class Liste extends Fragment {
 
         ItemTouchHelper itemTouchHelper = new ItemTouchHelper(simpleCallback);
         itemTouchHelper.attachToRecyclerView(recyclerView);
+
+        int[] progress = getProgress();
+        String stringCompteur = progress[0] + "/" + progress[1];
+        compteurView.setText(stringCompteur);
 
         return view;
     }
