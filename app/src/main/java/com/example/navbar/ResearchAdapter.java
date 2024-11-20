@@ -2,6 +2,7 @@ package com.example.navbar;
 
 import android.content.Context;
 import android.view.LayoutInflater;
+import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.recyclerview.widget.RecyclerView;
@@ -12,10 +13,12 @@ public class ResearchAdapter extends RecyclerView.Adapter<ResearchViewHolder> {
 
     Context context;
     Vector<Item> items;
+    Vector<Item> shopping_list;
 
-    public ResearchAdapter(Context context, Vector<Item> items){
+    public ResearchAdapter(Context context, Vector<Item> items, Vector<Item> shopping_list){
         this.context = context;
         this.items = items;
+        this.shopping_list = shopping_list;
     }
 
     @Override
@@ -26,6 +29,12 @@ public class ResearchAdapter extends RecyclerView.Adapter<ResearchViewHolder> {
     @Override
     public void onBindViewHolder(ResearchViewHolder holder, int position) {
         holder.textView.setText(items.elementAt(position).getName());
+        holder.textView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                shopping_list.add(new Item(items.elementAt(position).getName(), true));
+            }
+        });
     }
 
     @Override

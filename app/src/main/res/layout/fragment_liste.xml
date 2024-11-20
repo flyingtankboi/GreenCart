@@ -54,11 +54,10 @@
             android:layout_margin="8dp"
             android:background="@drawable/search_view_background"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:queryHint="Search product"
-            app:iconifiedByDefault="false"/>
+            android:queryHint="Add product"
+            android:iconifiedByDefault="false"/>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

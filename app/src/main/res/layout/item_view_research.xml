@@ -11,6 +11,7 @@
         android:layout_height="wrap_content"
         android:layout_weight="1"
         android:textSize="18sp"
-        android:padding="8dp" />
+        android:padding="8dp"
+        android:background="@drawable/search_view_background"/>
 
 </LinearLayout>

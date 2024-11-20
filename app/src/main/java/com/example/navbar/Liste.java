@@ -33,6 +33,9 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
+
 public class Liste extends Fragment {
 
     final String FILENAME = "current_list.json";
@@ -46,10 +49,12 @@ public class Liste extends Fragment {
     RecyclerView recyclerView;
     RecyclerView researchRecyclerView;
     ResearchAdapter researchAdapter;
+    SQLiteDatabase item_database;
+    private DatabaseHelper databaseHelper;
 
     JSONObject liste;
     Vector<Item> shoppingList;
-    ShoppingListAdapter adapter;
+    static ShoppingListAdapter adapter;
 
     public Liste() {
     }
@@ -120,6 +125,8 @@ public class Liste extends Fragment {
 
             }
         });
+        databaseHelper = new DatabaseHelper(getContext());
+        SQLiteDatabase db = databaseHelper.getReadableDatabase();
 
         searchView = view.findViewById(R.id.searchView);
         searchView.clearFocus();
@@ -133,7 +140,7 @@ public class Liste extends Fragment {
             public boolean onQueryTextChange(String newText) {
                     if (!newText.isEmpty()) {
                         researchRecyclerView.setVisibility(View.VISIBLE);
-                        filterlist(newText);
+                        loadSuggestions(db, newText);
                     } else {
                         closeSuggestions();
                     }
@@ -154,7 +161,7 @@ public class Liste extends Fragment {
         researchRecyclerView = view.findViewById(R.id.researchRecyclerView);
         researchRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 
-        researchAdapter = new ResearchAdapter(getContext(), items);
+        researchAdapter = new ResearchAdapter(getContext(), items, shoppingList);
         researchRecyclerView.setAdapter(researchAdapter);
 
         closeSuggestions();
@@ -275,7 +282,6 @@ public class Liste extends Fragment {
         return view;
     }
 
-
     private void closeSuggestions() {
         researchRecyclerView.setVisibility(View.GONE);
     }
@@ -287,6 +293,26 @@ public class Liste extends Fragment {
                 filtereditems.add(item);
             }
         }
+        researchAdapter.setFilteredList(filtereditems);
+    }
+
+    public void ajout(Item item){
+        shoppingList.add(item);
+    }
+
+    public void loadSuggestions(SQLiteDatabase database, String query) {
+        Vector<Item> filtereditems = new Vector<>();
+
+        String sqlQuery = "SELECT name FROM items WHERE name LIKE ?";
+        Cursor cursor = database.rawQuery(sqlQuery, new String[]{"%" + query + "%"});
+
+        if (cursor.moveToFirst()) {
+            do {
+                String itemName = cursor.getString(0);
+                filtereditems.add(new Item(itemName, false));
+            } while (cursor.moveToNext());
+        }
+        cursor.close();
         researchAdapter.setFilteredList(filtereditems);
     }
 
