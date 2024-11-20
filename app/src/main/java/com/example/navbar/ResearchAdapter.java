@@ -6,7 +6,9 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
+import androidx.fragment.app.FragmentActivity;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.Vector;
@@ -17,12 +19,14 @@ public class ResearchAdapter extends RecyclerView.Adapter<ResearchViewHolder> {
     Vector<Item> items;
     Vector<Item> shopping_list;
     ShoppingListAdapter adapter;
+    FragmentActivity activity;
 
-    public ResearchAdapter(Context context, Vector<Item> items, Vector<Item> shopping_list, ShoppingListAdapter adapter){
+    public ResearchAdapter(Context context, Vector<Item> items, Vector<Item> shopping_list, ShoppingListAdapter adapter, FragmentActivity activity) {
         this.context = context;
         this.items = items;
         this.shopping_list = shopping_list;
         this.adapter = adapter;
+        this.activity = activity;
     }
 
     @Override
@@ -38,6 +42,10 @@ public class ResearchAdapter extends RecyclerView.Adapter<ResearchViewHolder> {
             public void onClick(View view) {
                 shopping_list.add(new Item(items.elementAt(position).getName(), false));
                 adapter.notifyItemChanged(shopping_list.size() - 1);
+                int[] progress = getProgress();
+                String stringCompteur = progress[0] + "/" + progress[1];
+                TextView compteur = activity.findViewById(R.id.compteur);
+                compteur.setText(stringCompteur);
             }
         });
     }
@@ -47,8 +55,18 @@ public class ResearchAdapter extends RecyclerView.Adapter<ResearchViewHolder> {
         return items.size();
     }
 
-    public void setFilteredList(Vector<Item> filteredList){
+    public void setFilteredList(Vector<Item> filteredList) {
         this.items = filteredList;
         notifyDataSetChanged();
+    }
+
+    public int[] getProgress() {
+        int a = 0;
+        for (Item item : shopping_list) {
+            if (!item.isBought()) {
+                a++;
+            }
+        }
+        return new int[]{a, shopping_list.size()};
     }
 }
