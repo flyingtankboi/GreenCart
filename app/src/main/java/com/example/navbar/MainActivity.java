@@ -1,7 +1,6 @@
 package com.example.navbar;
 
 import android.os.Bundle;
-import android.renderscript.ScriptGroup;
 import android.util.Log;
 
 import androidx.activity.EdgeToEdge;
@@ -39,14 +38,14 @@ public class MainActivity extends AppCompatActivity {
         nav_bar = findViewById(R.id.navBar);
         replaceFragment(new Liste());
         if (nav_bar == null){
-            Log.i("error", "wtf");
+            Log.i("error", "Pas de barre de navigation :C.");
         }
         nav_bar.setOnItemSelectedListener(item ->{
             int itemId = item.getItemId();
             if (itemId == R.id.scan) {
                 replaceFragment(new Scan());
-            } else if (itemId == R.id.frigo) {
-                replaceFragment(new Frigo());
+            } else if (itemId == R.id.historique) {
+                replaceFragment(new Historique());
             } else if (itemId == R.id.liste) {
                 replaceFragment(new Liste());
             } else if (itemId == R.id.recette) {

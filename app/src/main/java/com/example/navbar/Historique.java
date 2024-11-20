@@ -10,10 +10,10 @@ import android.view.ViewGroup;
 
 /**
  * A simple {@link Fragment} subclass.
- * Use the {@link Frigo#newInstance} factory method to
+ * Use the {@link Historique#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class Frigo extends Fragment {
+public class Historique extends Fragment {
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -24,7 +24,7 @@ public class Frigo extends Fragment {
     private String mParam1;
     private String mParam2;
 
-    public Frigo() {
+    public Historique() {
         // Required empty public constructor
     }
 
@@ -37,8 +37,8 @@ public class Frigo extends Fragment {
      * @return A new instance of fragment Frigo.
      */
     // TODO: Rename and change types and number of parameters
-    public static Frigo newInstance(String param1, String param2) {
-        Frigo fragment = new Frigo();
+    public static Historique newInstance(String param1, String param2) {
+        Historique fragment = new Historique();
         Bundle args = new Bundle();
         args.putString(ARG_PARAM1, param1);
         args.putString(ARG_PARAM2, param2);

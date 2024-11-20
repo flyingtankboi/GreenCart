@@ -140,7 +140,7 @@ public class Recette extends Fragment {
             }
         });
 
-        FloatingActionButton debug_button = view.findViewById(R.id.debug_button);
+        FloatingActionButton debug_button = view.findViewById(R.id.share_button);
         debug_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
