@@ -1,57 +1,68 @@
 package com.example.navbar;
 
+import android.content.Context;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link Profile#newInstance} factory method to
- * create an instance of this fragment.
- */
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+
 public class Profile extends Fragment {
 
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
-
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
+    final String FILENAME_HISTORIQUE = "historique.json";
+    final String DEFAULT_HISTORIQUE = "[]";
 
     public Profile() {
         // Required empty public constructor
     }
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment Profile.
-     */
-    // TODO: Rename and change types and number of parameters
-    public static Profile newInstance(String param1, String param2) {
-        Profile fragment = new Profile();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
-        return fragment;
-    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
+    }
+
+
+    private String getHistorique(Context context) {
+
+        File list = new File(context.getFilesDir(), FILENAME_HISTORIQUE);
+        if (!list.exists()) {
+            try (FileOutputStream file = context.openFileOutput(FILENAME_HISTORIQUE, Context.MODE_PRIVATE)) {
+                file.write(DEFAULT_HISTORIQUE.getBytes());
+            } catch (IOException e) {
+                Log.i("error", "N'a pas réussi à ecrire dans le fichier par defaut");
+            }
+            return DEFAULT_HISTORIQUE;
+        } else {
+            String string_du_fichier = "";
+            try {
+                FileInputStream file = context.openFileInput(FILENAME_HISTORIQUE);
+                int size = file.available();
+                byte[] buffer = new byte[size];
+                file.read(buffer);
+                file.close();
+                string_du_fichier = new String(buffer, "UTF-8");
+
+            } catch (IOException e) {
+                Log.i("error", "N'a pas réussi à écrire dans le fichier par defaut");
+            }
+            return string_du_fichier;
         }
     }
 
@@ -59,6 +70,37 @@ public class Profile extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_profile, container, false);
+        View view = inflater.inflate(R.layout.fragment_profile, container, false);
+
+
+        RecyclerView recyclerView = view.findViewById(R.id.recycler_view);
+        recyclerView.setLayoutManager(new GridLayoutManager(getContext().getApplicationContext(), 1));
+
+        // Example
+        JSONArray historique = null;
+        try {
+            historique = new JSONArray(getHistorique(getContext().getApplicationContext()));
+        } catch (JSONException e) {
+            throw new RuntimeException(e);
+        }
+        List<String> names = new ArrayList<>();
+        List<String> dates = new ArrayList<>();
+
+        for (int i = historique.length() - 1; i >= 0; i--) {
+            // Récupérer l'élément à l'index i
+            JSONObject liste = null;
+            try {
+                liste = historique.getJSONObject(i);
+                names.add(liste.getString("name"));
+                dates.add(liste.getString("date"));
+            } catch (JSONException e) {
+                throw new RuntimeException(e);
+            }
+        }
+
+        CardAdapter adapter = new CardAdapter(names, dates, historique);
+        recyclerView.setAdapter(adapter);
+
+        return view;
     }
 }
