@@ -3,6 +3,7 @@ package com.example.navbar;
 import android.content.Context;
 import android.util.Log;
 import android.view.View;
+import android.widget.Toast;
 
 import androidx.annotation.OptIn;
 import androidx.camera.core.ExperimentalGetImage;
@@ -27,6 +28,8 @@ public class BarcodeAnalyzer implements ImageAnalysis.Analyzer {
     RequestQueue rq;
     View view;
     Context context;
+    int nb_requests;
+    boolean stop=true;
     public BarcodeAnalyzer(FragmentManager fm, Context context, View view){
         this.fm = fm;
         this.context = context;
@@ -56,6 +59,7 @@ public class BarcodeAnalyzer implements ImageAnalysis.Analyzer {
                             if (count==5) {
                                 count = 0;
                                 Log.d("Barcode", "Detected: " + barcode);
+                                nb_requests++;
                                 rq = Volley.newRequestQueue(context);
                                 ProductListener responseListener = new ProductListener(fm,view,rq);
                                 Response.ErrorListener errorListener = new ErrorListener();
@@ -64,6 +68,11 @@ public class BarcodeAnalyzer implements ImageAnalysis.Analyzer {
                                         responseListener,
                                         errorListener);
                                 rq.add(SR);
+                            }
+
+                            if (nb_requests>3 && stop){
+                                Toast.makeText(context,"Vérifiez que vous êtes connéctés à Internet.", Toast.LENGTH_LONG).show();
+                                stop=false;
                             }
                         }
                     })
