@@ -51,4 +51,5 @@ dependencies {
     implementation(libs.camera.lifecycle)
     implementation(libs.camera.view)
     implementation(libs.barcode.scanning)
+    implementation(libs.volley)
 }
