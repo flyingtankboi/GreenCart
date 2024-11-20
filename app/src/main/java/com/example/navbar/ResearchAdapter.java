@@ -20,13 +20,12 @@ public class ResearchAdapter extends RecyclerView.Adapter<ResearchViewHolder> {
 
     @Override
     public ResearchViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        return new ResearchViewHolder(LayoutInflater.from(context).inflate(R.layout.item_view, parent, false));
+        return new ResearchViewHolder(LayoutInflater.from(context).inflate(R.layout.item_view_research, parent, false));
     }
 
     @Override
     public void onBindViewHolder(ResearchViewHolder holder, int position) {
-        holder.imageView.setImageResource(items.elementAt(position).picture);
-        holder.textView.setText(items.elementAt(position).product);
+        holder.textView.setText(items.elementAt(position).getName());
     }
 
     @Override

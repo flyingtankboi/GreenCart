@@ -44,7 +44,8 @@ public class Liste extends Fragment {
     Vector<Item> items;
     SearchView searchView;
     RecyclerView recyclerView;
-    ResearchAdapter adapter;
+    RecyclerView researchRecyclerView;
+    ResearchAdapter researchAdapter;
 
     JSONObject liste;
     Vector<Item> shoppingList;
@@ -120,7 +121,7 @@ public class Liste extends Fragment {
             }
         });
 
-        searchView = findViewById(R.id.searchView);
+        searchView = view.findViewById(R.id.searchView);
         searchView.clearFocus();
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
@@ -133,33 +134,23 @@ public class Liste extends Fragment {
                 filterlist(newText);
                 return false;
             }
+
         });
 
         items = new Vector<Item>();
-        items.add(new Item("caca", R.drawable.caca));
-        items.add(new Item("caco", R.drawable.caca));
-        items.add(new Item("coca", R.drawable.caca));
-        items.add(new Item("coco", R.drawable.caca));
-        items.add(new Item("ca", R.drawable.caca));
-        items.add(new Item("co", R.drawable.caca));
+        items.add(new Item("caca", false));
+        items.add(new Item("caco", false));
+        items.add(new Item("coca", false));
+        items.add(new Item("coco", false));
+        items.add(new Item("ca", false));
+        items.add(new Item("co", false));
 
 
-        recyclerView = findViewById(R.id.recyclerView);
-        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+        researchRecyclerView = view.findViewById(R.id.researchRecyclerView);
+        researchRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 
-        adapter = new ResearchAdapter(getContext(), items);
-        recyclerView.setAdapter(adapter);
-    }
-
-    private void filterlist(String text) {
-        Vector<Item> filtereditems = new Vector<Item>();
-        for (Item item : items){
-            if (item.product.toLowerCase().contains(text.toLowerCase())){
-                filtereditems.add(item);
-            }
-        }
-        adapter.setFilteredList(filtereditems);
-    }
+        researchAdapter = new ResearchAdapter(getContext(), items);
+        researchRecyclerView.setAdapter(researchAdapter);
 
         FloatingActionButton reset_button = view.findViewById(R.id.reset_button);
         reset_button.setOnClickListener(new View.OnClickListener() {
@@ -275,6 +266,16 @@ public class Liste extends Fragment {
 
 
         return view;
+    }
+
+    private void filterlist(String text) {
+        Vector<Item> filtereditems = new Vector<Item>();
+        for (Item item : items){
+            if (item.getName().toLowerCase().contains(text.toLowerCase())){
+                filtereditems.add(item);
+            }
+        }
+        researchAdapter.setFilteredList(filtereditems);
     }
 
     public void updateJSONList() {
