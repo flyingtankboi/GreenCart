@@ -46,8 +46,7 @@ public class Fiche_recette extends Fragment {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view =  inflater.inflate(R.layout.fragment_fiche_recette, container, false);
         TextView titre_recette_tv = view.findViewById(R.id.titre_recette);
         titre_recette_tv.setText(fiche_recette.getTitre());
@@ -61,5 +60,9 @@ public class Fiche_recette extends Fragment {
 
 
         return view;
+    }
+
+    public void supprime_recette(View view){
+
     }
 }

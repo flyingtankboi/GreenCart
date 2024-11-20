@@ -6,10 +6,16 @@ import java.util.Vector;
 public class RecetteCard implements Serializable {
     String titre;
     Vector<String> ingredients;
+    String instructions;
 
     public RecetteCard(String titre,Vector<String> ingredients){
         this.titre = titre;
         this.ingredients = ingredients;
+    }
+    public RecetteCard(String titre,Vector<String> ingredients,String instructions){
+        this.titre = titre;
+        this.ingredients = ingredients;
+        this.instructions = instructions;
     }
 
     public RecetteCard(String titre){
