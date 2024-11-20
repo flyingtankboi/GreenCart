@@ -49,7 +49,6 @@ public class Liste extends Fragment {
     RecyclerView recyclerView;
     RecyclerView researchRecyclerView;
     ResearchAdapter researchAdapter;
-    SQLiteDatabase item_database;
     private DatabaseHelper databaseHelper;
 
     JSONObject liste;
@@ -120,11 +119,12 @@ public class Liste extends Fragment {
             @Override
             public void onClick(View view) {
                 Random r = new Random();
-                shoppingList.add(new Item(String.valueOf(r.nextInt(100)), false));
+                shoppingList.add(new Item(String.valueOf(r.nextInt(100)), true));
                 adapter.notifyItemChanged(shoppingList.size() - 1);
-
             }
         });
+        shoppingList = new Vector<>();
+
         databaseHelper = new DatabaseHelper(getContext());
         SQLiteDatabase db = databaseHelper.getReadableDatabase();
 
@@ -178,8 +178,6 @@ public class Liste extends Fragment {
 
         super.onCreate(savedInstanceState);
         RecyclerView recyclerView = view.findViewById(R.id.recyclerView);
-
-        shoppingList = new Vector<Item>();
 
         try {
             liste = new JSONObject(readJson(getActivity().getApplicationContext()));

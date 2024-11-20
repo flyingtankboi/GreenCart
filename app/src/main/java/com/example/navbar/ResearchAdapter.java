@@ -33,6 +33,7 @@ public class ResearchAdapter extends RecyclerView.Adapter<ResearchViewHolder> {
             @Override
             public void onClick(View view) {
                 shopping_list.add(new Item(items.elementAt(position).getName(), true));
+                notifyItemChanged(shopping_list.size() - 1);
             }
         });
     }
