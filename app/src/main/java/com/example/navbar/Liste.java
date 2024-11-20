@@ -310,6 +310,11 @@ public class Liste extends Fragment {
                     shoppingList.remove(position);
                     adapter.notifyItemRemoved(position);
                 }
+                if(listIsFinished()){
+                    Toast.makeText(getContext().getApplicationContext(), "Les courses sont finies !", Toast.LENGTH_SHORT).show();
+                }
+
+
             }
         };
 
@@ -337,6 +342,14 @@ public class Liste extends Fragment {
         }
     }
 
+    public boolean listIsFinished(){
+        for(Item item : shoppingList){
+            if(!item.isBought()){
+                return false;
+            }
+        }
+        return true;
+    }
 
     @Override
     public void onPause() {
