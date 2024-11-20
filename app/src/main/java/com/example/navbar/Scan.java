@@ -39,6 +39,7 @@ import java.util.Objects;
 
 public class Scan extends Fragment {
     PreviewView PW;
+    View view;
 
 
     public Scan() {
@@ -56,7 +57,7 @@ public class Scan extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_scan, container, false);
+        view = inflater.inflate(R.layout.fragment_scan, container, false);
         PW = view.findViewById(R.id.preview);
 
         if (ContextCompat.checkSelfPermission(requireContext(), android.Manifest.permission.CAMERA)
@@ -70,11 +71,6 @@ public class Scan extends Fragment {
     }
 
     public void startCamera() {
-        Log.d("Camera", "Starting camera...");
-        if (PW == null || PW.getWidth() == 0 || PW.getHeight() == 0) {
-            return;
-        }
-
         int aspect_ratio = aspectRatio(PW.getWidth(), PW.getHeight());
         ListenableFuture<ProcessCameraProvider> LF = ProcessCameraProvider.getInstance(requireContext());
 
@@ -88,7 +84,7 @@ public class Scan extends Fragment {
                 ImageAnalysis imageAnalysis = new ImageAnalysis.Builder()
                         .setBackpressureStrategy(ImageAnalysis.STRATEGY_KEEP_ONLY_LATEST)
                         .build();
-                imageAnalysis.setAnalyzer(ContextCompat.getMainExecutor(requireContext()), new BarcodeAnalyzer());
+                imageAnalysis.setAnalyzer(ContextCompat.getMainExecutor(requireContext()), new BarcodeAnalyzer(getParentFragmentManager(),requireContext(),view));
 
                 CP.unbindAll();
                 Camera camera = CP.bindToLifecycle(getViewLifecycleOwner(), cameraSelector, preview, imageAnalysis);
@@ -100,11 +96,7 @@ public class Scan extends Fragment {
     }
 
     private void requestCameraPermission() {
-        if (shouldShowRequestPermissionRationale("android.permission.camera")) {
-            // Show a rationale dialog here if necessary
-        }
-
-        activityResultLauncher.launch("android.permission.camera");
+        activityResultLauncher.launch(Manifest.permission.CAMERA);
     }
 
     private final ActivityResultLauncher<String> activityResultLauncher = registerForActivityResult(
@@ -117,6 +109,7 @@ public class Scan extends Fragment {
                         Intent intent = new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
                         intent.setData(Uri.parse("package:" + requireContext().getPackageName()));
                         startActivity(intent);
+                        startCamera();
                     }
                 }
             }
