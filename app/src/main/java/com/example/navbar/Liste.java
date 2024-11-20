@@ -145,9 +145,9 @@ public class Liste extends Fragment {
 
 
         recyclerView = findViewById(R.id.recyclerView);
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 
-        adapter = new Adapter(getApplicationContext(), items);
+        adapter = new ResearchAdapter(getContext(), items);
         recyclerView.setAdapter(adapter);
     }
 
