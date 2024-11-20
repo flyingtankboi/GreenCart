@@ -135,7 +135,8 @@ public class Liste extends Fragment {
         researchRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 
         databaseHelper = new DatabaseHelper(getContext());
-        SQLiteDatabase db = databaseHelper.getReadableDatabase();
+        databaseHelper.copyDatabase();
+        SQLiteDatabase db = databaseHelper.openDatabase();
 
         searchView = view.findViewById(R.id.searchView);
         searchView.clearFocus();
@@ -283,20 +284,6 @@ public class Liste extends Fragment {
 
     private void closeSuggestions() {
         researchRecyclerView.setVisibility(View.GONE);
-    }
-
-    private void filterlist(String text) {
-        Vector<Item> filtereditems = new Vector<Item>();
-        for (Item item : items){
-            if (item.getName().toLowerCase().contains(text.toLowerCase())){
-                filtereditems.add(item);
-            }
-        }
-        researchAdapter.setFilteredList(filtereditems);
-    }
-
-    public void ajout(Item item){
-        shoppingList.add(item);
     }
 
     public void loadSuggestions(SQLiteDatabase database, String query) {

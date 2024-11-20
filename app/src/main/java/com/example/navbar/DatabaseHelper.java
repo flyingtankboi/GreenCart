@@ -1,42 +1,83 @@
 package com.example.navbar;
 
 import android.content.Context;
-import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.util.Log;
+
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.InputStream;
+import java.io.OutputStream;
 
 public class DatabaseHelper extends SQLiteOpenHelper {
 
-    private static final String DATABASE_NAME = "items.db";
-    private static final int DATABASE_VERSION = 1;
+    private static final String DATABASE_NAME = "items.db"; // Nom de la base de données
+    private static final int DATABASE_VERSION = 1; // Version (modifiez si vous mettez à jour le schéma)
+    private final Context context;
+    private final String databasePath;
 
     public DatabaseHelper(Context context) {
-        // Le contexte de l'application, le nom de la base de données, et la version
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
+        this.context = context;
+        this.databasePath = context.getDatabasePath(DATABASE_NAME).getPath();
     }
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-        // Crée la table items
-        String createTable = "CREATE TABLE IF NOT EXISTS items (" +
-                "id INTEGER PRIMARY KEY AUTOINCREMENT, " +
-                "name TEXT NOT NULL UNIQUE);";
-        db.execSQL(createTable);
-
-        // Insère des données
-        String insertData = "INSERT INTO items (name) VALUES " +
-                "('Android'), " +
-                "('Kotlin'), " +
-                "('Java'), " +
-                "('SQLite');";
-        db.execSQL(insertData);
+        // Rien ici, car nous utilisons une base de données préexistante
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-        // Supprime la table si elle existe et recrée la table
-        db.execSQL("DROP TABLE IF EXISTS items");
-        onCreate(db);
+        // Gérez les mises à jour si nécessaire
+        Log.d("DatabaseHelper", "Database version updated from " + oldVersion + " to " + newVersion);
+    }
+
+    /**
+     * Vérifie si la base de données existe déjà dans le répertoire interne
+     */
+    private boolean checkDatabaseExists() {
+        File dbFile = new File(databasePath);
+        return dbFile.exists();
+    }
+
+    /**
+     * Copie la base de données depuis le dossier assets vers le répertoire interne
+     */
+    public void copyDatabase() {
+        if (!checkDatabaseExists()) {
+            try {
+                InputStream inputStream = context.getAssets().open(DATABASE_NAME); // Ouvre la base de données dans assets
+                File databaseFile = new File(databasePath);
+
+                // Crée le répertoire parent si nécessaire
+                databaseFile.getParentFile().mkdirs();
+
+                OutputStream outputStream = new FileOutputStream(databaseFile);
+
+                // Copie les données
+                byte[] buffer = new byte[1024];
+                int length;
+                while ((length = inputStream.read(buffer)) > 0) {
+                    outputStream.write(buffer, 0, length);
+                }
+
+                // Ferme les flux
+                outputStream.flush();
+                outputStream.close();
+                inputStream.close();
+
+                Log.d("DatabaseHelper", "Database copied successfully.");
+            } catch (Exception e) {
+                Log.e("DatabaseHelper", "Error copying database: " + e.getMessage());
+            }
+        } else {
+            Log.d("DatabaseHelper", "Database already exists. No need to copy.");
+        }
+    }
+
+    public SQLiteDatabase openDatabase() {
+        return SQLiteDatabase.openDatabase(databasePath, null, SQLiteDatabase.OPEN_READWRITE);
     }
 }
-
