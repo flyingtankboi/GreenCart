@@ -55,11 +55,11 @@
             android:id="@+id/button_ajouter"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text = "Importer"
+            android:text="Importer"
             android:textSize="13sp"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/edit_text_name" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.cardview.widget.CardView>
