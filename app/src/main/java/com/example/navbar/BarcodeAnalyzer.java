@@ -57,10 +57,10 @@ public class BarcodeAnalyzer implements ImageAnalysis.Analyzer {
                                 count = 0;
                                 Log.d("Barcode", "Detected: " + barcode);
                                 rq = Volley.newRequestQueue(context);
-                                ProductListener responseListener = new ProductListener(fm,view);
+                                ProductListener responseListener = new ProductListener(fm,view,rq);
                                 Response.ErrorListener errorListener = new ErrorListener();
                                 StringRequest SR = new StringRequest(Request.Method.GET,
-                                        "https://world.openfoodfacts.net/api/v2/product/"+barcode+"/?product_type=all&fields=ecoscore_grade%2Cnutriscore_grade",
+                                        "https://world.openfoodfacts.net/api/v2/product/"+barcode+"/?product_type=all&fields=nutriscore_grade%2Cecoscore_grade%2Cimage_url",
                                         responseListener,
                                         errorListener);
                                 rq.add(SR);

@@ -1,15 +1,18 @@
 package com.example.navbar;
 
+import android.graphics.Bitmap;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
 
-import android.util.Log;
+import android.util.LruCache;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
+import com.android.volley.RequestQueue;
+import com.android.volley.toolbox.ImageLoader;
 
 
 public class BarcodeFound extends Fragment {
@@ -21,10 +24,16 @@ public class BarcodeFound extends Fragment {
     String ecoscore;
     String nutriscore;
 
+    String imageUrl;
 
-    public BarcodeFound(String ecoscore, String nutriscore) {
+    RequestQueue rq;
+
+
+    public BarcodeFound(String ecoscore, String nutriscore, String imageUrl, RequestQueue rq) {
         this.ecoscore = ecoscore;
         this.nutriscore = nutriscore;
+        this.imageUrl = imageUrl;
+        this.rq = rq;
     }
 
     public static BarcodeFound newInstance() {
@@ -70,6 +79,20 @@ public class BarcodeFound extends Fragment {
         if (nutriscore.equals("e"))
             nutriview.setImageResource(R.drawable.nutriscoree);
 
+        ImageLoader imageLoader = new ImageLoader(rq, new ImageLoader.ImageCache() {
+            private final LruCache<String, Bitmap> cache = new LruCache<>(20);
+
+            @Override
+            public Bitmap getBitmap(String url) {
+                return cache.get(url);
+            }
+
+            @Override
+            public void putBitmap(String url, Bitmap bitmap) {
+                cache.put(url, bitmap);
+            }
+        });
+        imageLoader.get(imageUrl, ImageLoader.getImageListener(view.findViewById(R.id.imageProduit),R.drawable.baseline_file_download_24,R.drawable.baseline_question_mark_24));
         return view;
     }
 }
