@@ -3,7 +3,9 @@ package com.example.navbar;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
+import android.graphics.LinearGradient;
 import android.graphics.Paint;
+import android.graphics.Shader;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 
@@ -19,14 +21,19 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.SearchView;
+import android.widget.Toast;
 
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Random;
 import java.util.Vector;
 
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import org.json.JSONArray;
@@ -39,8 +46,9 @@ import android.database.sqlite.SQLiteDatabase;
 public class Liste extends Fragment {
 
     final String FILENAME = "current_list.json";
+    final String FILENAME_HISTORIQUE = "historique.json";
     final String DEFAULT_JSON = "{\n" +
-            "  \"nom\": \"\",\n" +
+            "  \"name\": \"\",\n" +
             "  \"date\": \"\",\n" +
             "  \"items\": [{\"name\" : \"Pomme\", \"isbought\":false}]\n" +
             "}";
@@ -69,6 +77,53 @@ public class Liste extends Fragment {
             file.write(DEFAULT_JSON.getBytes());
         } catch (IOException e) {
             Log.i("error", "N'a pas réussi à ecrire dans le fichier par defaut");
+        }
+    }
+
+    private void writeHistorique(Context context, JSONObject liste_de_course) throws JSONException {
+        File list = new File(context.getFilesDir(), FILENAME_HISTORIQUE);
+
+        LocalDateTime today = LocalDateTime.now();
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
+        String date = today.format(formatter);
+
+        liste_de_course.put("date", date);
+        liste_de_course.put("name", "liste");
+        JSONArray items = liste_de_course.getJSONArray("items");
+        for(int i = 0; i < items.length(); i++){
+            items.getJSONObject(i).put("isbought", false);
+        }
+
+        if (!list.exists()) { // Le fichier n'existe pas
+            try (FileOutputStream file = context.openFileOutput(FILENAME_HISTORIQUE, Context.MODE_PRIVATE)) {
+
+                JSONArray historique = new JSONArray();
+                historique.put(liste_de_course);
+                file.write(historique.toString().getBytes());
+            } catch (IOException e) {
+                Log.i("error", "N'a pas réussi à ecrire dans le fichier par defaut");
+            }
+
+        } else { // Le fichier existe
+            String string_du_fichier;
+            try {
+                FileInputStream file_input = context.openFileInput(FILENAME_HISTORIQUE);
+                int size = file_input.available();
+                byte[] buffer = new byte[size];
+                file_input.read(buffer);
+                file_input.close();
+                string_du_fichier = new String(buffer, "UTF-8");
+                JSONArray historique = new JSONArray(string_du_fichier);
+                historique.put(liste_de_course);
+
+                FileOutputStream file_output = context.openFileOutput(FILENAME_HISTORIQUE, Context.MODE_PRIVATE);
+                file_output.write(historique.toString().getBytes());
+
+            } catch (IOException e) {
+                Log.i("error", "N'a pas réussi à écrire dans le fichier par defaut");
+            } catch (JSONException e) {
+                Log.i("error", "Historique n'est pas un JSONArray");
+            }
         }
     }
 
@@ -110,8 +165,7 @@ public class Liste extends Fragment {
 
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_liste, container, false);
 
         FloatingActionButton debug_button = view.findViewById(R.id.debug_button);
@@ -123,6 +177,7 @@ public class Liste extends Fragment {
                 adapter.notifyItemChanged(shoppingList.size() - 1);
             }
         });
+<<<<<<< app/src/main/java/com/example/navbar/Liste.java
         shoppingList = new Vector<>();
 
         adapter = new ShoppingListAdapter(shoppingList);
@@ -165,9 +220,22 @@ public class Liste extends Fragment {
         closeSuggestions();
 
         FloatingActionButton reset_button = view.findViewById(R.id.reset_button);
+=======
+        FloatingActionButton reset_button = view.findViewById(R.id.nouvelle_recette);
+>>>>>>> app/src/main/java/com/example/navbar/Liste.java
         reset_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
+                try {
+                    updateJSONList();
+                    writeJson(getContext().getApplicationContext(), liste.toString());
+                    writeHistorique(getContext().getApplicationContext(), liste);
+                    Toast.makeText(view.getContext().getApplicationContext(), "Sauvegardé", Toast.LENGTH_SHORT).show();
+
+                } catch (JSONException e) {
+                    throw new RuntimeException(e);
+                }
                 shoppingList.clear();
                 adapter.notifyDataSetChanged();
             }
@@ -207,9 +275,25 @@ public class Liste extends Fragment {
                         int iconBottom = iconTop + icon.getIntrinsicHeight();
                         icon.setBounds(iconLeft, iconTop, iconRight, iconBottom);
 
-                        paint.setColor(Color.parseColor("#91c9a2"));
-                        c.drawRect((float) viewHolder.itemView.getLeft(), (float) viewHolder.itemView.getTop(), dX, (float) viewHolder.itemView.getBottom(), paint);
+                        LinearGradient gradient = new LinearGradient(
+                                viewHolder.itemView.getLeft(),
+                                viewHolder.itemView.getTop(),
+                                dX,
+                                viewHolder.itemView.getBottom(),
+                                Color.parseColor("#91c9a2"), // Start color (green)
+                                Color.parseColor("#FCF5FD"),                 // End color (white)
+                                Shader.TileMode.CLAMP
+                        );
+                        paint.setShader(gradient);
+                        c.drawRect(
+                                (float) viewHolder.itemView.getLeft(),
+                                (float) viewHolder.itemView.getTop(),
+                                dX,
+                                (float) viewHolder.itemView.getBottom(),
+                                paint
+                        );
 
+                        icon.setTint(Color.parseColor("#FCF5FD"));
                         icon.draw(c);
 
                     } else if (dX < 0) {
@@ -221,9 +305,20 @@ public class Liste extends Fragment {
                         int iconBottom = iconTop + icon.getIntrinsicHeight();
                         icon.setBounds(iconLeft, iconTop, iconRight, iconBottom);
 
-                        paint.setColor(Color.parseColor("#9c5959"));
+                        LinearGradient gradient = new LinearGradient(
+                                viewHolder.itemView.getRight(),
+                                viewHolder.itemView.getTop(),
+                                viewHolder.itemView.getRight() + dX, // Start at the edge and move left
+                                viewHolder.itemView.getBottom(),
+                                 // Start color (white)
+                                Color.parseColor("#9c5959"),
+                                Color.parseColor("#FCF5FD"),// End color (red)
+                                Shader.TileMode.CLAMP
+                        );
+                        paint.setShader(gradient);
                         c.drawRect((float) viewHolder.itemView.getRight() + dX, (float) viewHolder.itemView.getTop(), (float) viewHolder.itemView.getRight(), (float) viewHolder.itemView.getBottom(), paint);
 
+                        icon.setTint(Color.parseColor("#FCF5FD"));
                         icon.draw(c);
 
                     } else {
@@ -253,20 +348,22 @@ public class Liste extends Fragment {
                     shoppingList.remove(position);
                     shoppingList.add(newPosition, item);
 
-                    adapter.notifyItemMoved(position, newPosition);
-                    adapter.notifyItemChanged(newPosition);
+                    adapter.notifyItemRemoved(position);
+                    adapter.notifyItemInserted(newPosition);
                 } else {
                     shoppingList.remove(position);
                     adapter.notifyItemRemoved(position);
                 }
+                if(listIsFinished()){
+                    Toast.makeText(getContext().getApplicationContext(), "Les courses sont finies !", Toast.LENGTH_SHORT).show();
+                }
+
+
             }
         };
 
         ItemTouchHelper itemTouchHelper = new ItemTouchHelper(simpleCallback);
         itemTouchHelper.attachToRecyclerView(recyclerView);
-
-        //permet de rajouter un fonds de couleur derriere les boutons quand on commence à les swipe
-
 
         return view;
     }
@@ -309,6 +406,14 @@ public class Liste extends Fragment {
         }
     }
 
+    public boolean listIsFinished(){
+        for(Item item : shoppingList){
+            if(!item.isBought()){
+                return false;
+            }
+        }
+        return true;
+    }
 
     @Override
     public void onPause() {
