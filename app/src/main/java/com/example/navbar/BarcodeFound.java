@@ -4,6 +4,7 @@ import android.graphics.Bitmap;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 
 import android.util.LruCache;
 import android.view.LayoutInflater;
@@ -13,6 +14,7 @@ import android.widget.ImageView;
 
 import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.ImageLoader;
+import com.google.android.material.button.MaterialButton;
 
 
 public class BarcodeFound extends Fragment {
@@ -20,12 +22,9 @@ public class BarcodeFound extends Fragment {
     ImageView produit;
     ImageView ecoview;
     ImageView nutriview;
-
     String ecoscore;
     String nutriscore;
-
     String imageUrl;
-
     RequestQueue rq;
 
 
@@ -49,6 +48,17 @@ public class BarcodeFound extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_barcode_found, container, false);
+
+        MaterialButton bouton = view.findViewById(R.id.bouttonRescan);
+        bouton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                FragmentTransaction transaction = getParentFragmentManager().beginTransaction();
+                transaction.replace(R.id.frameLayout, new Scan());
+                transaction.addToBackStack(null);
+                transaction.commit();
+            }
+        });
 
         produit = view.findViewById(R.id.imageProduit);
         ecoview = view.findViewById(R.id.EcoScore);
