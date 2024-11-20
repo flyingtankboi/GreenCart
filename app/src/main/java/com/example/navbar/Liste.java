@@ -3,7 +3,9 @@ package com.example.navbar;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
+import android.graphics.LinearGradient;
 import android.graphics.Paint;
+import android.graphics.Shader;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 
@@ -18,6 +20,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -29,6 +32,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.Random;
 import java.util.Vector;
 
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import org.json.JSONArray;
@@ -75,6 +79,10 @@ public class Liste extends Fragment {
 
         liste_de_course.put("date", date);
         liste_de_course.put("name", "liste");
+        JSONArray items = liste_de_course.getJSONArray("items");
+        for(int i = 0; i < items.length(); i++){
+            items.getJSONObject(i).put("isbought", false);
+        }
 
         if (!list.exists()) { // Le fichier n'existe pas
             try (FileOutputStream file = context.openFileOutput(FILENAME_HISTORIQUE, Context.MODE_PRIVATE)) {
@@ -170,6 +178,7 @@ public class Liste extends Fragment {
                     updateJSONList();
                     writeJson(getContext().getApplicationContext(), liste.toString());
                     writeHistorique(getContext().getApplicationContext(), liste);
+                    Toast.makeText(view.getContext().getApplicationContext(), "Sauvegardé", Toast.LENGTH_SHORT).show();
 
                 } catch (JSONException e) {
                     throw new RuntimeException(e);
@@ -222,9 +231,25 @@ public class Liste extends Fragment {
                         int iconBottom = iconTop + icon.getIntrinsicHeight();
                         icon.setBounds(iconLeft, iconTop, iconRight, iconBottom);
 
-                        paint.setColor(Color.parseColor("#91c9a2"));
-                        c.drawRect((float) viewHolder.itemView.getLeft(), (float) viewHolder.itemView.getTop(), dX, (float) viewHolder.itemView.getBottom(), paint);
+                        LinearGradient gradient = new LinearGradient(
+                                viewHolder.itemView.getLeft(),
+                                viewHolder.itemView.getTop(),
+                                dX,
+                                viewHolder.itemView.getBottom(),
+                                Color.parseColor("#91c9a2"), // Start color (green)
+                                Color.parseColor("#FCF5FD"),                 // End color (white)
+                                Shader.TileMode.CLAMP
+                        );
+                        paint.setShader(gradient);
+                        c.drawRect(
+                                (float) viewHolder.itemView.getLeft(),
+                                (float) viewHolder.itemView.getTop(),
+                                dX,
+                                (float) viewHolder.itemView.getBottom(),
+                                paint
+                        );
 
+                        icon.setTint(Color.parseColor("#FCF5FD"));
                         icon.draw(c);
 
                     } else if (dX < 0) {
@@ -236,9 +261,20 @@ public class Liste extends Fragment {
                         int iconBottom = iconTop + icon.getIntrinsicHeight();
                         icon.setBounds(iconLeft, iconTop, iconRight, iconBottom);
 
-                        paint.setColor(Color.parseColor("#9c5959"));
+                        LinearGradient gradient = new LinearGradient(
+                                viewHolder.itemView.getRight(),
+                                viewHolder.itemView.getTop(),
+                                viewHolder.itemView.getRight() + dX, // Start at the edge and move left
+                                viewHolder.itemView.getBottom(),
+                                 // Start color (white)
+                                Color.parseColor("#9c5959"),
+                                Color.parseColor("#FCF5FD"),// End color (red)
+                                Shader.TileMode.CLAMP
+                        );
+                        paint.setShader(gradient);
                         c.drawRect((float) viewHolder.itemView.getRight() + dX, (float) viewHolder.itemView.getTop(), (float) viewHolder.itemView.getRight(), (float) viewHolder.itemView.getBottom(), paint);
 
+                        icon.setTint(Color.parseColor("#FCF5FD"));
                         icon.draw(c);
 
                     } else {
@@ -268,8 +304,8 @@ public class Liste extends Fragment {
                     shoppingList.remove(position);
                     shoppingList.add(newPosition, item);
 
-                    adapter.notifyItemMoved(position, newPosition);
-                    adapter.notifyItemChanged(newPosition);
+                    adapter.notifyItemRemoved(position);
+                    adapter.notifyItemInserted(newPosition);
                 } else {
                     shoppingList.remove(position);
                     adapter.notifyItemRemoved(position);
@@ -279,9 +315,6 @@ public class Liste extends Fragment {
 
         ItemTouchHelper itemTouchHelper = new ItemTouchHelper(simpleCallback);
         itemTouchHelper.attachToRecyclerView(recyclerView);
-
-        //permet de rajouter un fonds de couleur derriere les boutons quand on commence à les swipe
-
 
         return view;
     }

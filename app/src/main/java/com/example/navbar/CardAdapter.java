@@ -11,8 +11,15 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
+
 import androidx.annotation.NonNull;
+import androidx.fragment.app.FragmentActivity;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -34,11 +41,13 @@ public class CardAdapter extends RecyclerView.Adapter<CardAdapter.ViewHolder> {
     final String FILENAME = "current_list.json";
     final String DEFAULT_HISTORIQUE = "[]";
     JSONArray historique;
+    FragmentActivity activity;
 
-    public CardAdapter(List<String> names, List<String> dates, JSONArray historique) {
+    public CardAdapter(List<String> names, List<String> dates, JSONArray historique, FragmentActivity activity) {
         this.names = names;
         this.dates = dates;
         this.historique = historique;
+        this.activity = activity;
     }
 
     @NonNull
@@ -89,6 +98,13 @@ public class CardAdapter extends RecyclerView.Adapter<CardAdapter.ViewHolder> {
             public void onClick(View view) {
                 try (FileOutputStream file = view.getContext().openFileOutput(FILENAME, Context.MODE_PRIVATE)) {
                     file.write(historique.getJSONObject(historique.length() - 1 - position).toString().getBytes());
+
+                    Toast.makeText(view.getContext().getApplicationContext(), "Importé", Toast.LENGTH_SHORT).show();
+
+                    BottomNavigationView nav_bar = activity.findViewById(R.id.navBar);
+                    nav_bar.setSelectedItemId(R.id.liste);
+
+
                 } catch (IOException e) {
                     Log.i("error", "N'a pas réussi à ecrire dans le fichier par defaut");
                 } catch (JSONException e) {
