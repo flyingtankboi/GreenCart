@@ -12,7 +12,6 @@ public class ResearchViewHolder extends RecyclerView.ViewHolder {
     TextView textView;
     public ResearchViewHolder( View itemView) {
         super(itemView);
-        imageView = itemView.findViewById(R.id.imageView);
         textView = itemView.findViewById(R.id.textView);
     }
 }

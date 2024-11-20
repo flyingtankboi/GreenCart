@@ -131,8 +131,13 @@ public class Liste extends Fragment {
 
             @Override
             public boolean onQueryTextChange(String newText) {
-                filterlist(newText);
-                return false;
+                    if (!newText.isEmpty()) {
+                        researchRecyclerView.setVisibility(View.VISIBLE);
+                        filterlist(newText);
+                    } else {
+                        closeSuggestions();
+                    }
+                return true;
             }
 
         });
@@ -151,6 +156,8 @@ public class Liste extends Fragment {
 
         researchAdapter = new ResearchAdapter(getContext(), items);
         researchRecyclerView.setAdapter(researchAdapter);
+
+        closeSuggestions();
 
         FloatingActionButton reset_button = view.findViewById(R.id.reset_button);
         reset_button.setOnClickListener(new View.OnClickListener() {
@@ -266,6 +273,11 @@ public class Liste extends Fragment {
 
 
         return view;
+    }
+
+
+    private void closeSuggestions() {
+        researchRecyclerView.setVisibility(View.GONE);
     }
 
     private void filterlist(String text) {

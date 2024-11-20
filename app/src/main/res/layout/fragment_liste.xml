@@ -22,7 +22,8 @@
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:scrollbars="vertical"
-            app:layout_constraintTop_toBottomOf="@+id/searchView"/>
+            android:background="@color/swipe_right"
+            app:layout_constraintTop_toBottomOf="@+id/searchView" />
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/debug_button"
