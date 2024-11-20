@@ -3,4 +3,5 @@
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
     <color name="swipe_right">#66ffb3</color>
+    <color name="background">#FCF5FD</color>
 </resources>

@@ -15,14 +15,16 @@
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:scrollbars="vertical"
-            app:layout_constraintTop_toBottomOf="@+id/searchView"/>
+            app:layout_constraintTop_toBottomOf="@+id/searchView"
+            android:background="@drawable/search_view_background"
+            android:layout_margin="8dp"/>
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/researchRecyclerView"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:scrollbars="vertical"
-            android:background="@color/swipe_right"
+            android:background="@color/background"
             app:layout_constraintTop_toBottomOf="@+id/searchView" />
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton

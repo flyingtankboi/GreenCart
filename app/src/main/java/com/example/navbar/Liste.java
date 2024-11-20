@@ -177,7 +177,7 @@ public class Liste extends Fragment {
                 adapter.notifyItemChanged(shoppingList.size() - 1);
             }
         });
-<<<<<<< app/src/main/java/com/example/navbar/Liste.java
+
         shoppingList = new Vector<>();
 
         adapter = new ShoppingListAdapter(shoppingList);
@@ -219,10 +219,8 @@ public class Liste extends Fragment {
 
         closeSuggestions();
 
-        FloatingActionButton reset_button = view.findViewById(R.id.reset_button);
-=======
         FloatingActionButton reset_button = view.findViewById(R.id.nouvelle_recette);
->>>>>>> app/src/main/java/com/example/navbar/Liste.java
+
         reset_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
