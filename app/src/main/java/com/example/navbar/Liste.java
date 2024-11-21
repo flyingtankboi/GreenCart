@@ -45,7 +45,6 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
 public class Liste extends Fragment {
-
     final String FILENAME = "current_list.json";
     final String FILENAME_HISTORIQUE = "historique.json";
     final String DEFAULT_JSON = "{\n" +
@@ -366,6 +365,10 @@ public class Liste extends Fragment {
                 compteurView.setText(stringCompteur);
                 if(progress[0] == 0){
                     Toast.makeText(getContext().getApplicationContext(), "Les courses sont finies !", Toast.LENGTH_SHORT).show();
+                }
+
+                if (shoppingList.isEmpty()){
+                    compteurView.setVisibility(View.GONE);
                 }
 
 
