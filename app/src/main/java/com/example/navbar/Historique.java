@@ -12,6 +12,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -86,7 +87,10 @@ public class Historique extends Fragment {
         }
         List<String> names = new ArrayList<>();
         List<String> dates = new ArrayList<>();
-
+        if (historique.length()==0){
+            TextView historique_vide = view.findViewById(R.id.tv_historique_vide);
+            historique_vide.setVisibility(View.VISIBLE);
+        }
         for (int i = historique.length() - 1; i >= 0; i--) {
             // Récupérer l'élément à l'index i
             JSONObject liste = null;
@@ -117,6 +121,8 @@ public class Historique extends Fragment {
                 names.remove(position);
                 dates.remove(position);
                 adapter.notifyItemRemoved(position);
+
+
             }
         };
 
@@ -145,6 +151,10 @@ public class Historique extends Fragment {
 
             FileOutputStream file_output = context.openFileOutput(FILENAME_HISTORIQUE, Context.MODE_PRIVATE);
             file_output.write(historique.toString().getBytes());
+            if (historique.length()==0){
+                TextView historique_vide = getView().findViewById(R.id.tv_historique_vide);
+                historique_vide.setVisibility(View.VISIBLE);
+            }
 
         } catch (IOException e) {
             Log.i("error", "N'a pas réussi à écrire dans le fichier par defaut");
