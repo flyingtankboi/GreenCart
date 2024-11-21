@@ -289,13 +289,7 @@ public class Liste extends Fragment {
                                 Shader.TileMode.CLAMP
                         );
                         paint.setShader(gradient);
-                        c.drawRect(
-                                (float) viewHolder.itemView.getLeft(),
-                                (float) viewHolder.itemView.getTop(),
-                                dX,
-                                (float) viewHolder.itemView.getBottom(),
-                                paint
-                        );
+                        c.drawRect((float) viewHolder.itemView.getLeft() + 2, (float) viewHolder.itemView.getTop()+2, dX, (float) viewHolder.itemView.getBottom()-2, paint);
 
                         icon.setTint(Color.parseColor("#FCF5FD"));
                         icon.draw(c);
@@ -320,7 +314,7 @@ public class Liste extends Fragment {
                                 Shader.TileMode.CLAMP
                         );
                         paint.setShader(gradient);
-                        c.drawRect((float) viewHolder.itemView.getRight() + dX, (float) viewHolder.itemView.getTop(), (float) viewHolder.itemView.getRight(), (float) viewHolder.itemView.getBottom(), paint);
+                        c.drawRect((float) viewHolder.itemView.getRight() + dX, (float) viewHolder.itemView.getTop() + 2, (float) viewHolder.itemView.getRight() - 2, (float) viewHolder.itemView.getBottom() - 2, paint);
 
                         icon.setTint(Color.parseColor("#FCF5FD"));
                         icon.draw(c);
