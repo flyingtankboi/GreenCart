@@ -45,12 +45,19 @@ public class ResearchAdapter extends RecyclerView.Adapter<ResearchViewHolder> {
                 if (items.elementAt(position).getName().equals("+ Ajouter produit")) {
 
                     String current_text = searchView.getQuery().toString();
+
+                    searchView.setQuery("", false);
+                    searchView.clearFocus();
+
                     databaseHelper.addItem(current_text);
 
                     shopping_list.add(new Item(current_text, false));
                     adapter.notifyItemChanged(shopping_list.size() - 1);
 
                 } else {
+                    searchView.setQuery("", false);
+                    searchView.clearFocus();
+
                     shopping_list.add(new Item(items.elementAt(position).getName(), false));
                     adapter.notifyItemChanged(shopping_list.size() - 1);
                 }
