@@ -1,6 +1,7 @@
 package com.example.navbar;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.LinearGradient;
@@ -9,7 +10,6 @@ import android.graphics.Shader;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 
-import androidx.annotation.NonNull;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.ItemTouchHelper;
@@ -20,7 +20,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.SearchView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -28,13 +27,12 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.Objects;
 import java.util.Random;
 import java.util.Vector;
 
-import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import org.json.JSONArray;
@@ -170,13 +168,34 @@ public class Liste extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_liste, container, false);
 
-        FloatingActionButton debug_button = view.findViewById(R.id.debug_button);
-        debug_button.setOnClickListener(new View.OnClickListener() {
+        FloatingActionButton share_button = view.findViewById(R.id.share_button);
+        share_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Random r = new Random();
-                shoppingList.add(new Item(String.valueOf(r.nextInt(100)), true));
-                adapter.notifyItemChanged(shoppingList.size() - 1);
+                Intent intent = new Intent(Intent.ACTION_SEND);
+                intent.setType("text/plain");
+                String liste_de_course = "Voice ma liste de courses!\n";
+                boolean temp1 = true;
+                boolean temp2 = true;
+                for(int i=0; i<shoppingList.size(); i++){
+                    if (shoppingList.get(i).isBought()){
+                        if (temp1){
+                            liste_de_course+="Ce que j'ai déjà acheté:\n";
+                            temp1=false;
+                        }
+                        liste_de_course += "✅ ";
+                    }
+                    else{
+                        if (temp2){
+                            liste_de_course+="Ce qu'il reste à acheter :\n";
+                            temp2=false;
+                        }
+                        liste_de_course += "❌ ";
+                    }
+                    liste_de_course+=shoppingList.get(i).getName() + "\n";
+                }
+                intent.putExtra(Intent.EXTRA_TEXT,liste_de_course);
+                startActivity(Intent.createChooser(intent, "Envoyer à"));
             }
         });
 
@@ -187,7 +206,7 @@ public class Liste extends Fragment {
         compteurView = view.findViewById(R.id.compteur);
 
         recyclerView = view.findViewById(R.id.recyclerView);
-        recyclerView.setLayoutManager(new LinearLayoutManager(getContext().getApplicationContext()));
+        recyclerView.setLayoutManager(new LinearLayoutManager(requireContext().getApplicationContext()));
         recyclerView.setAdapter(adapter);
 
 

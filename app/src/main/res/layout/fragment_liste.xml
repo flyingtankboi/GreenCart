@@ -41,13 +41,13 @@
             app:layout_constraintTop_toBottomOf="@+id/searchView"/>
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
-            android:id="@+id/debug_button"
+            android:id="@+id/share_button"
             android:layout_width="56dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="24dp"
             android:layout_marginBottom="24dp"
             android:clickable="true"
-            android:src="@drawable/baseline_bug_report_24"
+            android:src="@drawable/share"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent" />
 
