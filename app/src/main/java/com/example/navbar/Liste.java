@@ -175,15 +175,17 @@ public class Liste extends Fragment {
                 intent.setType("text/plain");
                 String liste = "Voici ma liste de courses!\nÀ acheter:\n";
                 boolean temp = true;
-                for (int i=0; i<shoppingList.size(); i--){
-                    if (shoppingList.get(i).isBought())
-                        liste += "✅ ";
-                    else
+                for (int i=0; i<shoppingList.size(); i++) {
+                    if (shoppingList.get(i).isBought()) {
                         if (temp) {
                             liste += "Déjà acheté:\n";
-                            temp=false;
+                            temp = false;
                         }
+                        liste += "✅ ";
+                    }
+                    else {
                         liste += "❌ ";
+                    }
                     liste += shoppingList.get(i).getName() + "\n";
                 }
                 intent.putExtra(Intent.EXTRA_TEXT,liste);
