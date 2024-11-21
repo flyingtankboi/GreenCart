@@ -10,15 +10,28 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/recyclerView"
+        <androidx.cardview.widget.CardView
+            android:id="@+id/listCard"
             android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_margin="8dp"
-            android:background="@drawable/liste_background"
-            android:scrollbars="vertical"
-            app:layout_constraintTop_toBottomOf="@id/compteur"
-            tools:layout_editor_absoluteX="8dp" />
+            android:layout_height="wrap_content"
+            android:layout_margin="16dp"
+            app:cardBackgroundColor="@android:color/white"
+            app:cardCornerRadius="16dp"
+            app:cardElevation="8dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/compteur">
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recyclerView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="8dp"
+                android:scrollbars="vertical"
+                app:layout_constraintTop_toBottomOf="@id/compteur"
+                tools:layout_editor_absoluteX="8dp" />
+
+        </androidx.cardview.widget.CardView>
 
         <TextView
             android:id="@+id/compteur"
@@ -30,15 +43,28 @@
             android:textColor="#B0B0B0"
             app:layout_constraintBottom_toTopOf="@id/recyclerView"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/searchView" />
+            app:layout_constraintTop_toBottomOf="@id/searchCard" />
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/researchRecyclerView"
+        <androidx.cardview.widget.CardView
             android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:scrollbars="vertical"
-            android:background="@color/background"
-            app:layout_constraintTop_toBottomOf="@+id/searchView"/>
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="24dp"
+            android:layout_marginStart="24dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/searchCard"
+            app:cardElevation="16dp"
+            app:cardCornerRadius="16dp"
+            android:background="@android:color/white">
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/researchRecyclerView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@android:color/white"
+                android:scrollbars="vertical" />
+        </androidx.cardview.widget.CardView>
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/share_button"
@@ -62,17 +88,31 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent" />
 
-        <androidx.appcompat.widget.SearchView
-            android:id="@+id/searchView"
-            android:layout_width="0dp"
+
+        <androidx.cardview.widget.CardView
+            android:id="@+id/searchCard"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="8dp"
-            android:background="@drawable/search_view_background"
+            android:layout_margin="16dp"
+            app:cardBackgroundColor="@android:color/white"
+            app:cardCornerRadius="16dp"
+            app:cardElevation="8dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            android:queryHint="Add product"
-            android:iconifiedByDefault="false"/>
+            app:layout_constraintTop_toTopOf="parent">
+
+            <androidx.appcompat.widget.SearchView
+                android:id="@+id/searchView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:iconifiedByDefault="false"
+                app:queryBackground="@android:color/transparent"
+                android:queryHint="Add product"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+        </androidx.cardview.widget.CardView>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
