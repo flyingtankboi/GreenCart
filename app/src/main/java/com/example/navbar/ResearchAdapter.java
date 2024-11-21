@@ -64,15 +64,15 @@ public class ResearchAdapter extends RecyclerView.Adapter<ResearchViewHolder> {
 
                     databaseHelper.addItem(current_text);
 
-                    shopping_list.add(new Item(current_text, false));
-                    adapter.notifyItemChanged(shopping_list.size() - 1);
+                    shopping_list.insertElementAt(new Item(current_text, false), 0);
+                    adapter.notifyItemInserted(0);
 
                 } else {
                     searchView.setQuery("", false);
                     searchView.clearFocus();
 
-                    shopping_list.add(new Item(currentItem.getName(), false));
-                    adapter.notifyItemChanged(shopping_list.size() - 1);
+                    shopping_list.insertElementAt(new Item(currentItem.getName(), false), 0);
+                    adapter.notifyItemInserted(0);
                 }
                 int[] progress = getProgress();
                 String stringCompteur = progress[0] + "/" + progress[1];
