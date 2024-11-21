@@ -48,7 +48,6 @@ public class ProductListener implements Response.Listener<String> {
                 imageUrl = prod.getString("image_url");
                 FragmentTransaction transaction = fragmentManager.beginTransaction();
                 transaction.replace(R.id.frameLayout, new BarcodeFound(ecoscore,nutriscore,imageUrl,rq));
-                transaction.addToBackStack(null);
                 transaction.commit();
             }
         } catch (JSONException e) {

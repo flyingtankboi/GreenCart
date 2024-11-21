@@ -14,10 +14,11 @@
             android:id="@+id/recyclerView"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:scrollbars="vertical"
-            app:layout_constraintTop_toBottomOf="@+id/searchView"
+            android:layout_margin="8dp"
             android:background="@drawable/search_view_background"
-            android:layout_margin="8dp"/>
+            android:scrollbars="vertical"
+            app:layout_constraintTop_toBottomOf="@id/compteur"
+            tools:layout_editor_absoluteX="8dp" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/researchRecyclerView"
@@ -60,6 +61,18 @@
             app:layout_constraintTop_toTopOf="parent"
             android:queryHint="Add product"
             android:iconifiedByDefault="false"/>
+
+        <TextView
+            android:id="@+id/compteur"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="16dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginBottom="8dp"
+            android:textColor="#B0B0B0"
+            app:layout_constraintBottom_toTopOf="@id/recyclerView"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/searchView" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

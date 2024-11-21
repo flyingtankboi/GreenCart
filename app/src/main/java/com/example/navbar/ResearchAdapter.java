@@ -7,8 +7,10 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import androidx.appcompat.widget.SearchView;
+import androidx.fragment.app.FragmentActivity;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.Vector;
@@ -19,16 +21,19 @@ public class ResearchAdapter extends RecyclerView.Adapter<ResearchViewHolder> {
     Vector<Item> items;
     Vector<Item> shopping_list;
     ShoppingListAdapter adapter;
+
     DatabaseHelper databaseHelper;
     SearchView searchView;
 
-    public ResearchAdapter(Context context, Vector<Item> items, Vector<Item> shopping_list, ShoppingListAdapter adapter, DatabaseHelper databaseHelper, SearchView searchView){
+    public ResearchAdapter(Context context, Vector<Item> items, Vector<Item> shopping_list, ShoppingListAdapter adapter, DatabaseHelper databaseHelper, SearchView searchView, FragmentActivity activity){
+
         this.context = context;
         this.items = items;
         this.shopping_list = shopping_list;
         this.adapter = adapter;
         this.databaseHelper = databaseHelper;
         this.searchView = searchView;
+        this.activity = activity;
     }
 
     @Override
@@ -42,6 +47,7 @@ public class ResearchAdapter extends RecyclerView.Adapter<ResearchViewHolder> {
         holder.textView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+<<<<<<< app/src/main/java/com/example/navbar/ResearchAdapter.java
                 int currentPosition = holder.getAdapterPosition();
                 if (currentPosition == RecyclerView.NO_POSITION) return;
 
@@ -66,6 +72,10 @@ public class ResearchAdapter extends RecyclerView.Adapter<ResearchViewHolder> {
                     shopping_list.add(new Item(currentItem.getName(), false));
                     adapter.notifyItemChanged(shopping_list.size() - 1);
                 }
+                int[] progress = getProgress();
+                String stringCompteur = progress[0] + "/" + progress[1];
+                TextView compteur = activity.findViewById(R.id.compteur);
+                compteur.setText(stringCompteur);
             }
         });
     }
@@ -75,8 +85,18 @@ public class ResearchAdapter extends RecyclerView.Adapter<ResearchViewHolder> {
         return items.size();
     }
 
-    public void setFilteredList(Vector<Item> filteredList){
+    public void setFilteredList(Vector<Item> filteredList) {
         this.items = filteredList;
         notifyDataSetChanged();
+    }
+
+    public int[] getProgress() {
+        int a = 0;
+        for (Item item : shopping_list) {
+            if (!item.isBought()) {
+                a++;
+            }
+        }
+        return new int[]{a, shopping_list.size()};
     }
 }
