@@ -38,14 +38,14 @@ public class MainActivity extends AppCompatActivity {
         nav_bar = findViewById(R.id.navBar);
         replaceFragment(new Liste());
         if (nav_bar == null){
-            Log.i("error", "Pas de barre de navigation :C.");
+            Log.i("error", "wtf");
         }
         nav_bar.setOnItemSelectedListener(item ->{
             int itemId = item.getItemId();
             if (itemId == R.id.scan) {
                 replaceFragment(new Scan());
-            } else if (itemId == R.id.historique) {
-                replaceFragment(new Historique());
+            } else if (itemId == R.id.frigo) {
+                replaceFragment(new Frigo());
             } else if (itemId == R.id.liste) {
                 replaceFragment(new Liste());
             } else if (itemId == R.id.recette) {
