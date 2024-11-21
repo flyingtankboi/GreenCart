@@ -1,6 +1,7 @@
 package com.example.navbar;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.LinearGradient;
@@ -9,7 +10,6 @@ import android.graphics.Shader;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 
-import androidx.annotation.NonNull;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.ItemTouchHelper;
@@ -28,13 +28,12 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.Objects;
 import java.util.Random;
 import java.util.Vector;
 
-import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import org.json.JSONArray;
@@ -170,13 +169,30 @@ public class Liste extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_liste, container, false);
 
-        FloatingActionButton debug_button = view.findViewById(R.id.debug_button);
+        FloatingActionButton debug_button = view.findViewById(R.id.share_button);
         debug_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Random r = new Random();
-                shoppingList.add(new Item(String.valueOf(r.nextInt(100)), true));
-                adapter.notifyItemChanged(shoppingList.size() - 1);
+                Intent intent = new Intent().setAction(Intent.ACTION_SEND);
+                intent.setType("text/plain");
+                String liste = "Voici ma liste de courses!\nÀ acheter:\n";
+                boolean temp = true;
+                for (int i=0; i<shoppingList.size(); i++) {
+                    if (shoppingList.get(i).isBought()) {
+                        if (temp) {
+                            liste += "Déjà acheté:\n";
+                            temp = false;
+                        }
+                        liste += "✅ ";
+                    }
+                    else {
+                        liste += "❌ ";
+                    }
+                    liste += shoppingList.get(i).getName() + "\n";
+                }
+                intent.putExtra(Intent.EXTRA_TEXT,liste);
+                Intent test = Intent.createChooser(intent, "Test");
+                startActivity(test);
             }
         });
 
@@ -187,7 +203,7 @@ public class Liste extends Fragment {
         compteurView = view.findViewById(R.id.compteur);
 
         recyclerView = view.findViewById(R.id.recyclerView);
-        recyclerView.setLayoutManager(new LinearLayoutManager(getContext().getApplicationContext()));
+        recyclerView.setLayoutManager(new LinearLayoutManager(requireContext().getApplicationContext()));
         recyclerView.setAdapter(adapter);
 
 
@@ -234,8 +250,8 @@ public class Liste extends Fragment {
                 try {
                     compteurView.setVisibility(View.GONE);
                     updateJSONList();
-                    writeJson(getContext().getApplicationContext(), liste.toString());
-                    writeHistorique(getContext().getApplicationContext(), liste);
+                    writeJson(requireContext().getApplicationContext(), liste.toString());
+                    writeHistorique(requireContext().getApplicationContext(), liste);
                     Toast.makeText(view.getContext().getApplicationContext(), "Sauvegardé", Toast.LENGTH_SHORT).show();
 
                 } catch (JSONException e) {
@@ -249,7 +265,7 @@ public class Liste extends Fragment {
         super.onCreate(savedInstanceState);
 
         try {
-            liste = new JSONObject(readJson(getActivity().getApplicationContext()));
+            liste = new JSONObject(readJson(requireActivity().getApplicationContext()));
             JSONArray items = liste.getJSONArray("items");
             for (int i = 0; i < items.length(); i++) {
                 JSONObject item = items.getJSONObject(i);
@@ -271,7 +287,8 @@ public class Liste extends Fragment {
                     Paint paint = new Paint();
 
                     if (dX > 0) {
-                        Drawable icon = ContextCompat.getDrawable(getContext(), R.drawable.ic_check);
+                        Drawable icon = ContextCompat.getDrawable(requireContext(), R.drawable.ic_check);
+                        assert icon != null;
                         int iconMargin = (viewHolder.itemView.getHeight() - icon.getIntrinsicHeight()) / 2;
                         int iconLeft = viewHolder.itemView.getLeft() + iconMargin;
                         int iconRight = iconLeft + icon.getIntrinsicWidth();
@@ -301,7 +318,8 @@ public class Liste extends Fragment {
                         icon.draw(c);
 
                     } else if (dX < 0) {
-                        Drawable icon = ContextCompat.getDrawable(getContext(), R.drawable.ic_delete);
+                        Drawable icon = ContextCompat.getDrawable(requireContext(), R.drawable.ic_delete);
+                        assert icon != null;
                         int iconMargin = (viewHolder.itemView.getHeight() - icon.getIntrinsicHeight()) / 2;
                         int iconRight = viewHolder.itemView.getRight() - iconMargin;
                         int iconLeft = iconRight - icon.getIntrinsicWidth();
@@ -437,7 +455,7 @@ public class Liste extends Fragment {
     @Override
     public void onPause() {
         updateJSONList();
-        writeJson(getContext().getApplicationContext(), liste.toString());
+        writeJson(requireContext().getApplicationContext(), liste.toString());
         super.onPause();
     }
 }

@@ -4,6 +4,12 @@
     <item android:title="Scan"
         android:icon="@drawable/camera"
         android:id="@+id/scan"/>
+    <item android:title="Historique"
+        android:icon="@drawable/history"
+        android:id="@+id/historique"/>
+    <item android:title="Liste"
+        android:icon="@drawable/icon_course"
+        android:id="@+id/liste"/>
     <item android:title="Recette"
         android:icon="@drawable/recette"
         android:id="@+id/recette"/>
