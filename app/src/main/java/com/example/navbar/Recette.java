@@ -134,30 +134,7 @@ public class Recette extends Fragment {
             }
         });
 
-        FloatingActionButton debug_button = view.findViewById(R.id.share_button);
-        debug_button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                try {
-                    JSONArray recettes  = new JSONArray(readJson(getActivity().getApplicationContext()));
-                    Random r = new Random();
-                    JSONObject newRecette = new JSONObject();
-                    newRecette.put("title",r.nextInt());
-                    newRecette.put(" ingredients",new JSONArray());
-                    recettes.put(newRecette);
-                    FileOutputStream file = getContext().openFileOutput(FILENAME, Context.MODE_PRIVATE);
-                    file.write(recettes.toString().getBytes());
-                    liste_recettes.add(new RecetteCard(String.valueOf(r.nextInt())));
-                    adapter.notifyItemInserted(liste_recettes.size() -1);
-                } catch (JSONException e) {
-                    throw new RuntimeException(e);
-                } catch (FileNotFoundException e) {
-                    throw new RuntimeException(e);
-                } catch (IOException e) {
-                    throw new RuntimeException(e);
-                }
-            }
-        });
+
 
         return view;
 
