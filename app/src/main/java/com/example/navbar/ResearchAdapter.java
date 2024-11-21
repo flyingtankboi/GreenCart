@@ -2,7 +2,10 @@ package com.example.navbar;
 
 import static com.example.navbar.Liste.adapter;
 
+import android.content.ContentValues;
 import android.content.Context;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,6 +16,7 @@ import androidx.appcompat.widget.SearchView;
 import androidx.fragment.app.FragmentActivity;
 import androidx.recyclerview.widget.RecyclerView;
 
+import java.util.Locale;
 import java.util.Vector;
 
 public class ResearchAdapter extends RecyclerView.Adapter<ResearchViewHolder> {
@@ -26,8 +30,10 @@ public class ResearchAdapter extends RecyclerView.Adapter<ResearchViewHolder> {
     SearchView searchView;
     FragmentActivity activity;
 
+    SQLiteDatabase db;
 
-    public ResearchAdapter(Context context, Vector<Item> items, Vector<Item> shopping_list, ShoppingListAdapter adapter, DatabaseHelper databaseHelper, SearchView searchView, FragmentActivity activity){
+
+    public ResearchAdapter(Context context, Vector<Item> items, Vector<Item> shopping_list, ShoppingListAdapter adapter, DatabaseHelper databaseHelper, SearchView searchView, FragmentActivity activity, SQLiteDatabase db){
 
         this.context = context;
         this.items = items;
@@ -36,6 +42,7 @@ public class ResearchAdapter extends RecyclerView.Adapter<ResearchViewHolder> {
         this.databaseHelper = databaseHelper;
         this.searchView = searchView;
         this.activity = activity;
+        this.db = db;
     }
 
     @Override
@@ -45,7 +52,7 @@ public class ResearchAdapter extends RecyclerView.Adapter<ResearchViewHolder> {
 
     @Override
     public void onBindViewHolder(ResearchViewHolder holder, int position) {
-        holder.textView.setText(items.elementAt(position).getName());
+        holder.textView.setText(items.elementAt(position).getName(db));
         holder.textView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -55,23 +62,36 @@ public class ResearchAdapter extends RecyclerView.Adapter<ResearchViewHolder> {
 
                 Item currentItem = items.elementAt(currentPosition);
 
-                if (currentItem.getName().equals("+ Ajouter produit")) {
+                if (currentItem.getName(db).equals("+ Add product")) {
 
                     String current_text = searchView.getQuery().toString();
+
+                    String queryID = "SELECT MAX(id) FROM items";
+                    Cursor cursor = db.rawQuery(queryID, new String[]{});
+                    cursor.moveToFirst();
+                    int id = cursor.getInt(0) + 1;
+                    cursor.close();
+
+                    ContentValues values = new ContentValues();
+                    values.put("id", id);
+                    values.put("name", current_text);
+                    values.put("name_fr", current_text);
+                    values.put("food_group", "Added");
+                    values.put("food_subgroup", "Added");
+
+                    db.insert("items", null, values);
 
                     searchView.setQuery("", false);
                     searchView.clearFocus();
 
-                    databaseHelper.addItem(current_text);
-
-                    shopping_list.insertElementAt(new Item(current_text, false), 0);
+                    shopping_list.insertElementAt(new Item(id, false), 0);
                     adapter.notifyItemInserted(0);
 
                 } else {
                     searchView.setQuery("", false);
                     searchView.clearFocus();
 
-                    shopping_list.insertElementAt(new Item(currentItem.getName(), false), 0);
+                    shopping_list.insertElementAt(currentItem, 0);
                     adapter.notifyItemInserted(0);
                 }
                 int[] progress = getProgress();

@@ -1,17 +1,46 @@
 package com.example.navbar;
 
 
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
+import android.util.Log;
+
+import java.util.Locale;
+import java.util.Vector;
+
 class Item {
-    private String name;
+    private int id;
     private boolean isBought;
 
-    public Item(String name, boolean isBought) {
-        this.name = name;
+    public Item(int id, boolean isBought) {
+        this.id = id;
         this.isBought = isBought;
     }
 
-    public String getName() {
-        return name;
+    public String getName(SQLiteDatabase database) {
+        String sqlQuery;
+        if (Locale.getDefault().getLanguage().equals("fr")) {
+            sqlQuery = "SELECT name_fr FROM items WHERE id = " + String.valueOf(id);
+        }
+        else{
+            sqlQuery = "SELECT name FROM items WHERE id = " + String.valueOf(id);
+        }
+        Cursor cursor = database.rawQuery(sqlQuery, new String[]{});
+        Log.i("test",sqlQuery);
+        cursor.moveToFirst();
+        try {
+            String res = cursor.getString(0);
+            cursor.close();
+            return res;
+        }
+        catch (Exception e){
+            cursor.close();
+            return "Not Found";
+        }
+    }
+
+    public int getId() {
+        return id;
     }
 
     public boolean isBought() {
