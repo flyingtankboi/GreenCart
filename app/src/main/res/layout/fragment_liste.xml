@@ -25,7 +25,7 @@
             android:layout_height="0dp"
             android:scrollbars="vertical"
             android:background="@color/background"
-            app:layout_constraintTop_toBottomOf="@+id/searchView" />
+            app:layout_constraintTop_toBottomOf="@+id/searchView"/>
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/debug_button"
@@ -49,7 +49,7 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent" />
 
-        <android.widget.SearchView
+        <androidx.appcompat.widget.SearchView
             android:id="@+id/searchView"
             android:layout_width="0dp"
             android:layout_height="wrap_content"

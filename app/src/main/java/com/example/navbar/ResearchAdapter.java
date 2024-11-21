@@ -3,10 +3,12 @@ package com.example.navbar;
 import static com.example.navbar.Liste.adapter;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import androidx.appcompat.widget.SearchView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.Vector;
@@ -17,12 +19,16 @@ public class ResearchAdapter extends RecyclerView.Adapter<ResearchViewHolder> {
     Vector<Item> items;
     Vector<Item> shopping_list;
     ShoppingListAdapter adapter;
+    DatabaseHelper databaseHelper;
+    SearchView searchView;
 
-    public ResearchAdapter(Context context, Vector<Item> items, Vector<Item> shopping_list, ShoppingListAdapter adapter){
+    public ResearchAdapter(Context context, Vector<Item> items, Vector<Item> shopping_list, ShoppingListAdapter adapter, DatabaseHelper databaseHelper, SearchView searchView){
         this.context = context;
         this.items = items;
         this.shopping_list = shopping_list;
         this.adapter = adapter;
+        this.databaseHelper = databaseHelper;
+        this.searchView = searchView;
     }
 
     @Override
@@ -36,8 +42,18 @@ public class ResearchAdapter extends RecyclerView.Adapter<ResearchViewHolder> {
         holder.textView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                shopping_list.add(new Item(items.elementAt(position).getName(), false));
-                adapter.notifyItemChanged(shopping_list.size() - 1);
+                if (items.elementAt(position).getName().equals("+ Ajouter produit")) {
+
+                    String current_text = searchView.getQuery().toString();
+                    databaseHelper.addItem(current_text);
+
+                    shopping_list.add(new Item(current_text, false));
+                    adapter.notifyItemChanged(shopping_list.size() - 1);
+
+                } else {
+                    shopping_list.add(new Item(items.elementAt(position).getName(), false));
+                    adapter.notifyItemChanged(shopping_list.size() - 1);
+                }
             }
         });
     }

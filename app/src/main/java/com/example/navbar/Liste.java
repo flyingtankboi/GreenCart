@@ -21,6 +21,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.SearchView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import java.io.File;
@@ -53,9 +54,10 @@ public class Liste extends Fragment {
             "  \"items\": [{\"name\" : \"Pomme\", \"isbought\":false}]\n" +
             "}";
     Vector<Item> items;
-    SearchView searchView;
+    androidx.appcompat.widget.SearchView searchView;
     RecyclerView recyclerView;
     RecyclerView researchRecyclerView;
+    TextView text_add_item;
     ResearchAdapter researchAdapter;
     private DatabaseHelper databaseHelper;
 
@@ -186,6 +188,7 @@ public class Liste extends Fragment {
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext().getApplicationContext()));
         recyclerView.setAdapter(adapter);
 
+
         researchRecyclerView = view.findViewById(R.id.researchRecyclerView);
         researchRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 
@@ -195,7 +198,8 @@ public class Liste extends Fragment {
 
         searchView = view.findViewById(R.id.searchView);
         searchView.clearFocus();
-        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+        searchView.setIconifiedByDefault(false);
+        searchView.setOnQueryTextListener(new androidx.appcompat.widget.SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
                 return false;
@@ -214,7 +218,7 @@ public class Liste extends Fragment {
 
         });
 
-        researchAdapter = new ResearchAdapter(getContext(), items, shoppingList, adapter);
+        researchAdapter = new ResearchAdapter(getContext(), items, shoppingList, adapter, databaseHelper, searchView);
         researchRecyclerView.setAdapter(researchAdapter);
 
         closeSuggestions();
@@ -373,6 +377,7 @@ public class Liste extends Fragment {
     public void loadSuggestions(SQLiteDatabase database, String query) {
         Vector<Item> filtereditems = new Vector<>();
 
+        filtereditems.add(new Item("+ Ajouter produit", true));
         String sqlQuery = "SELECT name FROM items WHERE name LIKE ?";
         Cursor cursor = database.rawQuery(sqlQuery, new String[]{"%" + query + "%"});
 
@@ -419,8 +424,4 @@ public class Liste extends Fragment {
         writeJson(getContext().getApplicationContext(), liste.toString());
         super.onPause();
     }
-
-
-
-
 }
