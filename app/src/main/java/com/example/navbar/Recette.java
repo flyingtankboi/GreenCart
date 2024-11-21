@@ -147,7 +147,7 @@ public class Recette extends Fragment {
             JSONObject newRecette = new JSONObject();
             newRecette.put("title", "Nouvelle Recette");
             newRecette.put("ingredients", new JSONArray());
-            newRecette.put("instructions", "");
+            newRecette.put("instructions", "Remplir les instructions...");
             recettes.put(newRecette);
             FileOutputStream file = getContext().openFileOutput(FILENAME, Context.MODE_PRIVATE);
             file.write(recettes.toString().getBytes());

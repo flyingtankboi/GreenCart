@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Liste de Course</string>
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="rescan">Rescan</string>
+    <string name="nav_bar_scan_name">Scan</string>
+    <string name="nav_bar_recette_name">Recipe</string>
+    <string name="nav_bar_liste_name">List</string>
+    <string name="nav_bar_historique_name">History</string>
+    <string name="nav_bar_about_us_name">About Us</string>
+    <string name="recette_instructions">Instructions :</string>
+    <string name="recette_save_button">Save</string>
+    <string name="about_us_title">About Us</string>
+    <string name="recettes_title">Recipes</string>
+    <string name="enter_name_edit_text_hint">Enter name</string>
+    <string name="importer_button">Import</string>
+    <string name="les_courses_sont_finies">The shopping is done !</string>
+    <string name="sauvegarde_boutton">Saved</string>
+    <string name="remplir_les_instructions">Complete the instructions...</string>
+    <string name="importe_toast">Imported</string>
+    <string name="ajouter_produit">+ Add product</string>
+    <string name="voice_ma_liste_de_courses">Here is my shopping list!\n</string>
+    <string name="ce_que_j_ai_d_j_achet">What I have bought :\n</string>
+    <string name="ce_qu_il_reste_acheter">What is left to buy :\n</string>
+</resources>
