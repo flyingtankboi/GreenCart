@@ -42,7 +42,12 @@ public class ResearchAdapter extends RecyclerView.Adapter<ResearchViewHolder> {
         holder.textView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (items.elementAt(position).getName().equals("+ Ajouter produit")) {
+                int currentPosition = holder.getAdapterPosition();
+                if (currentPosition == RecyclerView.NO_POSITION) return;
+
+                Item currentItem = items.elementAt(currentPosition);
+
+                if (currentItem.getName().equals("+ Ajouter produit")) {
 
                     String current_text = searchView.getQuery().toString();
 
@@ -58,7 +63,7 @@ public class ResearchAdapter extends RecyclerView.Adapter<ResearchViewHolder> {
                     searchView.setQuery("", false);
                     searchView.clearFocus();
 
-                    shopping_list.add(new Item(items.elementAt(position).getName(), false));
+                    shopping_list.add(new Item(currentItem.getName(), false));
                     adapter.notifyItemChanged(shopping_list.size() - 1);
                 }
             }
