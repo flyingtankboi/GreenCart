@@ -395,7 +395,12 @@ public class Liste extends Fragment {
         String stringCompteur = progress[0] + "/" + progress[1];
         compteurView.setText(stringCompteur);
 
+        if (progress[1] == 0){
+            compteurView.setVisibility(View.GONE);
+        }
+
         return view;
+
     }
 
     private void closeSuggestions() {
