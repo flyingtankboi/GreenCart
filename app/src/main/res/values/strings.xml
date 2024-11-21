@@ -2,4 +2,23 @@
     <string name="app_name">Liste de Course</string>
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="rescan">Rescan</string>
+    <string name="nav_bar_scan_name">Scan</string>
+    <string name="nav_bar_recette_name">Recette</string>
+    <string name="nav_bar_liste_name">Liste</string>
+    <string name="nav_bar_historique_name">Historique</string>
+    <string name="nav_bar_about_us_name">A Propos</string>
+    <string name="recette_instructions">Instructions :</string>
+    <string name="recette_save_button">Sauvegardé</string>
+    <string name="about_us_title">A Propos</string>
+    <string name="recettes_title">Recettes</string>
+    <string name="enter_name_edit_text_hint">Rentrer le nom</string>
+    <string name="importer_button">Importer</string>
+    <string name="les_courses_sont_finies">Les courses sont finies !</string>
+    <string name="sauvegarde_boutton">Sauvegardé</string>
+    <string name="remplir_les_instructions">Remplir les instructions...</string>
+    <string name="importe_toast">Importé</string>
+    <string name="ajouter_produit">+ Ajouter produit</string>
+    <string name="voice_ma_liste_de_courses">Voice ma liste de courses!\n</string>
+    <string name="ce_que_j_ai_d_j_achet">Ce que j\'ai déjà acheté:\n</string>
+    <string name="ce_qu_il_reste_acheter">Ce qu\'il reste à acheter :\n</string>
 </resources>
