@@ -57,8 +57,6 @@ public class MainActivity extends AppCompatActivity {
         });
         nav_bar.setSelectedItemId(R.id.liste);
 
-
-
     }
 
     // Fonction pour remplacer le fragment en cours d'utilisation

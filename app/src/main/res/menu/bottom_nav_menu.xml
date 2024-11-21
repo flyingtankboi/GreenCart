@@ -7,11 +7,6 @@
     <item android:title="Recette"
         android:icon="@drawable/recette"
         android:id="@+id/recette"/>
-
-    <item android:title="Liste"
-        android:icon="@drawable/icon_course"
-        android:id="@+id/liste"/>
-
     <item android:title="Historique"
         android:icon="@drawable/baseline_access_time_24"
         android:id="@+id/profile"/>
