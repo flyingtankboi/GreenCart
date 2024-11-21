@@ -4,16 +4,18 @@
     <item android:title="Scan"
         android:icon="@drawable/camera"
         android:id="@+id/scan"/>
-    <item android:title="Frigo"
-        android:icon="@drawable/fridge"
-        android:id="@+id/frigo"/>
-    <item android:title="Liste"
-        android:icon="@drawable/icon_course"
-        android:id="@+id/liste"/>
     <item android:title="Recette"
         android:icon="@drawable/recette"
         android:id="@+id/recette"/>
+
+    <item android:title="Liste"
+        android:icon="@drawable/icon_course"
+        android:id="@+id/liste"/>
+
     <item android:title="Historique"
         android:icon="@drawable/baseline_access_time_24"
         android:id="@+id/profile"/>
+    <item android:title="About us"
+        android:icon="@drawable/baseline_person_24"
+        android:id="@+id/frigo"/>
 </menu>

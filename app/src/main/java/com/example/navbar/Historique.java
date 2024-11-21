@@ -1,13 +1,8 @@
 package com.example.navbar;
 
 import android.content.Context;
-import android.graphics.Canvas;
-import android.graphics.Color;
-import android.graphics.Paint;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 
-import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.ItemTouchHelper;
@@ -29,13 +24,13 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Profile extends Fragment {
+public class Historique extends Fragment {
 
     final String FILENAME_HISTORIQUE = "historique.json";
     final String DEFAULT_HISTORIQUE = "[]";
     JSONArray historique;
 
-    public Profile() {
+    public Historique() {
         // Required empty public constructor
     }
 

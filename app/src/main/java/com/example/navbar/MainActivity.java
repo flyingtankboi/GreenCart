@@ -1,7 +1,6 @@
 package com.example.navbar;
 
 import android.os.Bundle;
-import android.renderscript.ScriptGroup;
 import android.util.Log;
 
 import androidx.activity.EdgeToEdge;
@@ -52,7 +51,7 @@ public class MainActivity extends AppCompatActivity {
             } else if (itemId == R.id.recette) {
                 replaceFragment(new Recette());
             } else if (itemId == R.id.profile) {
-                replaceFragment(new Profile());
+                replaceFragment(new Historique());
             }
             return true;
         });
