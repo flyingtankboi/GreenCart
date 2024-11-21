@@ -63,8 +63,30 @@ public class Liste extends Fragment {
     JSONObject liste;
     Vector<Item> shoppingList;
     static ShoppingListAdapter adapter;
+    static SQLiteDatabase db;
 
     public Liste() {
+    }
+
+    public static int getID(String name){
+        String sqlQuery;
+        if (Locale.getDefault().getLanguage().equals("fr")) {
+            sqlQuery = "SELECT id FROM items WHERE name_fr = ?";
+        }
+        else{
+            sqlQuery = "SELECT id FROM items WHERE name = ?";
+        }
+        Cursor cursor = db.rawQuery(sqlQuery, new String[]{"%" + String.valueOf(name) + "%"});
+        cursor.moveToFirst();
+        try {
+            int res = cursor.getInt(0);
+            cursor.close();
+            return res;
+        }
+        catch (Exception e) {
+            cursor.close();
+            return 0;
+        }
     }
 
     @Override
@@ -193,7 +215,7 @@ public class Liste extends Fragment {
                         }
                         liste_de_course += "❌ ";
                     }
-                    liste_de_course+=shoppingList.get(i).getName() + "\n";
+                    liste_de_course+=shoppingList.get(i).getName(db) + "\n";
                 }
                 intent.putExtra(Intent.EXTRA_TEXT,liste_de_course);
                 startActivity(Intent.createChooser(intent, "Envoyer à"));
@@ -202,7 +224,7 @@ public class Liste extends Fragment {
 
         shoppingList = new Vector<>();
 
-        adapter = new ShoppingListAdapter(shoppingList);
+        adapter = new ShoppingListAdapter(shoppingList,db);
 
         compteurView = view.findViewById(R.id.compteur);
 
@@ -216,7 +238,7 @@ public class Liste extends Fragment {
 
         databaseHelper = new DatabaseHelper(getContext());
         databaseHelper.copyDatabase();
-        SQLiteDatabase db = databaseHelper.openDatabase();
+        db = databaseHelper.openDatabase();
 
         searchView = view.findViewById(R.id.searchView);
         searchView.clearFocus();
@@ -240,7 +262,7 @@ public class Liste extends Fragment {
 
         });
 
-        researchAdapter = new ResearchAdapter(getContext(), items, shoppingList, adapter, databaseHelper, searchView, requireActivity());
+        researchAdapter = new ResearchAdapter(getContext(), items, shoppingList, adapter, databaseHelper, searchView, requireActivity(), db);
         researchRecyclerView.setAdapter(researchAdapter);
 
         closeSuggestions();
@@ -273,7 +295,12 @@ public class Liste extends Fragment {
             JSONArray items = liste.getJSONArray("items");
             for (int i = 0; i < items.length(); i++) {
                 JSONObject item = items.getJSONObject(i);
-                shoppingList.add(new Item(item.getString("name"), item.getBoolean("isbought")));
+                try {
+                    shoppingList.add(new Item(item.getInt("id"), item.getBoolean("isbought")));
+                }
+                catch (Exception e){
+                    shoppingList.add(new Item(0, false));
+                }
             }
         } catch (JSONException e) {
             throw new RuntimeException(e);
@@ -412,20 +439,21 @@ public class Liste extends Fragment {
     public void loadSuggestions(SQLiteDatabase database, String query) {
         Vector<Item> filtereditems = new Vector<>();
 
-        filtereditems.add(new Item("+ Ajouter produit", true));
+        filtereditems.add(new Item(1025, true));
         String sqlQuery;
         if (Locale.getDefault().getLanguage().equals("fr")) {
-            sqlQuery = "SELECT name_fr FROM items WHERE name_fr LIKE ?";
+            sqlQuery = "SELECT id FROM items WHERE name_fr LIKE ? LIMIT 5";
         }
         else{
-            sqlQuery = "SELECT name FROM items WHERE name LIKE ?";
+            sqlQuery = "SELECT id FROM items WHERE name LIKE ? LIMIT 5";
         }
         Cursor cursor = database.rawQuery(sqlQuery, new String[]{"%" + query + "%"});
 
         if (cursor.moveToFirst()) {
             do {
-                String itemName = cursor.getString(0);
-                filtereditems.add(new Item(itemName, false));
+                int itemID = cursor.getInt(0);
+                Log.i("test", String.valueOf(itemID));
+                filtereditems.add(new Item(itemID, false));
             } while (cursor.moveToNext());
         }
         cursor.close();
@@ -439,7 +467,7 @@ public class Liste extends Fragment {
             for (Item item : shoppingList) {
                 JSONObject item_json = new JSONObject();
 
-                item_json.put("name", item.getName());
+                item_json.put("id", item.getId());
                 item_json.put("isbought", item.isBought());
 
                 items_array.put(item_json);

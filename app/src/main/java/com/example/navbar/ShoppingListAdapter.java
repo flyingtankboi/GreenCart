@@ -1,6 +1,7 @@
 package com.example.navbar;
 
 
+import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,9 +15,11 @@ import java.util.Vector;
 public class ShoppingListAdapter extends RecyclerView.Adapter<ShoppingListAdapter.ViewHolder> {
 
     private final Vector<Item> shoppingList;
+    SQLiteDatabase db;
 
-    public ShoppingListAdapter(Vector<Item> shoppingList) {
+    public ShoppingListAdapter(Vector<Item> shoppingList, SQLiteDatabase db) {
         this.shoppingList = shoppingList;
+        this.db = db;
     }
 
     @Override
@@ -34,7 +37,7 @@ public class ShoppingListAdapter extends RecyclerView.Adapter<ShoppingListAdapte
         else{
             holder.textViewItem.setTextColor(Color.BLACK);
         }
-        holder.textViewItem.setText(item.getName());
+        holder.textViewItem.setText(item.getName(db));
     }
 
     @Override
