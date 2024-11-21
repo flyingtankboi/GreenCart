@@ -44,8 +44,6 @@ public class MainActivity extends AppCompatActivity {
             int itemId = item.getItemId();
             if (itemId == R.id.scan) {
                 replaceFragment(new Scan());
-            } else if (itemId == R.id.historique) {
-                replaceFragment(new Historique());
             } else if (itemId == R.id.liste) {
                 replaceFragment(new Liste());
             } else if (itemId == R.id.recette) {
@@ -56,8 +54,6 @@ public class MainActivity extends AppCompatActivity {
             return true;
         });
         nav_bar.setSelectedItemId(R.id.liste);
-
-
 
     }
 
