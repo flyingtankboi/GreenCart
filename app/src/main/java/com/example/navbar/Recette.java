@@ -166,9 +166,29 @@ public class Recette extends Fragment {
 
 
     private void openRecipeCreator() {
+        try {
+            JSONArray recettes = new JSONArray(readJson(getActivity().getApplicationContext()));
+            JSONObject newRecette = new JSONObject();
+            newRecette.put("title", "Nouvelle Recette");
+            newRecette.put("ingredients", new JSONArray());
+            newRecette.put("instructions", "");
+            recettes.put(newRecette);
+            FileOutputStream file = getContext().openFileOutput(FILENAME, Context.MODE_PRIVATE);
+            file.write(recettes.toString().getBytes());
+            liste_recettes.add(new RecetteCard("Nouvelle Recette"));
+            adapter.notifyItemInserted(liste_recettes.size() - 1);
+        } catch (FileNotFoundException e) {
+            throw new RuntimeException(e);
+        } catch (JSONException e) {
+            throw new RuntimeException(e);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+
+        Fiche_recette fragment = Fiche_recette.newInstance(new RecetteCard("Nouvelle Recette"),liste_recettes.size()-1);
         FragmentTransaction transaction = getParentFragmentManager().beginTransaction();
 
-        transaction.replace(R.id.frameLayout, new Fiche_recette());
+        transaction.replace(R.id.frameLayout, fragment);
 
         transaction.addToBackStack(null);
 
