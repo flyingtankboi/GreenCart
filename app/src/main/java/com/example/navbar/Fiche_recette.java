@@ -62,6 +62,8 @@ public class Fiche_recette extends Fragment {
         TextView titre_recette_tv = view.findViewById(R.id.titre_recette);
         titre_recette_tv.setText(fiche_recette.getTitre());
 
+        TextView instructions = view.findViewById(R.id.notes_recette);
+        instructions.setText(fiche_recette.getInstructions());
 
         RecyclerView recyclerView = view.findViewById(R.id.recyclerView);
         adapter = new FicheRecetteAdapter(fiche_recette.getIngredients());

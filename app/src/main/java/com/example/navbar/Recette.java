@@ -40,7 +40,8 @@ public class Recette extends Fragment {
     Vector<RecetteCard> liste_recettes;
     static final String FILENAME = "recipes.json";
     static final String DEFAULT_JSON = "[{\"title\" : \"Lasagnes\",\n" +
-            "                       \"ingredients\" : [\"Pomme\", \"Poire\"]}]\n";
+            "                       \"ingredients\" : [\"Pomme\", \"Poire\"],\n\"instructions\" : \"Faire des lasagnes\"}]\n"
+            ;
 
 
     public static String readJson(Context context) {
@@ -107,28 +108,21 @@ public class Recette extends Fragment {
                     ingredients_vector.add(ingredients_json.get(ing).toString());
 
                 }
-
-                liste_recettes.add(new RecetteCard(recette.getString("title"), ingredients_vector));
-            } catch (JSONException e) {
-                try {
-                    liste_recettes.add(new RecetteCard(recette.getString("title")));
-                } catch (JSONException ex) {
-                    throw new RuntimeException(ex);
-                }
+                String instructions = recette.getString("instructions");
+                liste_recettes.add(new RecetteCard(recette.getString("title"), ingredients_vector, instructions));
+            } catch (JSONException ex) {
+                throw new RuntimeException(ex);
             }
-
 
 
         }
 
 
-
         View view = inflater.inflate(R.layout.fragment_recette, container, false);
         RecyclerView recyclerView = view.findViewById(R.id.recyclerView);
-        adapter = new RecetteAdapter(liste_recettes,getParentFragmentManager());
+        adapter = new RecetteAdapter(liste_recettes, getParentFragmentManager());
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext().getApplicationContext()));
-
 
 
         FloatingActionButton recette_button = view.findViewById(R.id.nouvelle_recette);
@@ -145,16 +139,17 @@ public class Recette extends Fragment {
             @Override
             public void onClick(View view) {
                 try {
-                    JSONArray recettes  = new JSONArray(readJson(getActivity().getApplicationContext()));
+                    JSONArray recettes = new JSONArray(readJson(getActivity().getApplicationContext()));
                     Random r = new Random();
                     JSONObject newRecette = new JSONObject();
-                    newRecette.put("title",r.nextInt());
-                    newRecette.put(" ingredients",new JSONArray());
+                    newRecette.put("title", r.nextInt());
+                    newRecette.put("ingredients", new JSONArray());
+                    newRecette.put("instructions", "faire la recette");
                     recettes.put(newRecette);
                     FileOutputStream file = getContext().openFileOutput(FILENAME, Context.MODE_PRIVATE);
                     file.write(recettes.toString().getBytes());
                     liste_recettes.add(new RecetteCard(String.valueOf(r.nextInt())));
-                    adapter.notifyItemInserted(liste_recettes.size() -1);
+                    adapter.notifyItemInserted(liste_recettes.size() - 1);
                 } catch (JSONException e) {
                     throw new RuntimeException(e);
                 } catch (FileNotFoundException e) {
