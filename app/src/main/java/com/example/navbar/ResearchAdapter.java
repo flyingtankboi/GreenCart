@@ -24,6 +24,8 @@ public class ResearchAdapter extends RecyclerView.Adapter<ResearchViewHolder> {
 
     DatabaseHelper databaseHelper;
     SearchView searchView;
+    FragmentActivity activity;
+
 
     public ResearchAdapter(Context context, Vector<Item> items, Vector<Item> shopping_list, ShoppingListAdapter adapter, DatabaseHelper databaseHelper, SearchView searchView, FragmentActivity activity){
 
@@ -47,7 +49,7 @@ public class ResearchAdapter extends RecyclerView.Adapter<ResearchViewHolder> {
         holder.textView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-<<<<<<< app/src/main/java/com/example/navbar/ResearchAdapter.java
+
                 int currentPosition = holder.getAdapterPosition();
                 if (currentPosition == RecyclerView.NO_POSITION) return;
 
@@ -75,6 +77,7 @@ public class ResearchAdapter extends RecyclerView.Adapter<ResearchViewHolder> {
                 int[] progress = getProgress();
                 String stringCompteur = progress[0] + "/" + progress[1];
                 TextView compteur = activity.findViewById(R.id.compteur);
+                compteur.setVisibility(View.VISIBLE);
                 compteur.setText(stringCompteur);
             }
         });

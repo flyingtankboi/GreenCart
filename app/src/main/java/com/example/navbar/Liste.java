@@ -233,6 +233,7 @@ public class Liste extends Fragment {
             public void onClick(View view) {
 
                 try {
+                    compteurView.setVisibility(View.GONE);
                     updateJSONList();
                     writeJson(getContext().getApplicationContext(), liste.toString());
                     writeHistorique(getContext().getApplicationContext(), liste);
