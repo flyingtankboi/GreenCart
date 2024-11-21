@@ -174,20 +174,20 @@ public class Liste extends Fragment {
             public void onClick(View view) {
                 Intent intent = new Intent(Intent.ACTION_SEND);
                 intent.setType("text/plain");
-                String liste_de_course = "Voice ma liste de courses!\n";
+                String liste_de_course = getString(R.string.voice_ma_liste_de_courses);
                 boolean temp1 = true;
                 boolean temp2 = true;
                 for(int i=0; i<shoppingList.size(); i++){
                     if (shoppingList.get(i).isBought()){
                         if (temp1){
-                            liste_de_course+="Ce que j'ai déjà acheté:\n";
+                            liste_de_course+=getString(R.string.ce_que_j_ai_d_j_achet);
                             temp1=false;
                         }
                         liste_de_course += "✅ ";
                     }
                     else{
                         if (temp2){
-                            liste_de_course+="Ce qu'il reste à acheter :\n";
+                            liste_de_course+=getString(R.string.ce_qu_il_reste_acheter);
                             temp2=false;
                         }
                         liste_de_course += "❌ ";
@@ -255,7 +255,7 @@ public class Liste extends Fragment {
                     updateJSONList();
                     writeJson(getContext().getApplicationContext(), liste.toString());
                     writeHistorique(getContext().getApplicationContext(), liste);
-                    Toast.makeText(view.getContext().getApplicationContext(), "Sauvegardé", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(view.getContext().getApplicationContext(), getString(R.string.sauvegarde_boutton), Toast.LENGTH_SHORT).show();
 
                 } catch (JSONException e) {
                     throw new RuntimeException(e);
@@ -377,7 +377,8 @@ public class Liste extends Fragment {
                 String stringCompteur = progress[0] + "/" + progress[1];
                 compteurView.setText(stringCompteur);
                 if(progress[0] == 0){
-                    Toast.makeText(getContext().getApplicationContext(), "Les courses sont finies !", Toast.LENGTH_SHORT).show();
+                    String s = getString(R.string.les_courses_sont_finies);
+                    Toast.makeText(getContext().getApplicationContext(),s , Toast.LENGTH_SHORT).show();
                 }
 
                 if (shoppingList.isEmpty()){
@@ -410,7 +411,7 @@ public class Liste extends Fragment {
     public void loadSuggestions(SQLiteDatabase database, String query) {
         Vector<Item> filtereditems = new Vector<>();
 
-        filtereditems.add(new Item("+ Ajouter produit", true));
+        filtereditems.add(new Item(getString(R.string.ajouter_produit), true));
         String sqlQuery = "SELECT name FROM items WHERE name LIKE ?";
         Cursor cursor = database.rawQuery(sqlQuery, new String[]{"%" + query + "%"});
 

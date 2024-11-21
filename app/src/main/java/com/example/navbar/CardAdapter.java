@@ -99,7 +99,7 @@ public class CardAdapter extends RecyclerView.Adapter<CardAdapter.ViewHolder> {
                 try (FileOutputStream file = view.getContext().openFileOutput(FILENAME, Context.MODE_PRIVATE)) {
                     file.write(historique.getJSONObject(historique.length() - 1 - position).toString().getBytes());
 
-                    Toast.makeText(view.getContext().getApplicationContext(), "Importé", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(view.getContext().getApplicationContext(), activity.getResources().getString(R.string.importe_toast), Toast.LENGTH_SHORT).show();
 
                     BottomNavigationView nav_bar = activity.findViewById(R.id.navBar);
                     nav_bar.setSelectedItemId(R.id.liste);

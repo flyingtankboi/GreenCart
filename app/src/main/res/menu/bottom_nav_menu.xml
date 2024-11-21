@@ -1,19 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <item android:title="Scan"
+    <item android:title="@string/nav_bar_scan_name"
         android:icon="@drawable/camera"
         android:id="@+id/scan"/>
-    <item android:title="Recette"
+    <item android:title="@string/nav_bar_recette_name"
         android:icon="@drawable/recette"
         android:id="@+id/recette"/>
-    <item android:title="Liste"
+    <item android:title="@string/nav_bar_liste_name"
         android:icon="@drawable/icon_course"
         android:id="@+id/liste"/>
-    <item android:title="Historique"
+    <item android:title="@string/nav_bar_historique_name"
         android:icon="@drawable/baseline_access_time_24"
         android:id="@+id/profile"/>
-    <item android:title="About us"
+    <item android:title="@string/nav_bar_about_us_name"
         android:icon="@drawable/baseline_person_24"
         android:id="@+id/frigo"/>
 
