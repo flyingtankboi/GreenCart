@@ -1,5 +1,6 @@
 package com.example.navbar;
 
+import android.content.ContentValues;
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
@@ -90,5 +91,21 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             Log.d("DatabaseHelper", "Old database deleted.");
         }
     }
+
+    public void addItem(String itemName) {
+        SQLiteDatabase db = this.getWritableDatabase(); // Ouvre la base de données en écriture
+        ContentValues values = new ContentValues();
+        values.put("name", itemName); // Ajoute une valeur pour la colonne "name"
+
+        long result = db.insert("items", null, values); // Insère les données dans la table "items"
+        if (result == -1) {
+            Log.e("DatabaseHelper", "Failed to insert item: " + itemName);
+        } else {
+            Log.d("DatabaseHelper", "Item inserted successfully: " + itemName);
+        }
+
+        db.close();
+    }
+
 
 }

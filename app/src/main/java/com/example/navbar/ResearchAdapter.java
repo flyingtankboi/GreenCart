@@ -3,11 +3,13 @@ package com.example.navbar;
 import static com.example.navbar.Liste.adapter;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import androidx.appcompat.widget.SearchView;
 import androidx.fragment.app.FragmentActivity;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -19,13 +21,18 @@ public class ResearchAdapter extends RecyclerView.Adapter<ResearchViewHolder> {
     Vector<Item> items;
     Vector<Item> shopping_list;
     ShoppingListAdapter adapter;
-    FragmentActivity activity;
 
-    public ResearchAdapter(Context context, Vector<Item> items, Vector<Item> shopping_list, ShoppingListAdapter adapter, FragmentActivity activity) {
+    DatabaseHelper databaseHelper;
+    SearchView searchView;
+
+    public ResearchAdapter(Context context, Vector<Item> items, Vector<Item> shopping_list, ShoppingListAdapter adapter, DatabaseHelper databaseHelper, SearchView searchView, FragmentActivity activity){
+
         this.context = context;
         this.items = items;
         this.shopping_list = shopping_list;
         this.adapter = adapter;
+        this.databaseHelper = databaseHelper;
+        this.searchView = searchView;
         this.activity = activity;
     }
 
@@ -40,8 +47,31 @@ public class ResearchAdapter extends RecyclerView.Adapter<ResearchViewHolder> {
         holder.textView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                shopping_list.add(new Item(items.elementAt(position).getName(), false));
-                adapter.notifyItemChanged(shopping_list.size() - 1);
+<<<<<<< app/src/main/java/com/example/navbar/ResearchAdapter.java
+                int currentPosition = holder.getAdapterPosition();
+                if (currentPosition == RecyclerView.NO_POSITION) return;
+
+                Item currentItem = items.elementAt(currentPosition);
+
+                if (currentItem.getName().equals("+ Ajouter produit")) {
+
+                    String current_text = searchView.getQuery().toString();
+
+                    searchView.setQuery("", false);
+                    searchView.clearFocus();
+
+                    databaseHelper.addItem(current_text);
+
+                    shopping_list.add(new Item(current_text, false));
+                    adapter.notifyItemChanged(shopping_list.size() - 1);
+
+                } else {
+                    searchView.setQuery("", false);
+                    searchView.clearFocus();
+
+                    shopping_list.add(new Item(currentItem.getName(), false));
+                    adapter.notifyItemChanged(shopping_list.size() - 1);
+                }
                 int[] progress = getProgress();
                 String stringCompteur = progress[0] + "/" + progress[1];
                 TextView compteur = activity.findViewById(R.id.compteur);
