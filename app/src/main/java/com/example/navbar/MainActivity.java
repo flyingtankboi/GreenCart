@@ -51,7 +51,7 @@ public class MainActivity extends AppCompatActivity {
             } else if (itemId == R.id.recette) {
                 replaceFragment(new Recette());
             } else if (itemId == R.id.profile) {
-                replaceFragment(new Profile());
+                replaceFragment(new Historique());
             }
             return true;
         });

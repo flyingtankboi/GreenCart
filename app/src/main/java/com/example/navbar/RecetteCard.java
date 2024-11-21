@@ -11,6 +11,7 @@ public class RecetteCard implements Serializable {
     public RecetteCard(String titre,Vector<String> ingredients){
         this.titre = titre;
         this.ingredients = ingredients;
+        this.instructions = "";
     }
     public RecetteCard(String titre,Vector<String> ingredients,String instructions){
         this.titre = titre;
@@ -20,8 +21,11 @@ public class RecetteCard implements Serializable {
 
     public RecetteCard(String titre){
         this.titre = titre;
-        ingredients = new Vector<>();
+        this.ingredients = new Vector<>();
+        this.instructions = "";
+
     }
+
 
     public void addIngredient(String ingredient){
         ingredients.add(ingredient);
@@ -31,6 +35,10 @@ public class RecetteCard implements Serializable {
     }
     public String getTitre(){
         return this.titre;
+    }
+
+    public String getInstructions(){
+        return this.instructions;
     }
 
 }
