@@ -29,6 +29,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.Locale;
 import java.util.Objects;
 import java.util.Random;
 import java.util.Vector;
@@ -411,8 +412,14 @@ public class Liste extends Fragment {
     public void loadSuggestions(SQLiteDatabase database, String query) {
         Vector<Item> filtereditems = new Vector<>();
 
-        filtereditems.add(new Item(getString(R.string.ajouter_produit), true));
-        String sqlQuery = "SELECT name FROM items WHERE name LIKE ?";
+        filtereditems.add(new Item("+ Ajouter produit", true));
+        String sqlQuery;
+        if (Locale.getDefault().getLanguage().equals("fr")) {
+            sqlQuery = "SELECT name_fr FROM items WHERE name_fr LIKE ?";
+        }
+        else{
+            sqlQuery = "SELECT name FROM items WHERE name LIKE ?";
+        }
         Cursor cursor = database.rawQuery(sqlQuery, new String[]{"%" + query + "%"});
 
         if (cursor.moveToFirst()) {
