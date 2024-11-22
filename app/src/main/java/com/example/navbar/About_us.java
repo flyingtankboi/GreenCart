@@ -31,6 +31,7 @@ public class About_us extends Fragment {
     }
 
     @Override
+    //Bouton de réinitialisation de la base de données
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_frigo, container, false);
@@ -38,7 +39,7 @@ public class About_us extends Fragment {
         reinit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                com.example.navbar.Liste.db.delete("items", "id > 1025", new String[]{});
+                com.example.navbar.Liste.db.delete("items", "id > 1025", new String[]{}); //Récupération de la base de données depuis Liste
             }
         });
         return view;

@@ -42,11 +42,12 @@ public class ProductListener implements Response.Listener<String> {
     @Override
     public void onResponse(String response) {
         try {
-            JSONObject rep = new JSONObject(response);
+            JSONObject rep = new JSONObject(response); //Le produit n'est pas dans la base de données Open Food Facts (très peu probable) donc erreur de l'utilisateur
             if (rep.getInt("status") == 0){
                 Toast.makeText(view.getContext(), "Le produit n'est pas trouvé. Vérifiez que vous ne scannez pas un QR code adjacent.", Toast.LENGTH_SHORT).show();
             }
             else {
+                //On récupère les entrées qui nous intéressent
                 JSONObject prod = rep.getJSONObject("product");
                 ecoscore = prod.getString("ecoscore_grade");
                 nutriscore = prod.getString("nutriscore_grade");
@@ -54,11 +55,15 @@ public class ProductListener implements Response.Listener<String> {
                 JSONObject agribalyse = data.getJSONObject("agribalyse");
                 String piechart;
                 double total;
+
+                //On tronque les nombres à deux chiffres après la virgule
                 DecimalFormatSymbols otherSymbols = new DecimalFormatSymbols(Locale.GERMAN);
                 otherSymbols.setDecimalSeparator('.');
                 otherSymbols.setGroupingSeparator('.');
                 DecimalFormat df = new DecimalFormat("#.##", otherSymbols);
+
                 try {
+                    //Création du lien servant a l'appel vers l'API pour créer le piechart
                     double[] co2 = new double[5];
                     co2[0] = agribalyse.getDouble("co2_agriculture");
                     co2[1] = agribalyse.getDouble("co2_consumption");
@@ -78,6 +83,8 @@ public class ProductListener implements Response.Listener<String> {
                 catch (Exception e){
                     imageUrl = "Not found";
                 }
+
+                //Envoie vers un nouveau fragment pour afficher les résultats de la requête
                 FragmentTransaction transaction = fragmentManager.beginTransaction();
                 transaction.replace(R.id.frameLayout, new BarcodeFound(ecoscore,nutriscore,imageUrl,piechart,total,rq));
                 transaction.commit();

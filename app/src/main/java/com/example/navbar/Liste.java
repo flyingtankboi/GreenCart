@@ -191,25 +191,30 @@ public class Liste extends Fragment {
         View view = inflater.inflate(R.layout.fragment_liste, container, false);
 
         FloatingActionButton share_button = view.findViewById(R.id.share_button);
+
+        //Création d'un OnClickListener pour le bouton de partage
         share_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                //Utilisation d'un intent implicit SEND
                 Intent intent = new Intent(Intent.ACTION_SEND);
                 intent.setType("text/plain");
-                StringBuilder liste_de_course = new StringBuilder(getString(R.string.voice_ma_liste_de_courses));
+                StringBuilder liste_de_course = new StringBuilder(getString(R.string.voice_ma_liste_de_courses) + "\n");
                 boolean temp1 = true;
                 boolean temp2 = true;
+
+                //Création de la string qui sera envoyée
                 for(int i=0; i<shoppingList.size(); i++){
                     if (shoppingList.get(i).isBought()){
                         if (temp1){
-                            liste_de_course.append(getString(R.string.ce_que_j_ai_d_j_achet));
+                            liste_de_course.append(getString(R.string.ce_que_j_ai_d_j_achet)).append("\n");
                             temp1=false;
                         }
                         liste_de_course.append("✅ ");
                     }
                     else{
                         if (temp2){
-                            liste_de_course.append(getString(R.string.ce_qu_il_reste_acheter));
+                            liste_de_course.append(getString(R.string.ce_qu_il_reste_acheter)).append("\n");
                             temp2=false;
                         }
                         liste_de_course.append("❌ ");
@@ -217,6 +222,8 @@ public class Liste extends Fragment {
                     liste_de_course.append(shoppingList.get(i).getName(db)).append("\n");
                 }
                 intent.putExtra(Intent.EXTRA_TEXT, liste_de_course.toString());
+
+                //Create chooser permet de choisir l'application souhaitée et la personne à qui l'envoyer
                 startActivity(Intent.createChooser(intent, "Envoyer à"));
             }
         });
@@ -442,16 +449,18 @@ public class Liste extends Fragment {
         researchRecyclerView.setVisibility(View.GONE);
     }
 
+    //Charge les suggestions de produits basé sur ce que l'utilisateur est en train d'écrire
     public void loadSuggestions(SQLiteDatabase database, String query) {
         Vector<Item> filtereditems = new Vector<>();
 
-        filtereditems.add(new Item(1025, true));
+        filtereditems.add(new Item(1025, true)); //L'item 1025 est un item artificiel intitulé "+ Ajouter produit"
         String sqlQuery;
+        //Distinction en fonction de la langue de l'utilisateur
         if (Locale.getDefault().getLanguage().equals("fr")) {
-            sqlQuery = "SELECT id FROM items WHERE name_fr LIKE ? LIMIT 5";
+            sqlQuery = "SELECT id FROM items WHERE name_fr LIKE ? LIMIT 20";
         }
         else{
-            sqlQuery = "SELECT id FROM items WHERE name LIKE ? LIMIT 5";
+            sqlQuery = "SELECT id FROM items WHERE name LIKE ? LIMIT 20";
         }
         Cursor cursor = database.rawQuery(sqlQuery, new String[]{"%" + query + "%"});
 
@@ -467,7 +476,7 @@ public class Liste extends Fragment {
     }
 
     public void updateJSONList() {
-        // Copy shopping list to the jsonOBJECT
+        // Copie de la shoppinglist dans un fichier JSON pour le stocker
         JSONArray items_array = new JSONArray();
         try {
             for (Item item : shoppingList) {
