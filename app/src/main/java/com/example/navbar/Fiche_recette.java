@@ -1,6 +1,8 @@
 package com.example.navbar;
 
 import android.content.Context;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -9,6 +11,7 @@ import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -42,6 +45,16 @@ public class Fiche_recette extends Fragment {
     EditText edit_notes_recette;
     TextView titre_recette;
     EditText edit_titre_recette;
+    androidx.appcompat.widget.SearchView searchView;
+
+    ResearchAdapter researchAdapter;
+    RecyclerView researchRecyclerView;
+    RecyclerView recyclerView;
+
+    private DatabaseHelper databaseHelper;
+    Vector<Item> items;
+
+
     Button save_button;
     final static String FILENAME = "recipes.json";
 
@@ -76,8 +89,7 @@ public class Fiche_recette extends Fragment {
         save_button.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view){
-                // mettre le fait de revenir au fragment précédent !!!
-
+                getParentFragmentManager().popBackStack();
             }
         });
 
@@ -157,13 +169,44 @@ public class Fiche_recette extends Fragment {
             }
         });
 
-        RecyclerView recyclerView = view.findViewById(R.id.recyclerView);
+        recyclerView = view.findViewById(R.id.recyclerView);
         adapter = new FicheRecetteAdapter(fiche_recette.getIngredients());
         recyclerView.setAdapter(adapter);
-        recyclerView.setLayoutManager(new LinearLayoutManager(getContext().getApplicationContext()));
+        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 
+        databaseHelper = new DatabaseHelper(getContext());
+        databaseHelper.copyDatabase();
+        SQLiteDatabase db = databaseHelper.openDatabase();
 
+        searchView = view.findViewById(R.id.searchView);
+        searchView.clearFocus();
+        searchView.setIconifiedByDefault(false);
+        searchView.setOnQueryTextListener(new androidx.appcompat.widget.SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                return false;
+            }
 
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                if (!newText.isEmpty()) {
+                    researchRecyclerView.setVisibility(View.VISIBLE);
+                    Log.i("test", "appartition !!!");
+                    loadSuggestions(db, newText);
+                } else {
+                    closeSuggestions();
+                }
+                return true;
+            }
+
+        });
+
+        researchAdapter = new ResearchAdapter(getContext(), items, fiche_recette, adapter, databaseHelper, searchView, requireActivity(), position);
+        researchRecyclerView = view.findViewById(R.id.researchRecyclerView);
+        researchRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+        researchRecyclerView.setAdapter(researchAdapter);
+
+        closeSuggestions();
 
         View delete_view = view.findViewById(R.id.imageView);
         delete_view.setOnClickListener(new View.OnClickListener() {
@@ -220,5 +263,27 @@ public class Fiche_recette extends Fragment {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
+        adapter.notifyDataSetChanged();
+    }
+
+    private void closeSuggestions() {
+        researchRecyclerView.setVisibility(View.GONE);
+    }
+
+    public void loadSuggestions(SQLiteDatabase database, String query) {
+        Vector<Item> filtereditems = new Vector<>();
+
+        filtereditems.add(new Item("+ Ajouter produit", false));
+        String sqlQuery = "SELECT name FROM items WHERE name LIKE ?";
+        Cursor cursor = database.rawQuery(sqlQuery, new String[]{"%" + query + "%"});
+
+        if (cursor.moveToFirst()) {
+            do {
+                String itemName = cursor.getString(0);
+                filtereditems.add(new Item(itemName, false));
+            } while (cursor.moveToNext());
+        }
+        cursor.close();
+        researchAdapter.setFilteredList(filtereditems);
     }
 }

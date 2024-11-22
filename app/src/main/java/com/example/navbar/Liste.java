@@ -54,7 +54,6 @@ public class Liste extends Fragment {
     androidx.appcompat.widget.SearchView searchView;
     RecyclerView recyclerView;
     RecyclerView researchRecyclerView;
-    TextView text_add_item;
     ResearchAdapter researchAdapter;
     TextView compteurView;
     private DatabaseHelper databaseHelper;

@@ -20,8 +20,6 @@ public class FicheRecetteAdapter extends RecyclerView.Adapter<FicheRecetteAdapte
 
     private Vector<String> ingredients;
 
-
-
     public FicheRecetteAdapter(Vector<String> ingredients) {
         this.ingredients = ingredients;
     }
@@ -47,7 +45,6 @@ public class FicheRecetteAdapter extends RecyclerView.Adapter<FicheRecetteAdapte
 
     static class ViewHolder extends RecyclerView.ViewHolder {
         TextView textViewIngredient;
-
 
         ViewHolder(View view) {
             super(view);
