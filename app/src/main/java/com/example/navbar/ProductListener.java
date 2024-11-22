@@ -1,6 +1,7 @@
 package com.example.navbar;
 
 import android.graphics.Bitmap;
+import android.util.Log;
 import android.util.LruCache;
 import android.view.View;
 import android.widget.ImageView;
@@ -45,9 +46,32 @@ public class ProductListener implements Response.Listener<String> {
                 JSONObject prod = rep.getJSONObject("product");
                 ecoscore = prod.getString("ecoscore_grade");
                 nutriscore = prod.getString("nutriscore_grade");
-                imageUrl = prod.getString("image_url");
+                JSONObject data = prod.getJSONObject("ecoscore_data");
+                JSONObject agribalyse = data.getJSONObject("agribalyse");
+                String piechart;
+                try {
+                    double[] co2 = new double[6];
+                    co2[0] = agribalyse.getDouble("co2_agriculture");
+                    co2[1] = agribalyse.getDouble("co2_consumption");
+                    co2[2] = agribalyse.getDouble("co2_distribution");
+                    co2[3] = agribalyse.getDouble("co2_packaging");
+                    co2[4] = agribalyse.getDouble("co2_processing");
+                    co2[5] = agribalyse.getDouble("co2_total");
+                    piechart = "https://quickchart.io/chart/render/zm-5fa30276-a03e-4a4b-99ed-efdc4138f274?data1=" + String.valueOf(co2[0]) + "," + String.valueOf(co2[1]) + "," + String.valueOf(co2[2]) + "," + String.valueOf(co2[3]) + "," + String.valueOf(co2[4]);
+                } catch (Exception e) {
+                    piechart = "Not found";
+                }
+
+                try {
+                    imageUrl = prod.getString("image_url");
+                }
+                catch (Exception e){
+                    imageUrl = "Not found";
+                }
+
+
                 FragmentTransaction transaction = fragmentManager.beginTransaction();
-                transaction.replace(R.id.frameLayout, new BarcodeFound(ecoscore,nutriscore,imageUrl,rq));
+                transaction.replace(R.id.frameLayout, new BarcodeFound(ecoscore,nutriscore,imageUrl,piechart,rq));
                 transaction.commit();
             }
         } catch (JSONException e) {
