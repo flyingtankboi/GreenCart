@@ -1,11 +1,10 @@
-package com.example.navbar;
+package com.android.greencart.shoppinglist;
 
 
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,6 +15,13 @@ import androidx.appcompat.widget.SearchView;
 import androidx.fragment.app.FragmentActivity;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.android.greencart.utils.DatabaseHelper;
+import com.android.greencart.utils.Item;
+import com.android.greencart.R;
+import com.android.greencart.recette.fiche_recette.FicheRecetteAdapter;
+import com.android.greencart.recette.Recette;
+import com.android.greencart.recette.RecetteCard;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -23,7 +29,6 @@ import org.json.JSONObject;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.util.Locale;
 import java.util.Vector;
 
 public class ResearchAdapter extends RecyclerView.Adapter<ResearchViewHolder> {

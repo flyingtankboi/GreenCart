@@ -1,4 +1,4 @@
-package com.example.navbar;
+package com.android.greencart.shoppinglist;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
@@ -18,6 +18,7 @@ import androidx.fragment.app.FragmentActivity;
 
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.android.greencart.R;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import org.json.JSONArray;

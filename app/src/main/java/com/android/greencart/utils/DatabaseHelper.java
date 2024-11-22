@@ -1,4 +1,4 @@
-package com.example.navbar;
+package com.android.greencart.utils;
 
 import android.content.ContentValues;
 import android.content.Context;

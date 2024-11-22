@@ -1,6 +1,5 @@
-package com.example.navbar;
+package com.android.greencart;
 
-import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -10,6 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 
+import com.android.greencart.shoppinglist.Liste;
 import com.google.android.material.button.MaterialButton;
 
 
@@ -39,7 +39,7 @@ public class About_us extends Fragment {
         reinit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                com.example.navbar.Liste.db.delete("items", "id > 1025", new String[]{}); //Récupération de la base de données depuis Liste
+                Liste.db.delete("items", "id > 1025", new String[]{}); //Récupération de la base de données depuis Liste
             }
         });
         return view;

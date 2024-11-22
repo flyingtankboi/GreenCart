@@ -1,4 +1,4 @@
-package com.example.navbar;
+package com.android.greencart;
 
 import org.junit.Test;
 

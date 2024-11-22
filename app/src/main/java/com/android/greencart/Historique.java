@@ -1,4 +1,4 @@
-package com.example.navbar;
+package com.android.greencart;
 
 import android.content.Context;
 import android.os.Bundle;
@@ -14,6 +14,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+
+import com.android.greencart.shoppinglist.CardAdapter;
 
 import org.json.JSONArray;
 import org.json.JSONException;

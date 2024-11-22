@@ -1,4 +1,4 @@
-package com.example.navbar;
+package com.android.greencart.recette;
 
 import android.graphics.Color;
 import android.view.LayoutInflater;
@@ -11,6 +11,9 @@ import androidx.cardview.widget.CardView;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.android.greencart.R;
+import com.android.greencart.recette.fiche_recette.Fiche_recette;
 
 import java.util.List;
 

@@ -1,4 +1,4 @@
-package com.example.navbar;
+package com.android.greencart.scan;
 
 import android.graphics.Bitmap;
 import android.os.Bundle;
@@ -13,6 +13,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.android.greencart.R;
 import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.ImageLoader;
 import com.google.android.material.button.MaterialButton;

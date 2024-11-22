@@ -1,13 +1,10 @@
-package com.example.navbar;
+package com.android.greencart.recette.fiche_recette;
 
 
-import static com.example.navbar.Liste.adapter;
-import static com.example.navbar.Liste.db;
+import static com.android.greencart.shoppinglist.Liste.db;
 
 import android.content.Context;
-import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,6 +16,11 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.FragmentActivity;
 import androidx.recyclerview.widget.RecyclerView;
 
+
+import com.android.greencart.utils.Item;
+import com.android.greencart.R;
+import com.android.greencart.recette.Recette;
+import com.android.greencart.recette.RecetteCard;
 
 import org.json.JSONArray;
 import org.json.JSONException;

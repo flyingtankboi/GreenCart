@@ -3,11 +3,11 @@ plugins {
 }
 
 android {
-    namespace = "com.example.navbar"
+    namespace = "com.android.greencart"
     compileSdk = 35
 
     defaultConfig {
-        applicationId = "com.example.navbar"
+        applicationId = "com.android.greencart"
         minSdk = 27
         targetSdk = 34
         versionCode = 1

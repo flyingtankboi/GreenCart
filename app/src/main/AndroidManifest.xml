@@ -19,7 +19,8 @@
         android:theme="@style/Theme.NavBar"
         tools:targetApi="31">
         <activity
-            android:name=".MainActivity"
+
+            android:name="com.android.greencart.MainActivity"
             android:windowSoftInputMode="adjustNothing"
             android:exported="true"
             android:screenOrientation="portrait">

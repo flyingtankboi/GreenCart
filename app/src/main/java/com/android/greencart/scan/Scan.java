@@ -1,4 +1,4 @@
-package com.example.navbar;
+package com.android.greencart.scan;
 
 import android.Manifest;
 import android.content.Intent;
@@ -24,8 +24,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import androidx.camera.core.Camera;
-
+import com.android.greencart.R;
 import com.google.common.util.concurrent.ListenableFuture;
 
 
