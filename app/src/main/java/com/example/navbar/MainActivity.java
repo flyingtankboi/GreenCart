@@ -45,7 +45,7 @@ public class MainActivity extends AppCompatActivity {
             if (itemId == R.id.scan) {
                 replaceFragment(new Scan());
             } else if (itemId == R.id.frigo) {
-                replaceFragment(new Frigo());
+                replaceFragment(new About_us());
             } else if (itemId == R.id.liste) {
                 replaceFragment(new Liste());
             } else if (itemId == R.id.recette) {

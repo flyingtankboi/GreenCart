@@ -78,8 +78,6 @@ public class ProductListener implements Response.Listener<String> {
                 catch (Exception e){
                     imageUrl = "Not found";
                 }
-
-
                 FragmentTransaction transaction = fragmentManager.beginTransaction();
                 transaction.replace(R.id.frameLayout, new BarcodeFound(ecoscore,nutriscore,imageUrl,piechart,total,rq));
                 transaction.commit();
