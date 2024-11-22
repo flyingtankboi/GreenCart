@@ -14,7 +14,7 @@
     <string name="enter_name_edit_text_hint">Rentrer le nom</string>
     <string name="importer_button">Importer</string>
     <string name="les_courses_sont_finies">Les courses sont finies !</string>
-    <string name="sauvegarde_boutton">Sauvegardé</string>
+    <string name="sauvegarde_boutton">Sauvegarder</string>
     <string name="remplir_les_instructions">Remplir les instructions...</string>
     <string name="importe_toast">Importé</string>
     <string name="ajouter_produit">+ Ajouter produit</string>
