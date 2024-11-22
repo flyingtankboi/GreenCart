@@ -22,4 +22,5 @@
     <string name="ce_que_j_ai_d_j_achet">Ce que j\'ai déjà acheté:\n</string>
     <string name="ce_qu_il_reste_acheter">Ce qu\'il reste à acheter :\n</string>
     <string name="aboutustext">Nous sommes quatre étudiants passionnés et engagés de CentraleSupélec, investis dans la cause environnementale.  Conscients de l\'impact écologique de notre alimentation, nous avons créé cette application éco-responsable pour repenser notre manière de consommer. Nous pensons qu’ensemble, même de petits gestes peuvent avoir un grand impact. 🌱</string>
+    <string name="reinittext">Réinitialiser la base de données</string>
 </resources>
