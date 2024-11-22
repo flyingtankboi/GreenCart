@@ -28,6 +28,7 @@ import org.json.JSONObject;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.Locale;
 import java.util.Vector;
 
 /**
@@ -63,7 +64,7 @@ public class Fiche_recette extends Fragment {
     }
 
 
-    public static Fiche_recette newInstance(RecetteCard recetteCard,int position) {
+    public static Fiche_recette newInstance(RecetteCard recetteCard, int position) {
         Fiche_recette fragment = new Fiche_recette();
         Bundle args = new Bundle();
         args.putSerializable("arg_recipe", recetteCard);
@@ -83,12 +84,12 @@ public class Fiche_recette extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view =  inflater.inflate(R.layout.fragment_fiche_recette, container, false);
+        View view = inflater.inflate(R.layout.fragment_fiche_recette, container, false);
 
         save_button = view.findViewById(R.id.save_button);
-        save_button.setOnClickListener(new View.OnClickListener(){
+        save_button.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view){
+            public void onClick(View view) {
                 getParentFragmentManager().popBackStack();
             }
         });
@@ -101,7 +102,7 @@ public class Fiche_recette extends Fragment {
                 if (actionId == EditorInfo.IME_ACTION_DONE) {
                     String text = v.getText().toString();
 
-                    if (text.isEmpty()){
+                    if (text.isEmpty()) {
                         text = "Nom Recette";
                     }
 
@@ -121,9 +122,9 @@ public class Fiche_recette extends Fragment {
 
         titre_recette = view.findViewById(R.id.titre_recette);
         titre_recette.setText(fiche_recette.getTitre());
-        titre_recette.setOnClickListener(new View.OnClickListener(){
+        titre_recette.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view){
+            public void onClick(View view) {
                 titre_recette.setVisibility(View.INVISIBLE);
                 edit_titre_recette.setVisibility(View.VISIBLE);
                 edit_titre_recette.setText(titre_recette.getText());
@@ -139,7 +140,7 @@ public class Fiche_recette extends Fragment {
                 if (actionId == EditorInfo.IME_ACTION_DONE) {
                     String text = v.getText().toString();
 
-                    if (text.isEmpty()){
+                    if (text.isEmpty()) {
                         text = "Remplir les instructions...";
                     }
 
@@ -159,9 +160,9 @@ public class Fiche_recette extends Fragment {
 
         notes_recette = view.findViewById(R.id.notes_recette);
         notes_recette.setText(fiche_recette.getInstructions());
-        notes_recette.setOnClickListener(new View.OnClickListener(){
+        notes_recette.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view){
+            public void onClick(View view) {
                 notes_recette.setVisibility(View.GONE);
                 edit_notes_recette.setVisibility(View.VISIBLE);
                 edit_notes_recette.setText(notes_recette.getText());
@@ -201,7 +202,7 @@ public class Fiche_recette extends Fragment {
 
         });
 
-        researchAdapter = new ResearchAdapter(getContext(), items, fiche_recette, adapter, searchView, requireActivity(), db,position);
+        researchAdapter = new ResearchAdapter(getContext(), items, fiche_recette, adapter, searchView, requireActivity(), db, position);
         researchRecyclerView = view.findViewById(R.id.researchRecyclerView);
         researchRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         researchRecyclerView.setAdapter(researchAdapter);
@@ -212,7 +213,7 @@ public class Fiche_recette extends Fragment {
         delete_view.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                JSONArray recettes  = null;
+                JSONArray recettes = null;
                 try {
                     recettes = new JSONArray(Recette.readJson(getActivity().getApplicationContext()));
                 } catch (JSONException e) {
@@ -238,7 +239,7 @@ public class Fiche_recette extends Fragment {
 
     }
 
-    public void editJSONRecettes (int position, String titre, Vector<String> ingredients_string, String instructions){
+    public void editJSONRecettes(int position, String titre, Vector<String> ingredients_string, String instructions) {
         try {
             JSONArray recettes = new JSONArray(Recette.readJson(getActivity().getApplicationContext()));
             recettes.remove(position);
@@ -247,7 +248,8 @@ public class Fiche_recette extends Fragment {
             newRecette.put("title", titre);
 
             JSONArray ingredients = new JSONArray();
-            for(int i = 0; i < ingredients_string.size(); i ++) ingredients.put(ingredients_string.elementAt(i));
+            for (int i = 0; i < ingredients_string.size(); i++)
+                ingredients.put(ingredients_string.elementAt(i));
             newRecette.put("ingredients", ingredients);
             newRecette.put("instructions", instructions);
 
@@ -273,15 +275,20 @@ public class Fiche_recette extends Fragment {
     public void loadSuggestions(SQLiteDatabase database, String query) {
         Vector<Item> filtereditems = new Vector<>();
 
-        //Modif !!!
-        filtereditems.add(new Item(1025, false));
-        String sqlQuery = "SELECT name FROM items WHERE name LIKE ?";
+        filtereditems.add(new Item(1025, true));
+        String sqlQuery;
+        if (Locale.getDefault().getLanguage().equals("fr")) {
+            sqlQuery = "SELECT id FROM items WHERE name_fr LIKE ? LIMIT 5";
+        } else {
+            sqlQuery = "SELECT id FROM items WHERE name LIKE ? LIMIT 5";
+        }
         Cursor cursor = database.rawQuery(sqlQuery, new String[]{"%" + query + "%"});
+
         if (cursor.moveToFirst()) {
             do {
-                //Modif !!!
-                int id = cursor.getInt(0);
-                filtereditems.add(new Item(id, false));
+                int itemID = cursor.getInt(0);
+                Log.i("test", String.valueOf(itemID));
+                filtereditems.add(new Item(itemID, false));
             } while (cursor.moveToNext());
         }
         cursor.close();
