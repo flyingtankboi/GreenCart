@@ -12,21 +12,24 @@
 
         <ImageView
             android:id="@+id/imageProduit"
-            android:layout_width="0dp"
+            android:layout_width="288dp"
             android:layout_height="0dp"
-            android:layout_marginTop="40dp"
+            android:layout_marginTop="36dp"
             android:background="@drawable/bgproduit"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHeight_percent="0.3"
-            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintHorizontal_bias="0.495"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintWidth_percent="0.7"
             tools:src="@tools:sample/avatars" />
 
         <ImageView
             android:id="@+id/NutriScore"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            app:layout_constraintHeight_percent="0.3"
+            app:layout_constraintWidth_percent="0.3"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/EcoScore"
             app:layout_constraintHorizontal_bias="0.2"
@@ -38,6 +41,8 @@
             android:id="@+id/EcoScore"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            app:layout_constraintHeight_percent="0.3"
+            app:layout_constraintWidth_percent="0.3"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/NutriScore"
@@ -52,7 +57,20 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/NutriScore" />
+            app:layout_constraintTop_toBottomOf="@+id/NutriScore"
+            app:layout_constraintVertical_bias="0.957" />
+
+        <ImageView
+            android:id="@+id/piechart"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/unavailable"
+            app:layout_constraintBottom_toTopOf="@+id/bouttonRescan"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.498"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/imageProduit"
+            app:layout_constraintVertical_bias="0.879" />
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>

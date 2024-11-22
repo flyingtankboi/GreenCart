@@ -58,13 +58,12 @@ public class BarcodeAnalyzer implements ImageAnalysis.Analyzer {
                             }
                             if (count==5) {
                                 count = 0;
-                                Log.d("Barcode", "Detected: " + barcode);
                                 nb_requests++;
                                 rq = Volley.newRequestQueue(context);
                                 ProductListener responseListener = new ProductListener(fm,view,rq);
                                 Response.ErrorListener errorListener = new ErrorListener();
                                 StringRequest SR = new StringRequest(Request.Method.GET,
-                                        "https://world.openfoodfacts.net/api/v2/product/"+barcode+"/?product_type=all&fields=nutriscore_grade%2Cecoscore_grade%2Cimage_url",
+                                        "https://world.openfoodfacts.net/api/v2/product/"+barcode+"/?product_type=all&fields=nutriscore_grade%2Cecoscore_grade%2Cimage_url%2Cecoscore_data",
                                         responseListener,
                                         errorListener);
                                 rq.add(SR);
@@ -72,6 +71,7 @@ public class BarcodeAnalyzer implements ImageAnalysis.Analyzer {
 
                             if (nb_requests>3 && stop){
                                 Toast.makeText(context,"Vérifiez que vous êtes connéctés à Internet.", Toast.LENGTH_LONG).show();
+                                rq.cancelAll(Request.Method.GET);
                                 stop=false;
                             }
                         }
