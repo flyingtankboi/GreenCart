@@ -34,11 +34,11 @@ public class MainActivity extends AppCompatActivity {
         });
 
 
-        // Bar de navigation et ouverture des fragments en fonction
+        // Bar de navigation et ouverture des fragments en fonction de l'icon clickée
         nav_bar = findViewById(R.id.navBar);
         replaceFragment(new Liste());
         if (nav_bar == null){
-            Log.i("error", "wtf");
+            throw (new RuntimeException());
         }
         nav_bar.setOnItemSelectedListener(item ->{
             int itemId = item.getItemId();

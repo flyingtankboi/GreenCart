@@ -52,6 +52,8 @@ public class ResearchAdapter extends RecyclerView.Adapter<ResearchViewHolder> {
     @Override
     public void onBindViewHolder(ResearchViewHolder holder, int position) {
         holder.textView.setText(items.elementAt(position).getName(db));
+
+        //On met un OnClickListener pour récupérer les clicks de l'utilisateur dans la bar de recherche
         holder.textView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -61,16 +63,21 @@ public class ResearchAdapter extends RecyclerView.Adapter<ResearchViewHolder> {
 
                 Item currentItem = items.elementAt(currentPosition);
 
-                if (currentItem.getName(db).equals("+ Add product") || currentItem.getName(db).equals("+ Ajouter produit")) {
+                //On vérifie d'abord s'il ne s'agit pas de l'item artificiel d'ajout de produit qui a l'id 1025
+                if (currentItem.getId() == 1025) {
 
+                    //On récupère la String écrite dans la barre de recherche
                     String current_text = searchView.getQuery().toString();
 
+
+                    //On récupère l'id maximal dans la BDD actuel
                     String queryID = "SELECT MAX(id) FROM items";
                     Cursor cursor = db.rawQuery(queryID, new String[]{});
                     cursor.moveToFirst();
                     int id = cursor.getInt(0) + 1;
                     cursor.close();
 
+                    //On insère ensuite la nouvelle entrée dans la base de données
                     ContentValues values = new ContentValues();
                     values.put("id", id);
                     values.put("name", current_text);
@@ -87,6 +94,7 @@ public class ResearchAdapter extends RecyclerView.Adapter<ResearchViewHolder> {
                     adapter.notifyItemInserted(0);
 
                 } else {
+                    //On ajoute juste l'élément à notre shopping liste actuelle
                     searchView.setQuery("", false);
                     searchView.clearFocus();
 

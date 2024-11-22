@@ -55,8 +55,7 @@ public class BarcodeFound extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_barcode_found, container, false);
-
-        MaterialButton bouton = view.findViewById(R.id.bouttonRescan);
+        MaterialButton bouton = view.findViewById(R.id.bouttonRescan); //Ajout d'un OnClickListener pour le bouton rescan qui renvoie sur un nouveau fragment scan
         bouton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -67,8 +66,9 @@ public class BarcodeFound extends Fragment {
             }
         });
 
-        TextView tot = view.findViewById(R.id.total);
+        //Toute cette partie est dédiée à afficher les résultats de la requette à Open Food Facts
 
+        TextView tot = view.findViewById(R.id.total);
         String text = String.format(Locale.GERMANY,"%.1f",total) + getString(R.string.CO2_tot);
         tot.setText(text);
 
@@ -102,6 +102,8 @@ public class BarcodeFound extends Fragment {
         if (nutriscore.equals("e"))
             nutriview.setImageResource(R.drawable.nutriscoree);
 
+
+        //Téléchargement de l'image du produit et affichage grâce à la librairie ImageLoader
         if (!imageUrl.equals("Not found")) {
 
             ImageLoader imageLoader = new ImageLoader(rq, new ImageLoader.ImageCache() {
@@ -120,6 +122,7 @@ public class BarcodeFound extends Fragment {
             imageLoader.get(imageUrl, ImageLoader.getImageListener(view.findViewById(R.id.imageProduit), R.drawable.baseline_file_download_24, R.drawable.baseline_question_mark_24));
         }
 
+        //Téléchargement de la piechart et affichage grâce à la librairie ImageLoader
         if (!piechart.equals("Not found")) {
 
             ImageLoader imageLoader = new ImageLoader(rq, new ImageLoader.ImageCache() {
