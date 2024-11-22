@@ -32,6 +32,7 @@ public class RecetteAdapter extends RecyclerView.Adapter<RecetteAdapter.ViewHold
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
+
         RecetteCard recette = recettes.get(position);
         holder.textViewName.setText(recette.getTitre());
         holder.textViewName.setTextColor(Color.parseColor("#000000"));

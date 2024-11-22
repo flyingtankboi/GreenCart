@@ -35,13 +35,14 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:text="Votre historique est vide pour le moment, archivez une liste de course pour qu'elle apparaisse ici."
+            android:textAlignment="center"
             android:textColor="#B0B0B0"
             android:visibility="invisible"
-            app:layout_constraintWidth_percent="0.8"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintWidth_percent="0.8" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 </FrameLayout>

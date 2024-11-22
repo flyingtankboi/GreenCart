@@ -12,6 +12,8 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
@@ -85,12 +87,13 @@ public class Recette extends Fragment {
 
         liste_recettes = new Vector<RecetteCard>();
 
-        JSONArray recettes = null;
+        JSONArray recettes = new JSONArray();
         try {
             recettes = new JSONArray(readJson(getActivity().getApplicationContext()));
         } catch (JSONException e) {
             throw new RuntimeException(e);
         }
+
         for (int i = 0; i < recettes.length(); i++) {
             JSONObject recette = null;
             try {
@@ -115,10 +118,16 @@ public class Recette extends Fragment {
             }
 
 
+
+        }
+        View view = inflater.inflate(R.layout.fragment_recette, container, false);
+
+        if (liste_recettes.isEmpty()){
+            TextView tv_recette_vide = view.findViewById(R.id.tv_recettes_vide);
+            tv_recette_vide.setVisibility(View.VISIBLE);
         }
 
 
-        View view = inflater.inflate(R.layout.fragment_recette, container, false);
         RecyclerView recyclerView = view.findViewById(R.id.recyclerView);
         adapter = new RecetteAdapter(liste_recettes, getParentFragmentManager());
         recyclerView.setAdapter(adapter);
