@@ -11,6 +11,7 @@
         android:id="@+id/navBar"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:theme="@style/Base.Theme.NavBar"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:itemRippleColor="@color/shade3"
