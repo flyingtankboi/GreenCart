@@ -4,8 +4,13 @@
         <!-- Customize your light theme here -->
     </style>
     <style name="Base.Theme.NavBar" parent="Theme.Material3.DayNight.NoActionBar">
-        <!-- Customize your light theme here. -->
-        <!-- <item name="colorPrimary">@color/my_light_primary</item> -->
+
+         <item name="colorPrimary">@color/shade2</item>
+        <item name="colorBackgroundFloating">@color/shade2</item>
+        <item name="colorPrimaryContainer">@color/shade2</item>
+        <item name="colorPrimaryFixed">@color/shade2</item>
+        <item name="colorSecondaryContainer">@color/shade3</item>
+        <item name="colorSecondaryFixed">@color/shade3</item>
     </style>
 
     <style name="Theme.NavBar" parent="Base.Theme.NavBar" />
