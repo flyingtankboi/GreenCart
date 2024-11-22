@@ -57,7 +57,7 @@ public class ProductListener implements Response.Listener<String> {
                     co2[3] = agribalyse.getDouble("co2_packaging");
                     co2[4] = agribalyse.getDouble("co2_processing");
                     co2[5] = agribalyse.getDouble("co2_total");
-                    piechart = "https://quickchart.io/chart/render/zm-b82ec21d-233a-46d2-94c5-ae7511cfc2f9?data1=" + String.valueOf(co2[0]) + "," + String.valueOf(co2[1]) + "," + String.valueOf(co2[2]) + "," + String.valueOf(co2[3]) + "," + String.valueOf(co2[4]);
+                    piechart = "https://quickchart.io/chart/render/zm-5fa30276-a03e-4a4b-99ed-efdc4138f274?data1=" + String.valueOf(co2[0]) + "," + String.valueOf(co2[1]) + "," + String.valueOf(co2[2]) + "," + String.valueOf(co2[3]) + "," + String.valueOf(co2[4]);
                 } catch (Exception e) {
                     piechart = "Not found";
                 }
