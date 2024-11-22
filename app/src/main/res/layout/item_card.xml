@@ -59,6 +59,9 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/edit_text_name" />
+            app:layout_constraintTop_toBottomOf="@id/edit_text_name"
+            app:rippleColor="@color/shade2"
+            app:tint="@color/white"
+            app:backgroundTint="@color/main_colour"/>
     </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.cardview.widget.CardView>

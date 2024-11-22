@@ -39,7 +39,10 @@
             android:onClick="nouvelle_recette"
             android:src="@drawable/baseline_add_24"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent" />
+            app:layout_constraintEnd_toEndOf="parent"
+            app:rippleColor="@color/shade2"
+            app:tint="@color/white"
+            app:backgroundTint="@color/shade1"/>
 
         <TextView
             android:id="@+id/tv_recettes_vide"

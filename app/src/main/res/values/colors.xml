@@ -4,4 +4,8 @@
     <color name="white">#FFFFFFFF</color>
     <color name="swipe_right">#66ffb3</color>
     <color name="background">#FCF5FD</color>
+    <color name="main_colour">#126664</color>
+    <color name="shade1">#4BB0A4</color>
+    <color name="shade2">#7ED2C8</color>
+    <color name="shade3">#BFEDE6</color>
 </resources>
