@@ -46,11 +46,7 @@ import android.database.sqlite.SQLiteDatabase;
 public class Liste extends Fragment {
     final String FILENAME = "current_list.json";
     final String FILENAME_HISTORIQUE = "historique.json";
-    final String DEFAULT_JSON = "{\n" +
-            "  \"name\": \"\",\n" +
-            "  \"date\": \"\",\n" +
-            "  \"items\": [{\"name\" : \"Pomme\", \"isbought\":false}]\n" +
-            "}";
+    final String DEFAULT_JSON = "{\"name\":\"\",\"date\":\"\",\"items\":[{\"id\":172,\"isbought\":false},{\"id\":270,\"isbought\":false},{\"id\":632,\"isbought\":true}]}";
     Vector<Item> items;
     androidx.appcompat.widget.SearchView searchView;
     RecyclerView recyclerView;
@@ -117,7 +113,6 @@ public class Liste extends Fragment {
 
         if (!list.exists()) { // Le fichier n'existe pas
             try (FileOutputStream file = context.openFileOutput(FILENAME_HISTORIQUE, Context.MODE_PRIVATE)) {
-
                 JSONArray historique = new JSONArray();
                 historique.put(liste_de_course);
                 file.write(historique.toString().getBytes());
