@@ -1,4 +1,4 @@
-package com.example.navbar;
+package com.android.greencart.scan;
 
 import android.content.Context;
 import android.util.Log;

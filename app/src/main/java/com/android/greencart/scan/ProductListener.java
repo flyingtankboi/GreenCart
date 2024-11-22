@@ -1,20 +1,14 @@
-package com.example.navbar;
+package com.android.greencart.scan;
 
-import android.graphics.Bitmap;
-import android.util.Log;
-import android.util.LruCache;
 import android.view.View;
-import android.widget.ImageView;
-import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.annotation.Nullable;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
+import com.android.greencart.R;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
-import com.android.volley.toolbox.ImageLoader;
 
 
 import org.json.JSONException;

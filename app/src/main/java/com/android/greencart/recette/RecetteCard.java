@@ -1,5 +1,7 @@
-package com.example.navbar;
+package com.android.greencart.recette;
 
+
+import com.android.greencart.utils.Item;
 
 import java.io.Serializable;
 import java.util.Vector;

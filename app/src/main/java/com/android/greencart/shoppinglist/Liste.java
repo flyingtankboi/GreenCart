@@ -1,4 +1,4 @@
-package com.example.navbar;
+package com.android.greencart.shoppinglist;
 
 import android.content.Context;
 import android.content.Intent;
@@ -34,6 +34,9 @@ import java.time.format.DateTimeFormatter;
 import java.util.Locale;
 import java.util.Vector;
 
+import com.android.greencart.utils.DatabaseHelper;
+import com.android.greencart.utils.Item;
+import com.android.greencart.R;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import org.json.JSONArray;
@@ -57,7 +60,7 @@ public class Liste extends Fragment {
     JSONObject liste;
     Vector<Item> shoppingList;
     static ShoppingListAdapter adapter;
-    static SQLiteDatabase db;
+    public static SQLiteDatabase db;
 
     public Liste() {
     }

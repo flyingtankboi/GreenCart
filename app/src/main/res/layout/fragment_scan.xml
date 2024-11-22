@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@android:color/white"
-    tools:context=".Scan">
+    tools:context=".scan.Scan">
 
     <!-- CardView to make PreviewView have rounded corners -->
     <androidx.cardview.widget.CardView

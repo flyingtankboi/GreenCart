@@ -1,4 +1,4 @@
-package com.example.navbar;
+package com.android.greencart.scan;
 
 import com.android.volley.Response;
 import com.android.volley.VolleyError;

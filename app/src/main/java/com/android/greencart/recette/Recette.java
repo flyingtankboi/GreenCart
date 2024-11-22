@@ -1,4 +1,4 @@
-package com.example.navbar;
+package com.android.greencart.recette;
 
 import android.content.Context;
 import android.os.Bundle;
@@ -14,18 +14,18 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-import android.widget.Toast;
 
+import com.android.greencart.utils.Item;
+import com.android.greencart.R;
+import com.android.greencart.recette.fiche_recette.Fiche_recette;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
-import java.util.Random;
 import java.util.Vector;
 
 

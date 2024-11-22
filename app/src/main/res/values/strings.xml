@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Liste de Course</string>
+    <string name="app_name">GreenCart</string>
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="rescan">Rescan</string>
     <string name="nav_bar_scan_name">Scan</string>

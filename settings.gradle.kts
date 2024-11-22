@@ -19,6 +19,6 @@ dependencyResolutionManagement {
     }
 }
 
-rootProject.name = "NavBar"
+rootProject.name = "GreenCart"
 include(":app")
  

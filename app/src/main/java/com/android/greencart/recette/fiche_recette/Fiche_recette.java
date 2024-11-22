@@ -1,6 +1,6 @@
-package com.example.navbar;
+package com.android.greencart.recette.fiche_recette;
 
-import static com.example.navbar.Liste.db;
+import static com.android.greencart.shoppinglist.Liste.db;
 
 import android.content.Context;
 import android.database.Cursor;
@@ -19,6 +19,14 @@ import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+
+import com.android.greencart.utils.DatabaseHelper;
+import com.android.greencart.utils.Item;
+import com.android.greencart.R;
+import com.android.greencart.shoppinglist.ResearchAdapter;
+import com.android.greencart.recette.Recette;
+import com.android.greencart.recette.RecetteCard;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
