@@ -14,15 +14,16 @@
             android:id="@+id/listCard"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_margin="16dp"
-            android:layout_marginBottom="50dp"
+            android:layout_marginEnd="16dp"
+            android:layout_marginStart="16dp"
             app:cardBackgroundColor="@android:color/white"
             app:cardCornerRadius="16dp"
             app:cardElevation="8dp"
-            app:layout_constraintHeight_percent="0.8"
+            android:layout_marginTop="50dp"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHeight_percent="0.8"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/compteur">
+            app:layout_constraintTop_toBottomOf="@id/searchCard">
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/recyclerView"
@@ -48,17 +49,18 @@
             app:layout_constraintTop_toBottomOf="@id/searchCard" />
 
         <androidx.cardview.widget.CardView
+            android:id="@+id/cardView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginStart="24dp"
             android:layout_marginTop="16dp"
             android:layout_marginEnd="24dp"
-            android:layout_marginStart="24dp"
+            android:background="@android:color/white"
+            app:cardCornerRadius="16dp"
+            app:cardElevation="16dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/searchCard"
-            app:cardElevation="16dp"
-            app:cardCornerRadius="16dp"
-            android:background="@android:color/white">
+            app:layout_constraintTop_toBottomOf="@id/searchCard">
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/researchRecyclerView"
@@ -72,13 +74,17 @@
             android:id="@+id/share_button"
             android:layout_width="56dp"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="24dp"
+            android:layout_marginEnd="26dp"
             android:layout_marginBottom="10dp"
             android:clickable="true"
             android:src="@drawable/share"
             app:elevation="9dp"
+            app:fabCustomSize="42dp"
             app:layout_constraintBottom_toTopOf="@id/nouvelle_recette"
-            app:layout_constraintEnd_toEndOf="parent" />
+            app:layout_constraintEnd_toEndOf="parent"
+            app:rippleColor="@color/shade2"
+            app:tint="@color/white"
+            app:backgroundTint="@color/shade1"/>
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/nouvelle_recette"
@@ -90,7 +96,10 @@
             android:src="@drawable/outline_bookmark_border_24"
             app:elevation="9dp"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent" />
+            app:layout_constraintEnd_toEndOf="parent"
+            app:rippleColor="@color/shade2"
+            app:tint="@color/white"
+            app:backgroundTint="@color/shade1"/>
 
 
         <androidx.cardview.widget.CardView

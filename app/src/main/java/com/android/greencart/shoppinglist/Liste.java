@@ -353,13 +353,13 @@ public class Liste extends Fragment {
                                 dX,
                                 viewHolder.itemView.getBottom(),
                                 Color.parseColor("#91c9a2"), // Start color (green)
-                                Color.parseColor("#FCF5FD"),                 // End color (white)
+                                Color.parseColor("#FFFFFF"),                 // End color (white)
                                 Shader.TileMode.CLAMP
                         );
                         paint.setShader(gradient);
                         c.drawRect((float) viewHolder.itemView.getLeft() + 2, (float) viewHolder.itemView.getTop()+2, dX, (float) viewHolder.itemView.getBottom()-2, paint);
 
-                        icon.setTint(Color.parseColor("#FCF5FD"));
+                        icon.setTint(Color.parseColor("#FFFFFF"));
                         icon.draw(c);
 
                     } else if (dX < 0) {
@@ -379,13 +379,13 @@ public class Liste extends Fragment {
                                 viewHolder.itemView.getBottom(),
                                  // Start color (white)
                                 Color.parseColor("#9c5959"),
-                                Color.parseColor("#FCF5FD"),// End color (red)
+                                Color.parseColor("#FFFFFF"),// End color (red)
                                 Shader.TileMode.CLAMP
                         );
                         paint.setShader(gradient);
                         c.drawRect((float) viewHolder.itemView.getRight() + dX, (float) viewHolder.itemView.getTop() + 2, (float) viewHolder.itemView.getRight() - 2, (float) viewHolder.itemView.getBottom() - 2, paint);
 
-                        icon.setTint(Color.parseColor("#FCF5FD"));
+                        icon.setTint(Color.parseColor("#FFFFFF"));
                         icon.draw(c);
 
                     } else {
