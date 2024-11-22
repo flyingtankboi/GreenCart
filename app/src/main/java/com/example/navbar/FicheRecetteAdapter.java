@@ -1,6 +1,8 @@
 package com.example.navbar;
 
 
+import static com.example.navbar.Liste.db;
+
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
 import android.util.Log;
@@ -19,13 +21,11 @@ import java.util.Vector;
 
 public class FicheRecetteAdapter extends RecyclerView.Adapter<FicheRecetteAdapter.ViewHolder> {
 
-    private Vector<String> ingredients_string;
+    private Vector<Item> ingredients;
 
-    public FicheRecetteAdapter(SQLiteDatabase db, Vector<Item> ingredients) {
-        ingredients_string = new Vector<>();
-        for(int i = 0; i < ingredients.size(); i++){
-            this.ingredients_string.add(ingredients.get(i).getName(db));
-        }
+    public FicheRecetteAdapter(Vector<Item> ingredients) {
+        this.ingredients = ingredients;
+
     }
 
     @Override
@@ -37,14 +37,14 @@ public class FicheRecetteAdapter extends RecyclerView.Adapter<FicheRecetteAdapte
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
         Log.i("debug","ajout d'un ingredient");
-        holder.textViewIngredient.setText(ingredients_string.get(position));
+        holder.textViewIngredient.setText(ingredients.get(position).getName(db));
         holder.textViewIngredient.setTextColor(Color.parseColor("#000000"));
 
     }
 
 
     public int getItemCount() {
-        return ingredients_string.size();
+        return ingredients.size();
     }
 
     static class ViewHolder extends RecyclerView.ViewHolder {

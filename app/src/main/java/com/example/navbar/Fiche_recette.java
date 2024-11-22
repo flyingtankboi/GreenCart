@@ -172,7 +172,7 @@ public class Fiche_recette extends Fragment {
         });
 
         recyclerView = view.findViewById(R.id.recyclerView);
-        adapter = new FicheRecetteAdapter(db, fiche_recette.getIngredients());
+        adapter = new FicheRecetteAdapter(fiche_recette.getIngredients());
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 
@@ -245,7 +245,7 @@ public class Fiche_recette extends Fragment {
 
             JSONArray ingredients = new JSONArray();
             for (int i = 0; i < ingredients_item.size(); i++)
-                ingredients.put(ingredients_item.elementAt(i));
+                ingredients.put(ingredients_item.elementAt(i).getId());
             newRecette.put("ingredients", ingredients);
             newRecette.put("instructions", instructions);
 

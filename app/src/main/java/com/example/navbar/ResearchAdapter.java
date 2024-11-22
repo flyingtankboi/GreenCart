@@ -141,6 +141,7 @@ public class ResearchAdapter extends RecyclerView.Adapter<ResearchViewHolder> {
                     compteur.setVisibility(View.VISIBLE);
                     compteur.setText(stringCompteur);
                 } else {
+                    Log.i("test", String.valueOf(recette.getIngredients().size()));
                     recette_adapter.notifyItemInserted(0);
                 }
             }
@@ -178,7 +179,7 @@ public class ResearchAdapter extends RecyclerView.Adapter<ResearchViewHolder> {
 
             JSONArray ingredients = new JSONArray();
             for (int i = 0; i < ingredients_item.size(); i++)
-                ingredients.put(ingredients_item.elementAt(i));
+                ingredients.put(ingredients_item.elementAt(i).getId());
             newRecette.put("ingredients", ingredients);
             newRecette.put("instructions", instructions);
 

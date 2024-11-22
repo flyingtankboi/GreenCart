@@ -39,9 +39,13 @@ public class Recette extends Fragment {
     RecetteAdapter adapter;
     Vector<RecetteCard> liste_recettes;
     static final String FILENAME = "recipes.json";
-    static final String DEFAULT_JSON = "[{\"title\" : \"Lasagnes\",\n" +
-            "                       \"ingredients\" : [],\n\"instructions\" : \"Faire des lasagnes\"}]\n"
-            ;
+    static final String DEFAULT_JSON = "[\n" +
+            "  {\n" +
+            "    \"title\": \"Lasagnes\",\n" +
+            "    \"ingredients\": [],\n" +
+            "    \"instructions\": \"Faire des lasagnes\"\n" +
+            "  }\n" +
+            "]";
 
 
     public static String readJson(Context context) {
@@ -106,6 +110,7 @@ public class Recette extends Fragment {
 
                 for (int ing = 0; ing < ingredients_json.length(); ing++) {
 
+                    //JSONObject object = ingredients_json.getJSONObject(ing);
                     ingredients_vector.add(new Item(ingredients_json.getInt(ing), false));
 
                 }
