@@ -11,6 +11,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.ImageLoader;
@@ -27,14 +28,16 @@ public class BarcodeFound extends Fragment {
     String imageUrl;
     RequestQueue rq;
     String piechart;
+    double total;
 
 
-    public BarcodeFound(String ecoscore, String nutriscore, String imageUrl, String piechart, RequestQueue rq) {
+    public BarcodeFound(String ecoscore, String nutriscore, String imageUrl, String piechart, double total, RequestQueue rq) {
         this.ecoscore = ecoscore;
         this.nutriscore = nutriscore;
         this.imageUrl = imageUrl;
         this.rq = rq;
         this.piechart = piechart;
+        this.total = total;
     }
 
     public static BarcodeFound newInstance() {
@@ -61,6 +64,9 @@ public class BarcodeFound extends Fragment {
                 transaction.commit();
             }
         });
+
+        TextView tot = view.findViewById(R.id.total);
+        tot.setText(String.format("%.1f",total) + " kg de CO2 / kg de produit");
 
         produit = view.findViewById(R.id.imageProduit);
         ecoview = view.findViewById(R.id.EcoScore);

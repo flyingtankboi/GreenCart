@@ -62,7 +62,7 @@ public class ResearchAdapter extends RecyclerView.Adapter<ResearchViewHolder> {
 
                 Item currentItem = items.elementAt(currentPosition);
 
-                if (currentItem.getName(db).equals("+ Add product")) {
+                if (currentItem.getName(db).equals("+ Add product") || currentItem.getName(db).equals("+ Ajouter produit")) {
 
                     String current_text = searchView.getQuery().toString();
 
