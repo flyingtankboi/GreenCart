@@ -31,6 +31,7 @@ import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.AbstractList;
 import java.util.Locale;
 import java.util.Vector;
 
@@ -54,8 +55,8 @@ public class Liste extends Fragment {
     ResearchAdapter researchAdapter;
     TextView compteurView;
 
-    JSONObject liste;
-    Vector<Item> shoppingList;
+    public static JSONObject liste;
+    static public Vector<Item> shoppingList;
     static ShoppingListAdapter adapter;
     static SQLiteDatabase db;
 
@@ -502,5 +503,9 @@ public class Liste extends Fragment {
         updateJSONList();
         writeJson(requireContext().getApplicationContext(), liste.toString());
         super.onPause();
+    }
+
+    public Vector<Item> getShoppingList(){
+        return shoppingList;
     }
 }

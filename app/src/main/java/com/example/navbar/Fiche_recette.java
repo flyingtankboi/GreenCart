@@ -1,6 +1,7 @@
 package com.example.navbar;
 
 import static com.example.navbar.Liste.db;
+import static com.example.navbar.Liste.shoppingList;
 
 import android.content.Context;
 import android.database.Cursor;
@@ -19,6 +20,8 @@ import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -47,10 +50,10 @@ public class Fiche_recette extends Fragment {
 
     private DatabaseHelper databaseHelper;
     Vector<Item> items;
-
-
     Button save_button;
     final static String FILENAME = "recipes.json";
+    final String FILENAME_list = "current_list.json";
+
 
     public Fiche_recette() {
         // Required empty public constructor
@@ -196,7 +199,24 @@ public class Fiche_recette extends Fragment {
 
         closeSuggestions();
 
-        View delete_view = view.findViewById(R.id.imageView);
+        View importRecipe = view.findViewById(R.id.importRecipe);
+        importRecipe.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View view){
+
+                for(int i = 0; i < fiche_recette.getIngredients().size(); i++){
+                    shoppingList.add(fiche_recette.getIngredients().get(i));
+                }
+
+                Toast toast = new Toast(getContext());
+                toast.setText(R.string.addingredients);
+                toast.show();
+
+                updateJSONList(shoppingList);
+            }
+        });
+
+        View delete_view = view.findViewById(R.id.deleteRecipe);
         delete_view.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -269,11 +289,39 @@ public class Fiche_recette extends Fragment {
         if (cursor.moveToFirst()) {
             do {
                 int itemID = cursor.getInt(0);
-                Log.i("test", String.valueOf(itemID));
                 filtereditems.add(new Item(itemID, false));
             } while (cursor.moveToNext());
         }
         cursor.close();
         researchAdapter.setFilteredList(filtereditems);
+    }
+
+    public void updateJSONList(Vector<Item> listetmp) {
+        // Copie de la shoppinglist dans un fichier JSON pour le stocker
+        JSONArray items_array = new JSONArray();
+        try {
+            for (Item item : listetmp) {
+                JSONObject item_json = new JSONObject();
+
+                item_json.put("id", item.getId());
+                item_json.put("isbought", item.isBought());
+
+                items_array.put(item_json);
+            }
+            Liste.liste.put("items", items_array);
+            Liste.liste.put("name", "");
+            Liste.liste.put("date", "");
+
+            String s = Liste.liste.toString();
+
+            try (FileOutputStream file = requireContext().openFileOutput(FILENAME_list, Context.MODE_PRIVATE)) {
+                file.write(s.getBytes());
+            } catch (IOException e) {
+                Log.i("error", "N'a pas réussi à ecrire dans le fichier par defaut");
+            }
+
+        } catch (JSONException e) {
+            throw new RuntimeException(e);
+        }
     }
 }

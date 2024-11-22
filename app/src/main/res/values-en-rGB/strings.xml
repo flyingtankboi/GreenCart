@@ -25,4 +25,5 @@
     <string name="aboutustext">We are four passionate and committed students from CentraleSupélec, invested in the environmental cause.  Aware of the ecological impact of food courses, we created this eco-friendly app to rethink the way we enjoy and consume. We believe that together, even small gestures can have a big impact. 🌱</string>
     <string name="reinittext">Reset the database</string>
     <string name="CO2_tot">kg of CO2 / kg of product</string>
+    <string name="addingredients">Ingredients added !</string>
 </resources>

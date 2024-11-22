@@ -90,7 +90,19 @@
         </androidx.cardview.widget.CardView>
 
         <ImageView
-            android:id="@+id/imageView"
+            android:id="@+id/importRecipe"
+            android:layout_width="31dp"
+            android:layout_height="27dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="16dp"
+            android:src="@drawable/addrecipe"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/ic_delete"
+            app:tint="#DC6565" />
+        
+        <ImageView
+            android:id="@+id/deleteRecipe"
             android:layout_width="31dp"
             android:layout_height="27dp"
             android:layout_marginTop="16dp"
