@@ -30,7 +30,6 @@ public class ResearchAdapter extends RecyclerView.Adapter<ResearchViewHolder> {
     Context context;
     Vector<Item> items;
     Vector<Item> shopping_list;
-    Vector<String> ingredients_string;
     Vector<Item> ingredients;
 
     RecetteCard recette;
@@ -148,7 +147,6 @@ public class ResearchAdapter extends RecyclerView.Adapter<ResearchViewHolder> {
                     compteur.setVisibility(View.VISIBLE);
                     compteur.setText(stringCompteur);
                 } else {
-                    Log.i("test", String.valueOf(recette.getIngredients().size()));
                     recette_adapter.notifyItemInserted(0);
                 }
             }
@@ -162,7 +160,6 @@ public class ResearchAdapter extends RecyclerView.Adapter<ResearchViewHolder> {
 
     public void setFilteredList(Vector<Item> filteredList) {
         this.items = filteredList;
-        Log.i("test", String.valueOf(filteredList.size()));
         notifyDataSetChanged();
     }
 

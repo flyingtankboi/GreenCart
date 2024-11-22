@@ -163,7 +163,7 @@ public class Fiche_recette extends Fragment {
         });
 
         recyclerView = view.findViewById(R.id.recyclerView);
-        adapter = new FicheRecetteAdapter(fiche_recette.getIngredients());
+        adapter = new FicheRecetteAdapter(fiche_recette, getActivity(), position);
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 
