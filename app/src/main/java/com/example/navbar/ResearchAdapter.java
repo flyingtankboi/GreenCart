@@ -31,7 +31,9 @@ public class ResearchAdapter extends RecyclerView.Adapter<ResearchViewHolder> {
     Context context;
     Vector<Item> items;
     Vector<Item> shopping_list;
-    Vector<String> ingredients;
+    Vector<String> ingredients_string;
+    Vector<Item> ingredients;
+
     RecetteCard recette;
     ShoppingListAdapter adapter;
     FicheRecetteAdapter recette_adapter;
@@ -114,7 +116,7 @@ public class ResearchAdapter extends RecyclerView.Adapter<ResearchViewHolder> {
                         shopping_list.insertElementAt(new Item(id, false), 0);
                     } else {
 
-                        ingredients.insertElementAt(current_text, 0);
+                        ingredients.insertElementAt(new Item(id, false), 0);
                         editJSONRecettes(json_position, recette.getTitre(), recette.getIngredients(),recette.getInstructions());
                     }
 
@@ -125,7 +127,7 @@ public class ResearchAdapter extends RecyclerView.Adapter<ResearchViewHolder> {
                     if (recette_adapter == null){
                         shopping_list.insertElementAt(currentItem, 0);
                     } else {
-                        ingredients.insertElementAt(currentItem.getName(db), 0);
+                        ingredients.insertElementAt(currentItem, 0);
                         editJSONRecettes(json_position, recette.getTitre(), recette.getIngredients(),recette.getInstructions());
                     }
                 }
@@ -166,7 +168,7 @@ public class ResearchAdapter extends RecyclerView.Adapter<ResearchViewHolder> {
         return new int[]{a, shopping_list.size()};
     }
 
-    public void editJSONRecettes (int position, String titre, Vector<String> ingredients_string, String instructions){
+    public void editJSONRecettes(int position, String titre, Vector<Item> ingredients_item, String instructions) {
         try {
             JSONArray recettes = new JSONArray(Recette.readJson(activity.getApplicationContext()));
             recettes.remove(position);
@@ -175,13 +177,14 @@ public class ResearchAdapter extends RecyclerView.Adapter<ResearchViewHolder> {
             newRecette.put("title", titre);
 
             JSONArray ingredients = new JSONArray();
-            for(int i = 0; i < ingredients_string.size(); i ++) ingredients.put(ingredients_string.elementAt(i));
+            for (int i = 0; i < ingredients_item.size(); i++)
+                ingredients.put(ingredients_item.elementAt(i));
             newRecette.put("ingredients", ingredients);
             newRecette.put("instructions", instructions);
 
             recettes.put(position, newRecette);
 
-            FileOutputStream file = activity.getApplicationContext().openFileOutput(FILENAME, Context.MODE_PRIVATE);
+            FileOutputStream file = context.openFileOutput(FILENAME, Context.MODE_PRIVATE);
             file.write(recettes.toString().getBytes());
 
         } catch (JSONException e) {

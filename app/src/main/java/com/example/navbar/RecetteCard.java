@@ -6,15 +6,15 @@ import java.util.Vector;
 
 public class RecetteCard implements Serializable {
     String titre;
-    Vector<String> ingredients;
+    Vector<Item> ingredients;
     String instructions;
 
-    public RecetteCard(String titre,Vector<String> ingredients){
+    public RecetteCard(String titre,Vector<Item> ingredients){
         this.titre = titre;
         this.ingredients = ingredients;
         this.instructions = "Remplir les instructions...";
     }
-    public RecetteCard(String titre,Vector<String> ingredients,String instructions){
+    public RecetteCard(String titre,Vector<Item> ingredients,String instructions){
         this.titre = titre;
         this.ingredients = ingredients;
         this.instructions = instructions;
@@ -28,12 +28,12 @@ public class RecetteCard implements Serializable {
     }
 
 
-    public void addIngredient(String ingredient){
+    public void addIngredient(Item ingredient){
         ingredients.add(ingredient);
     }
     public void setInstructions(String instructions) {this.instructions = instructions;}
     public void setTitre(String titre) {this.titre = titre;}
-    public Vector<String> getIngredients(){
+    public Vector<Item> getIngredients(){
         return this.ingredients;
     }
     public String getTitre(){

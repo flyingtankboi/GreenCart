@@ -40,7 +40,7 @@ public class Recette extends Fragment {
     Vector<RecetteCard> liste_recettes;
     static final String FILENAME = "recipes.json";
     static final String DEFAULT_JSON = "[{\"title\" : \"Lasagnes\",\n" +
-            "                       \"ingredients\" : [\"Pomme\", \"Poire\"],\n\"instructions\" : \"Faire des lasagnes\"}]\n"
+            "                       \"ingredients\" : [],\n\"instructions\" : \"Faire des lasagnes\"}]\n"
             ;
 
 
@@ -100,14 +100,16 @@ public class Recette extends Fragment {
             }
             JSONArray ingredients_json;
             try {
+
                 ingredients_json = recette.getJSONArray("ingredients");
-                Vector<String> ingredients_vector = new Vector<>();
+                Vector<Item> ingredients_vector = new Vector<>();
 
                 for (int ing = 0; ing < ingredients_json.length(); ing++) {
 
-                    ingredients_vector.add(ingredients_json.get(ing).toString());
+                    ingredients_vector.add(new Item(ingredients_json.getInt(ing), false));
 
                 }
+
                 String instructions = recette.getString("instructions");
                 liste_recettes.add(new RecetteCard(recette.getString("title"), ingredients_vector, instructions));
             } catch (JSONException ex) {

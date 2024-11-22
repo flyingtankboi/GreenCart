@@ -1,5 +1,7 @@
 package com.example.navbar;
 
+import static com.example.navbar.Liste.db;
+
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -93,7 +95,6 @@ public class Fiche_recette extends Fragment {
                 getParentFragmentManager().popBackStack();
             }
         });
-
         edit_titre_recette = view.findViewById(R.id.edit_titre_recette);
         edit_titre_recette.setVisibility(View.GONE);
         edit_titre_recette.setOnEditorActionListener(new TextView.OnEditorActionListener() {
@@ -171,13 +172,9 @@ public class Fiche_recette extends Fragment {
         });
 
         recyclerView = view.findViewById(R.id.recyclerView);
-        adapter = new FicheRecetteAdapter(fiche_recette.getIngredients());
+        adapter = new FicheRecetteAdapter(db, fiche_recette.getIngredients());
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-
-        databaseHelper = new DatabaseHelper(getContext());
-        databaseHelper.copyDatabase();
-        SQLiteDatabase db = databaseHelper.openDatabase();
 
         searchView = view.findViewById(R.id.searchView);
         searchView.clearFocus();
@@ -192,7 +189,6 @@ public class Fiche_recette extends Fragment {
             public boolean onQueryTextChange(String newText) {
                 if (!newText.isEmpty()) {
                     researchRecyclerView.setVisibility(View.VISIBLE);
-                    Log.i("test", "appartition !!!");
                     loadSuggestions(db, newText);
                 } else {
                     closeSuggestions();
@@ -239,7 +235,7 @@ public class Fiche_recette extends Fragment {
 
     }
 
-    public void editJSONRecettes(int position, String titre, Vector<String> ingredients_string, String instructions) {
+    public void editJSONRecettes(int position, String titre, Vector<Item> ingredients_item, String instructions) {
         try {
             JSONArray recettes = new JSONArray(Recette.readJson(getActivity().getApplicationContext()));
             recettes.remove(position);
@@ -248,8 +244,8 @@ public class Fiche_recette extends Fragment {
             newRecette.put("title", titre);
 
             JSONArray ingredients = new JSONArray();
-            for (int i = 0; i < ingredients_string.size(); i++)
-                ingredients.put(ingredients_string.elementAt(i));
+            for (int i = 0; i < ingredients_item.size(); i++)
+                ingredients.put(ingredients_item.elementAt(i));
             newRecette.put("ingredients", ingredients);
             newRecette.put("instructions", instructions);
 
@@ -265,7 +261,6 @@ public class Fiche_recette extends Fragment {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-        adapter.notifyDataSetChanged();
     }
 
     private void closeSuggestions() {
@@ -278,9 +273,9 @@ public class Fiche_recette extends Fragment {
         filtereditems.add(new Item(1025, true));
         String sqlQuery;
         if (Locale.getDefault().getLanguage().equals("fr")) {
-            sqlQuery = "SELECT id FROM items WHERE name_fr LIKE ? LIMIT 5";
+            sqlQuery = "SELECT id FROM items WHERE name_fr LIKE ? LIMIT 20";
         } else {
-            sqlQuery = "SELECT id FROM items WHERE name LIKE ? LIMIT 5";
+            sqlQuery = "SELECT id FROM items WHERE name LIKE ? LIMIT 20";
         }
         Cursor cursor = database.rawQuery(sqlQuery, new String[]{"%" + query + "%"});
 
