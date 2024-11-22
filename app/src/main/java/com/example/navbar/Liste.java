@@ -55,7 +55,6 @@ public class Liste extends Fragment {
     androidx.appcompat.widget.SearchView searchView;
     RecyclerView recyclerView;
     RecyclerView researchRecyclerView;
-    TextView text_add_item;
     ResearchAdapter researchAdapter;
     TextView compteurView;
 
@@ -268,7 +267,7 @@ public class Liste extends Fragment {
 
         });
 
-        researchAdapter = new ResearchAdapter(getContext(), items, shoppingList, adapter, databaseHelper, searchView, requireActivity(), db);
+        researchAdapter = new ResearchAdapter(getContext(), items, shoppingList, adapter, searchView, requireActivity(), db);
         researchRecyclerView.setAdapter(researchAdapter);
 
         closeSuggestions();

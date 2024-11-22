@@ -1,6 +1,9 @@
 package com.example.navbar;
 
 
+import static com.example.navbar.Liste.db;
+
+import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -17,12 +20,11 @@ import java.util.Vector;
 
 public class FicheRecetteAdapter extends RecyclerView.Adapter<FicheRecetteAdapter.ViewHolder> {
 
-    private final Vector<String> ingredients;
+    private Vector<Item> ingredients;
 
-
-
-    public FicheRecetteAdapter(Vector<String> ingredients) {
+    public FicheRecetteAdapter(Vector<Item> ingredients) {
         this.ingredients = ingredients;
+
     }
 
     @NonNull
@@ -35,7 +37,7 @@ public class FicheRecetteAdapter extends RecyclerView.Adapter<FicheRecetteAdapte
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
         Log.i("debug","ajout d'un ingredient");
-        holder.textViewIngredient.setText(ingredients.get(position));
+        holder.textViewIngredient.setText(ingredients.get(position).getName(db));
         holder.textViewIngredient.setTextColor(Color.parseColor("#000000"));
 
     }
@@ -47,7 +49,6 @@ public class FicheRecetteAdapter extends RecyclerView.Adapter<FicheRecetteAdapte
 
     static class ViewHolder extends RecyclerView.ViewHolder {
         TextView textViewIngredient;
-
 
         ViewHolder(View view) {
             super(view);
