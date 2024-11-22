@@ -1,17 +1,16 @@
 package com.example.navbar;
 
-import static com.example.navbar.Liste.adapter;
 
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.widget.SearchView;
 import androidx.fragment.app.FragmentActivity;
 import androidx.recyclerview.widget.RecyclerView;
@@ -74,7 +73,7 @@ public class ResearchAdapter extends RecyclerView.Adapter<ResearchViewHolder> {
     }
 
     @Override
-    public ResearchViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public ResearchViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         return new ResearchViewHolder(LayoutInflater.from(context).inflate(R.layout.item_view_research, parent, false));
     }
 

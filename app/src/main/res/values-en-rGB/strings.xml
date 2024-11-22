@@ -22,4 +22,7 @@
     <string name="voice_ma_liste_de_courses">Here is my shopping list!\n</string>
     <string name="ce_que_j_ai_d_j_achet">What I have bought :\n</string>
     <string name="ce_qu_il_reste_acheter">What is left to buy :\n</string>
+    <string name="aboutustext">We are four passionate and committed students from CentraleSupélec, invested in the environmental cause.  Aware of the ecological impact of food courses, we created this eco-friendly app to rethink the way we enjoy and consume. We believe that together, even small gestures can have a big impact. 🌱</string>
+    <string name="reinittext">Reset the database</string>
+    <string name="CO2_tot">kg of CO2 / kg of product</string>
 </resources>

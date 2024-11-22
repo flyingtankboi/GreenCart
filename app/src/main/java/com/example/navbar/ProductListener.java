@@ -20,6 +20,10 @@ import com.android.volley.toolbox.ImageLoader;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.text.DecimalFormat;
+import java.text.DecimalFormatSymbols;
+import java.util.Locale;
+
 public class ProductListener implements Response.Listener<String> {
     String ecoscore;
     String nutriscore;
@@ -49,17 +53,23 @@ public class ProductListener implements Response.Listener<String> {
                 JSONObject data = prod.getJSONObject("ecoscore_data");
                 JSONObject agribalyse = data.getJSONObject("agribalyse");
                 String piechart;
+                double total;
+                DecimalFormatSymbols otherSymbols = new DecimalFormatSymbols(Locale.GERMAN);
+                otherSymbols.setDecimalSeparator('.');
+                otherSymbols.setGroupingSeparator('.');
+                DecimalFormat df = new DecimalFormat("#.##", otherSymbols);
                 try {
-                    double[] co2 = new double[6];
+                    double[] co2 = new double[5];
                     co2[0] = agribalyse.getDouble("co2_agriculture");
                     co2[1] = agribalyse.getDouble("co2_consumption");
                     co2[2] = agribalyse.getDouble("co2_distribution");
                     co2[3] = agribalyse.getDouble("co2_packaging");
                     co2[4] = agribalyse.getDouble("co2_processing");
-                    co2[5] = agribalyse.getDouble("co2_total");
-                    piechart = "https://quickchart.io/chart/render/zm-5fa30276-a03e-4a4b-99ed-efdc4138f274?data1=" + String.valueOf(co2[0]) + "," + String.valueOf(co2[1]) + "," + String.valueOf(co2[2]) + "," + String.valueOf(co2[3]) + "," + String.valueOf(co2[4]);
+                    total = agribalyse.getDouble("co2_total");
+                    piechart = "https://quickchart.io/chart/render/zm-c35ff8ba-e59f-4358-99d3-1e699eeb3fd9?data1=" + df.format(co2[0]) + "," + df.format(co2[1]) + "," + df.format(co2[2]) + "," + df.format(co2[3]) + "," + df.format(co2[4]);
                 } catch (Exception e) {
                     piechart = "Not found";
+                    total = 0;
                 }
 
                 try {
@@ -68,10 +78,8 @@ public class ProductListener implements Response.Listener<String> {
                 catch (Exception e){
                     imageUrl = "Not found";
                 }
-
-
                 FragmentTransaction transaction = fragmentManager.beginTransaction();
-                transaction.replace(R.id.frameLayout, new BarcodeFound(ecoscore,nutriscore,imageUrl,piechart,rq));
+                transaction.replace(R.id.frameLayout, new BarcodeFound(ecoscore,nutriscore,imageUrl,piechart,total,rq));
                 transaction.commit();
             }
         } catch (JSONException e) {

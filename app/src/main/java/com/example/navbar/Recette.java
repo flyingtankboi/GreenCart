@@ -3,6 +3,7 @@ package com.example.navbar;
 import android.content.Context;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -12,6 +13,8 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
@@ -21,6 +24,7 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.util.Random;
 import java.util.Vector;
 
@@ -64,9 +68,9 @@ public class Recette extends Fragment {
                 FileInputStream file = context.openFileInput(FILENAME);
                 int size = file.available();
                 byte[] buffer = new byte[size];
-                file.read(buffer);
+                int _placeholder = file.read(buffer);
                 file.close();
-                string_du_fichier = new String(buffer, "UTF-8");
+                string_du_fichier = new String(buffer, StandardCharsets.UTF_8);
 
 
             } catch (IOException e) {
@@ -85,16 +89,17 @@ public class Recette extends Fragment {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
         liste_recettes = new Vector<RecetteCard>();
 
-        JSONArray recettes = null;
+        JSONArray recettes = new JSONArray();
         try {
-            recettes = new JSONArray(readJson(getActivity().getApplicationContext()));
+            recettes = new JSONArray(readJson(requireActivity().getApplicationContext()));
         } catch (JSONException e) {
             throw new RuntimeException(e);
         }
+
         for (int i = 0; i < recettes.length(); i++) {
             JSONObject recette = null;
             try {
@@ -122,14 +127,20 @@ public class Recette extends Fragment {
             }
 
 
+
+        }
+        View view = inflater.inflate(R.layout.fragment_recette, container, false);
+
+        if (liste_recettes.isEmpty()){
+            TextView tv_recette_vide = view.findViewById(R.id.tv_recettes_vide);
+            tv_recette_vide.setVisibility(View.VISIBLE);
         }
 
 
-        View view = inflater.inflate(R.layout.fragment_recette, container, false);
         RecyclerView recyclerView = view.findViewById(R.id.recyclerView);
         adapter = new RecetteAdapter(liste_recettes, getParentFragmentManager());
         recyclerView.setAdapter(adapter);
-        recyclerView.setLayoutManager(new LinearLayoutManager(getContext().getApplicationContext()));
+        recyclerView.setLayoutManager(new LinearLayoutManager(requireContext().getApplicationContext()));
 
 
         FloatingActionButton recette_button = view.findViewById(R.id.nouvelle_recette);
@@ -160,11 +171,7 @@ public class Recette extends Fragment {
             file.write(recettes.toString().getBytes());
             liste_recettes.add(new RecetteCard("Nouvelle Recette"));
             adapter.notifyItemInserted(liste_recettes.size() - 1);
-        } catch (FileNotFoundException e) {
-            throw new RuntimeException(e);
-        } catch (JSONException e) {
-            throw new RuntimeException(e);
-        } catch (IOException e) {
+        } catch (JSONException | IOException e) {
             throw new RuntimeException(e);
         }
 

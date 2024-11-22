@@ -10,6 +10,7 @@ import android.graphics.Shader;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.ItemTouchHelper;
@@ -27,11 +28,10 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Locale;
-import java.util.Objects;
-import java.util.Random;
 import java.util.Vector;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -57,7 +57,6 @@ public class Liste extends Fragment {
     RecyclerView researchRecyclerView;
     ResearchAdapter researchAdapter;
     TextView compteurView;
-    private DatabaseHelper databaseHelper;
 
     JSONObject liste;
     Vector<Item> shoppingList;
@@ -132,9 +131,9 @@ public class Liste extends Fragment {
                 FileInputStream file_input = context.openFileInput(FILENAME_HISTORIQUE);
                 int size = file_input.available();
                 byte[] buffer = new byte[size];
-                file_input.read(buffer);
+                int _placeholder = file_input.read(buffer);
                 file_input.close();
-                string_du_fichier = new String(buffer, "UTF-8");
+                string_du_fichier = new String(buffer, StandardCharsets.UTF_8);
                 JSONArray historique = new JSONArray(string_du_fichier);
                 historique.put(liste_de_course);
 
@@ -165,9 +164,9 @@ public class Liste extends Fragment {
                 FileInputStream file = context.openFileInput(FILENAME);
                 int size = file.available();
                 byte[] buffer = new byte[size];
-                file.read(buffer);
+                int _placeholer = file.read(buffer);
                 file.close();
-                string_du_fichier = new String(buffer, "UTF-8");
+                string_du_fichier = new String(buffer, StandardCharsets.UTF_8);
 
 
             } catch (IOException e) {
@@ -196,27 +195,27 @@ public class Liste extends Fragment {
             public void onClick(View view) {
                 Intent intent = new Intent(Intent.ACTION_SEND);
                 intent.setType("text/plain");
-                String liste_de_course = getString(R.string.voice_ma_liste_de_courses);
+                StringBuilder liste_de_course = new StringBuilder(getString(R.string.voice_ma_liste_de_courses));
                 boolean temp1 = true;
                 boolean temp2 = true;
                 for(int i=0; i<shoppingList.size(); i++){
                     if (shoppingList.get(i).isBought()){
                         if (temp1){
-                            liste_de_course+=getString(R.string.ce_que_j_ai_d_j_achet);
+                            liste_de_course.append(getString(R.string.ce_que_j_ai_d_j_achet));
                             temp1=false;
                         }
-                        liste_de_course += "✅ ";
+                        liste_de_course.append("✅ ");
                     }
                     else{
                         if (temp2){
-                            liste_de_course+=getString(R.string.ce_qu_il_reste_acheter);
+                            liste_de_course.append(getString(R.string.ce_qu_il_reste_acheter));
                             temp2=false;
                         }
-                        liste_de_course += "❌ ";
+                        liste_de_course.append("❌ ");
                     }
-                    liste_de_course+=shoppingList.get(i).getName(db) + "\n";
+                    liste_de_course.append(shoppingList.get(i).getName(db)).append("\n");
                 }
-                intent.putExtra(Intent.EXTRA_TEXT,liste_de_course);
+                intent.putExtra(Intent.EXTRA_TEXT, liste_de_course.toString());
                 startActivity(Intent.createChooser(intent, "Envoyer à"));
             }
         });
@@ -235,7 +234,7 @@ public class Liste extends Fragment {
         researchRecyclerView = view.findViewById(R.id.researchRecyclerView);
         researchRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 
-        databaseHelper = new DatabaseHelper(getContext());
+        DatabaseHelper databaseHelper = new DatabaseHelper(getContext());
         databaseHelper.copyDatabase();
         db = databaseHelper.openDatabase();
 
@@ -275,8 +274,8 @@ public class Liste extends Fragment {
                 try {
                     compteurView.setVisibility(View.GONE);
                     updateJSONList();
-                    writeJson(getContext().getApplicationContext(), liste.toString());
-                    writeHistorique(getContext().getApplicationContext(), liste);
+                    writeJson(requireContext().getApplicationContext(), liste.toString());
+                    writeHistorique(requireContext().getApplicationContext(), liste);
                     Toast.makeText(view.getContext().getApplicationContext(), getString(R.string.sauvegarde_boutton), Toast.LENGTH_SHORT).show();
 
                 } catch (JSONException e) {
@@ -290,7 +289,7 @@ public class Liste extends Fragment {
         super.onCreate(savedInstanceState);
 
         try {
-            liste = new JSONObject(readJson(getActivity().getApplicationContext()));
+            liste = new JSONObject(readJson(requireActivity().getApplicationContext()));
             JSONArray items = liste.getJSONArray("items");
             for (int i = 0; i < items.length(); i++) {
                 JSONObject item = items.getJSONObject(i);
@@ -305,19 +304,37 @@ public class Liste extends Fragment {
             throw new RuntimeException(e);
         }
 
+        ItemTouchHelper itemTouchHelper = getItemTouchHelper();
+        itemTouchHelper.attachToRecyclerView(recyclerView);
+
+        int[] progress = getProgress();
+        String stringCompteur = progress[0] + "/" + progress[1];
+        compteurView.setText(stringCompteur);
+
+        if (progress[1] == 0){
+            compteurView.setVisibility(View.GONE);
+        }
+
+        return view;
+
+    }
+
+    @NonNull
+    private ItemTouchHelper getItemTouchHelper() {
         ItemTouchHelper.SimpleCallback simpleCallback = new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT) {
             @Override
-            public boolean onMove(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder, RecyclerView.ViewHolder target) {
+            public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder target) {
                 return false;
             }
 
             @Override
-            public void onChildDraw(Canvas c, RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder, float dX, float dY, int actionState, boolean isCurrentlyActive) {
+            public void onChildDraw(@NonNull Canvas c, @NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, float dX, float dY, int actionState, boolean isCurrentlyActive) {
                 if (actionState == ItemTouchHelper.ACTION_STATE_SWIPE) {
                     Paint paint = new Paint();
 
                     if (dX > 0) {
-                        Drawable icon = ContextCompat.getDrawable(getContext(), R.drawable.ic_check);
+                        Drawable icon = ContextCompat.getDrawable(requireContext(), R.drawable.ic_check);
+                        assert icon != null;
                         int iconMargin = (viewHolder.itemView.getHeight() - icon.getIntrinsicHeight()) / 2;
                         int iconLeft = viewHolder.itemView.getLeft() + iconMargin;
                         int iconRight = iconLeft + icon.getIntrinsicWidth();
@@ -341,7 +358,8 @@ public class Liste extends Fragment {
                         icon.draw(c);
 
                     } else if (dX < 0) {
-                        Drawable icon = ContextCompat.getDrawable(getContext(), R.drawable.ic_delete);
+                        Drawable icon = ContextCompat.getDrawable(requireContext(), R.drawable.ic_delete);
+                        assert icon != null;
                         int iconMargin = (viewHolder.itemView.getHeight() - icon.getIntrinsicHeight()) / 2;
                         int iconRight = viewHolder.itemView.getRight() - iconMargin;
                         int iconLeft = iconRight - icon.getIntrinsicWidth();
@@ -405,7 +423,7 @@ public class Liste extends Fragment {
                 compteurView.setText(stringCompteur);
                 if(progress[0] == 0){
                     String s = getString(R.string.les_courses_sont_finies);
-                    Toast.makeText(getContext().getApplicationContext(),s , Toast.LENGTH_SHORT).show();
+                    Toast.makeText(requireContext().getApplicationContext(),s , Toast.LENGTH_SHORT).show();
                 }
 
                 if (shoppingList.isEmpty()){
@@ -416,19 +434,7 @@ public class Liste extends Fragment {
             }
         };
 
-        ItemTouchHelper itemTouchHelper = new ItemTouchHelper(simpleCallback);
-        itemTouchHelper.attachToRecyclerView(recyclerView);
-
-        int[] progress = getProgress();
-        String stringCompteur = progress[0] + "/" + progress[1];
-        compteurView.setText(stringCompteur);
-
-        if (progress[1] == 0){
-            compteurView.setVisibility(View.GONE);
-        }
-
-        return view;
-
+        return new ItemTouchHelper(simpleCallback);
     }
 
     private void closeSuggestions() {
@@ -451,8 +457,8 @@ public class Liste extends Fragment {
         if (cursor.moveToFirst()) {
             do {
                 int itemID = cursor.getInt(0);
-                Log.i("test", String.valueOf(itemID));
-                filtereditems.add(new Item(itemID, false));
+                if (itemID != 1025)
+                    filtereditems.add(new Item(itemID, false));
             } while (cursor.moveToNext());
         }
         cursor.close();
@@ -490,7 +496,7 @@ public class Liste extends Fragment {
     @Override
     public void onPause() {
         updateJSONList();
-        writeJson(getContext().getApplicationContext(), liste.toString());
+        writeJson(requireContext().getApplicationContext(), liste.toString());
         super.onPause();
     }
 }

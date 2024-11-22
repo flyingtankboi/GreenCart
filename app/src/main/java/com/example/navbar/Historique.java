@@ -3,6 +3,7 @@ package com.example.navbar;
 import android.content.Context;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.ItemTouchHelper;
@@ -22,6 +23,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -58,9 +60,9 @@ public class Historique extends Fragment {
                 FileInputStream file = context.openFileInput(FILENAME_HISTORIQUE);
                 int size = file.available();
                 byte[] buffer = new byte[size];
-                file.read(buffer);
+                int _placeholder = file.read(buffer);
                 file.close();
-                string_du_fichier = new String(buffer, "UTF-8");
+                string_du_fichier = new String(buffer, StandardCharsets.UTF_8);
 
             } catch (IOException e) {
                 Log.i("error", "N'a pas réussi à écrire dans le fichier par defaut");
@@ -77,11 +79,11 @@ public class Historique extends Fragment {
 
 
         RecyclerView recyclerView = view.findViewById(R.id.recycler_view);
-        recyclerView.setLayoutManager(new GridLayoutManager(getContext().getApplicationContext(), 1));
+        recyclerView.setLayoutManager(new GridLayoutManager(requireContext().getApplicationContext(), 1));
 
 
         try {
-            historique = new JSONArray(getHistorique(getContext().getApplicationContext()));
+            historique = new JSONArray(getHistorique(requireContext().getApplicationContext()));
         } catch (JSONException e) {
             throw new RuntimeException(e);
         }
@@ -106,18 +108,28 @@ public class Historique extends Fragment {
         CardAdapter adapter = new CardAdapter(names, dates, historique, requireActivity());
         recyclerView.setAdapter(adapter);
 
+        ItemTouchHelper itemTouchHelper = getItemTouchHelper(names, dates, adapter);
+        itemTouchHelper.attachToRecyclerView(recyclerView);
+
+
+
+        return view;
+    }
+
+    @NonNull
+    private ItemTouchHelper getItemTouchHelper(List<String> names, List<String> dates, CardAdapter adapter) {
         ItemTouchHelper.SimpleCallback simpleCallback = new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT) {
             @Override
-            public boolean onMove(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder, RecyclerView.ViewHolder target) {
+            public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder target) {
                 return false;
             }
 
             @Override
             public void onSwiped(RecyclerView.ViewHolder viewHolder, int direction) {
                 int position = viewHolder.getAdapterPosition();
-                Log.i("error", getHistorique(getContext().getApplicationContext()));
-                deleteItemFromJSON(getContext().getApplicationContext(),position);
-                Log.i("error", getHistorique(getContext().getApplicationContext()));
+                Log.i("error", getHistorique(requireContext().getApplicationContext()));
+                deleteItemFromJSON(requireContext().getApplicationContext(),position);
+                Log.i("error", getHistorique(requireContext().getApplicationContext()));
                 names.remove(position);
                 dates.remove(position);
                 adapter.notifyItemRemoved(position);
@@ -126,12 +138,7 @@ public class Historique extends Fragment {
             }
         };
 
-        ItemTouchHelper itemTouchHelper = new ItemTouchHelper(simpleCallback);
-        itemTouchHelper.attachToRecyclerView(recyclerView);
-
-
-
-        return view;
+        return new ItemTouchHelper(simpleCallback);
     }
 
 
@@ -143,16 +150,16 @@ public class Historique extends Fragment {
             FileInputStream file_input = context.openFileInput(FILENAME_HISTORIQUE);
             int size = file_input.available();
             byte[] buffer = new byte[size];
-            file_input.read(buffer);
+            int _placeholder = file_input.read(buffer);
             file_input.close();
-            string_du_fichier = new String(buffer, "UTF-8");
+            string_du_fichier = new String(buffer, StandardCharsets.UTF_8);
             JSONArray historique = new JSONArray(string_du_fichier);
             historique.remove(historique.length() - 1 - index);
 
             FileOutputStream file_output = context.openFileOutput(FILENAME_HISTORIQUE, Context.MODE_PRIVATE);
             file_output.write(historique.toString().getBytes());
             if (historique.length()==0){
-                TextView historique_vide = getView().findViewById(R.id.tv_historique_vide);
+                TextView historique_vide = requireView().findViewById(R.id.tv_historique_vide);
                 historique_vide.setVisibility(View.VISIBLE);
             }
 

@@ -28,26 +28,26 @@
             android:id="@+id/NutriScore"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:layout_constraintHeight_percent="0.3"
-            app:layout_constraintWidth_percent="0.3"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/EcoScore"
+            app:layout_constraintHeight_percent="0.3"
             app:layout_constraintHorizontal_bias="0.2"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/imageProduit"
-            app:layout_constraintVertical_bias="0.1" />
+            app:layout_constraintVertical_bias="0.1"
+            app:layout_constraintWidth_percent="0.3" />
 
         <ImageView
             android:id="@+id/EcoScore"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:layout_constraintHeight_percent="0.3"
-            app:layout_constraintWidth_percent="0.3"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHeight_percent="0.3"
             app:layout_constraintStart_toEndOf="@+id/NutriScore"
             app:layout_constraintTop_toBottomOf="@+id/imageProduit"
-            app:layout_constraintVertical_bias="0.1" />
+            app:layout_constraintVertical_bias="0.1"
+            app:layout_constraintWidth_percent="0.3" />
 
         <Button
             android:id="@+id/bouttonRescan"
@@ -70,7 +70,19 @@
             app:layout_constraintHorizontal_bias="0.498"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/imageProduit"
-            app:layout_constraintVertical_bias="0.879" />
+            app:layout_constraintVertical_bias="0.811" />
+
+        <TextView
+            android:id="@+id/total"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAlignment="center"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toTopOf="@+id/NutriScore"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/imageProduit" />
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>
