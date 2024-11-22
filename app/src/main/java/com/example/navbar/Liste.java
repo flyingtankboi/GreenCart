@@ -452,8 +452,8 @@ public class Liste extends Fragment {
         if (cursor.moveToFirst()) {
             do {
                 int itemID = cursor.getInt(0);
-                Log.i("test", String.valueOf(itemID));
-                filtereditems.add(new Item(itemID, false));
+                if (itemID != 1025)
+                    filtereditems.add(new Item(itemID, false));
             } while (cursor.moveToNext());
         }
         cursor.close();
