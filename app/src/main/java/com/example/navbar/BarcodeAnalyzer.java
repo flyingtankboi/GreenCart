@@ -10,7 +10,6 @@ import androidx.camera.core.ExperimentalGetImage;
 import androidx.camera.core.ImageAnalysis;
 import androidx.camera.core.ImageProxy;
 import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
 
 import com.android.volley.Request;
 import com.android.volley.Response;
@@ -49,6 +48,7 @@ public class BarcodeAnalyzer implements ImageAnalysis.Analyzer {
                     .addOnSuccessListener(barcodes -> {
                         if (!barcodes.isEmpty()) {
                             String barcode = barcodes.get(0).getRawValue();
+                            assert barcode != null;
                             if (barcode.equals(temp)){
                                 count++;
                             }

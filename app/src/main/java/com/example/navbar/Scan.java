@@ -6,7 +6,6 @@ import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
 
-import androidx.activity.result.ActivityResultCallback;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.camera.core.AspectRatio;
@@ -25,16 +24,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-
-
 import androidx.camera.core.Camera;
 
-
-
 import com.google.common.util.concurrent.ListenableFuture;
-
-
-import java.util.Objects;
 
 
 public class Scan extends Fragment {
@@ -46,8 +38,7 @@ public class Scan extends Fragment {
     }
 
     public Scan newInstance() {
-        Scan fragment = new Scan();
-        return fragment;
+        return new Scan();
     }
 
     @Override

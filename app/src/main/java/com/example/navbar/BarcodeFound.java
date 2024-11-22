@@ -17,6 +17,8 @@ import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.ImageLoader;
 import com.google.android.material.button.MaterialButton;
 
+import java.util.Locale;
+
 
 public class BarcodeFound extends Fragment {
 
@@ -66,7 +68,9 @@ public class BarcodeFound extends Fragment {
         });
 
         TextView tot = view.findViewById(R.id.total);
-        tot.setText(String.format("%.1f",total) + " kg de CO2 / kg de produit");
+
+        String text = String.format(Locale.GERMANY,"%.1f",total) + getString(R.string.CO2_tot);
+        tot.setText(text);
 
         produit = view.findViewById(R.id.imageProduit);
         ecoview = view.findViewById(R.id.EcoScore);

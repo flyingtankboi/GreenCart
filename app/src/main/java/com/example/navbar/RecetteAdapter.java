@@ -5,8 +5,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
@@ -16,14 +16,15 @@ import java.util.List;
 
 public class RecetteAdapter extends RecyclerView.Adapter<RecetteAdapter.ViewHolder> {
 
-    private List<RecetteCard> recettes;
-    private FragmentManager fragmentManager;
+    private final List<RecetteCard> recettes;
+    private final FragmentManager fragmentManager;
 
     public RecetteAdapter(List<RecetteCard> recettes, FragmentManager fragmentManager) {
         this.recettes = recettes;
         this.fragmentManager = fragmentManager;
     }
 
+    @NonNull
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.recette, parent, false);

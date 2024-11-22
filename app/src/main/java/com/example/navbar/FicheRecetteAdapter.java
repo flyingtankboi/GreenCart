@@ -7,18 +7,17 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
+import androidx.annotation.NonNull;
+
 import androidx.recyclerview.widget.RecyclerView;
 
-import java.util.List;
+
 import java.util.Vector;
 
 public class FicheRecetteAdapter extends RecyclerView.Adapter<FicheRecetteAdapter.ViewHolder> {
 
-    private Vector<String> ingredients;
+    private final Vector<String> ingredients;
 
 
 
@@ -26,6 +25,7 @@ public class FicheRecetteAdapter extends RecyclerView.Adapter<FicheRecetteAdapte
         this.ingredients = ingredients;
     }
 
+    @NonNull
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.liste_ingredients, parent, false);
