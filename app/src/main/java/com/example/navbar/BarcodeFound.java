@@ -26,13 +26,15 @@ public class BarcodeFound extends Fragment {
     String nutriscore;
     String imageUrl;
     RequestQueue rq;
+    String piechart;
 
 
-    public BarcodeFound(String ecoscore, String nutriscore, String imageUrl, RequestQueue rq) {
+    public BarcodeFound(String ecoscore, String nutriscore, String imageUrl, String piechart, RequestQueue rq) {
         this.ecoscore = ecoscore;
         this.nutriscore = nutriscore;
         this.imageUrl = imageUrl;
         this.rq = rq;
+        this.piechart = piechart;
     }
 
     public static BarcodeFound newInstance() {
@@ -64,9 +66,10 @@ public class BarcodeFound extends Fragment {
         ecoview = view.findViewById(R.id.EcoScore);
         nutriview = view.findViewById(R.id.NutriScore);
 
-        produit.setImageResource(R.drawable.nutriscorea);
-        ecoview.setImageResource(R.drawable.baseline_question_mark_24);
-        nutriview.setImageResource(R.drawable.baseline_question_mark_24);
+        produit.setImageResource(R.drawable.unavailable);
+        ecoview.setImageResource(R.drawable.unavailable);
+        nutriview.setImageResource(R.drawable.unavailable);
+
         if (ecoscore.equals("a"))
             ecoview.setImageResource(R.drawable.ecoscorea);
         if (ecoscore.equals("b"))
@@ -89,20 +92,41 @@ public class BarcodeFound extends Fragment {
         if (nutriscore.equals("e"))
             nutriview.setImageResource(R.drawable.nutriscoree);
 
-        ImageLoader imageLoader = new ImageLoader(rq, new ImageLoader.ImageCache() {
-            private final LruCache<String, Bitmap> cache = new LruCache<>(20);
+        if (!imageUrl.equals("Not found")) {
 
-            @Override
-            public Bitmap getBitmap(String url) {
-                return cache.get(url);
-            }
+            ImageLoader imageLoader = new ImageLoader(rq, new ImageLoader.ImageCache() {
+                private final LruCache<String, Bitmap> cache = new LruCache<>(20);
 
-            @Override
-            public void putBitmap(String url, Bitmap bitmap) {
-                cache.put(url, bitmap);
-            }
-        });
-        imageLoader.get(imageUrl, ImageLoader.getImageListener(view.findViewById(R.id.imageProduit),R.drawable.baseline_file_download_24,R.drawable.baseline_question_mark_24));
+                @Override
+                public Bitmap getBitmap(String url) {
+                    return cache.get(url);
+                }
+
+                @Override
+                public void putBitmap(String url, Bitmap bitmap) {
+                    cache.put(url, bitmap);
+                }
+            });
+            imageLoader.get(imageUrl, ImageLoader.getImageListener(view.findViewById(R.id.imageProduit), R.drawable.baseline_file_download_24, R.drawable.baseline_question_mark_24));
+        }
+
+        if (!piechart.equals("Not found")) {
+
+            ImageLoader imageLoader = new ImageLoader(rq, new ImageLoader.ImageCache() {
+                private final LruCache<String, Bitmap> cache = new LruCache<>(20);
+
+                @Override
+                public Bitmap getBitmap(String url) {
+                    return cache.get(url);
+                }
+
+                @Override
+                public void putBitmap(String url, Bitmap bitmap) {
+                    cache.put(url, bitmap);
+                }
+            });
+            imageLoader.get(piechart, ImageLoader.getImageListener(view.findViewById(R.id.piechart), R.drawable.baseline_file_download_24, R.drawable.baseline_question_mark_24));
+        }
         return view;
     }
 }
