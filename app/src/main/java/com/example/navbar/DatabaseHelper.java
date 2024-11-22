@@ -10,6 +10,7 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.util.Objects;
 
 public class DatabaseHelper extends SQLiteOpenHelper {
 
@@ -55,7 +56,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 File databaseFile = new File(databasePath);
 
                 // Crée le répertoire parent si nécessaire
-                databaseFile.getParentFile().mkdirs();
+                boolean _placeholder = Objects.requireNonNull(databaseFile.getParentFile()).mkdirs();
 
                 OutputStream outputStream = new FileOutputStream(databaseFile);
 
@@ -87,7 +88,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public void deleteDatabase() {
         File dbFile = new File(databasePath);
         if (dbFile.exists()) {
-            dbFile.delete();
+            boolean _placeholder = dbFile.delete();
             Log.d("DatabaseHelper", "Old database deleted.");
         }
     }

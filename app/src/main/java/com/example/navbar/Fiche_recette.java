@@ -1,14 +1,9 @@
 package com.example.navbar;
-
 import android.content.Context;
 import android.os.Bundle;
-
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,21 +12,15 @@ import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
-
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.Vector;
 
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link Fiche_recette#newInstance} factory method to
- * create an instance of this fragment.
- */
+
 public class Fiche_recette extends Fragment {
 
 
@@ -160,7 +149,7 @@ public class Fiche_recette extends Fragment {
         RecyclerView recyclerView = view.findViewById(R.id.recyclerView);
         adapter = new FicheRecetteAdapter(fiche_recette.getIngredients());
         recyclerView.setAdapter(adapter);
-        recyclerView.setLayoutManager(new LinearLayoutManager(getContext().getApplicationContext()));
+        recyclerView.setLayoutManager(new LinearLayoutManager(requireContext().getApplicationContext()));
 
 
 
@@ -171,14 +160,14 @@ public class Fiche_recette extends Fragment {
             public void onClick(View view) {
                 JSONArray recettes  = null;
                 try {
-                    recettes = new JSONArray(Recette.readJson(getActivity().getApplicationContext()));
+                    recettes = new JSONArray(Recette.readJson(requireActivity().getApplicationContext()));
                 } catch (JSONException e) {
                     throw new RuntimeException(e);
                 }
                 recettes.remove(position);
                 FileOutputStream file = null;
                 try {
-                    file = getContext().openFileOutput(FILENAME, Context.MODE_PRIVATE);
+                    file = requireContext().openFileOutput(FILENAME, Context.MODE_PRIVATE);
                 } catch (FileNotFoundException e) {
                     throw new RuntimeException(e);
                 }
@@ -197,7 +186,7 @@ public class Fiche_recette extends Fragment {
 
     public void editJSONRecettes (int position, String titre, Vector<String> ingredients_string, String instructions){
         try {
-            JSONArray recettes = new JSONArray(Recette.readJson(getActivity().getApplicationContext()));
+            JSONArray recettes = new JSONArray(Recette.readJson(requireActivity().getApplicationContext()));
             recettes.remove(position);
 
             JSONObject newRecette = new JSONObject();
@@ -210,14 +199,10 @@ public class Fiche_recette extends Fragment {
 
             recettes.put(position, newRecette);
 
-            FileOutputStream file = getContext().openFileOutput(FILENAME, Context.MODE_PRIVATE);
+            FileOutputStream file = requireContext().openFileOutput(FILENAME, Context.MODE_PRIVATE);
             file.write(recettes.toString().getBytes());
 
-        } catch (JSONException e) {
-            throw new RuntimeException(e);
-        } catch (FileNotFoundException e) {
-            throw new RuntimeException(e);
-        } catch (IOException e) {
+        } catch (JSONException | IOException e) {
             throw new RuntimeException(e);
         }
     }

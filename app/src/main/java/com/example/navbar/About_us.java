@@ -9,22 +9,19 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import static com.example.navbar.Liste.db;
 
 import com.google.android.material.button.MaterialButton;
 
 
 public class About_us extends Fragment {
 
-    SQLiteDatabase db;
 
     public About_us() {
     }
 
 
     public static About_us newInstance() {
-        About_us fragment = new About_us();
-        return fragment;
+        return new About_us();
     }
 
     @Override

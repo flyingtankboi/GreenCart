@@ -1,5 +1,6 @@
 package com.example.navbar;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.util.Log;
 import android.view.KeyEvent;
@@ -7,7 +8,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -15,28 +15,26 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.FragmentActivity;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
+
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import org.json.JSONArray;
 import org.json.JSONException;
-import org.json.JSONObject;
+
 
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
+import java.nio.charset.StandardCharsets;
 import java.util.List;
 
 public class CardAdapter extends RecyclerView.Adapter<CardAdapter.ViewHolder> {
 
-    private List<String> names;
-    private List<String> dates;
+    private final List<String> names;
+    private final List<String> dates;
     final String FILENAME_HISTORIQUE = "historique.json";
     final String FILENAME = "current_list.json";
     final String DEFAULT_HISTORIQUE = "[]";
@@ -58,7 +56,7 @@ public class CardAdapter extends RecyclerView.Adapter<CardAdapter.ViewHolder> {
     }
 
     @Override
-    public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull ViewHolder holder, @SuppressLint("RecyclerView") int position) {
         String name = names.get(position);
         String date = dates.get(position);
         holder.textViewName.setText(name);
@@ -145,9 +143,9 @@ public class CardAdapter extends RecyclerView.Adapter<CardAdapter.ViewHolder> {
             FileInputStream file_input = context.openFileInput(FILENAME_HISTORIQUE);
             int size = file_input.available();
             byte[] buffer = new byte[size];
-            file_input.read(buffer);
+            int _placeholder = file_input.read(buffer);
             file_input.close();
-            string_du_fichier = new String(buffer, "UTF-8");
+            string_du_fichier = new String(buffer, StandardCharsets.UTF_8);
             JSONArray historique = new JSONArray(string_du_fichier);
             historique.getJSONObject(historique.length() - 1 - index).put("name", name);
 
@@ -177,7 +175,7 @@ public class CardAdapter extends RecyclerView.Adapter<CardAdapter.ViewHolder> {
                 FileInputStream file = context.openFileInput(FILENAME_HISTORIQUE);
                 int size = file.available();
                 byte[] buffer = new byte[size];
-                file.read(buffer);
+                int _placeholder = file.read(buffer);
                 file.close();
                 string_du_fichier = new String(buffer, "UTF-8");
 
