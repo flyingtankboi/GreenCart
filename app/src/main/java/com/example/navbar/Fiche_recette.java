@@ -201,7 +201,7 @@ public class Fiche_recette extends Fragment {
 
         });
 
-        researchAdapter = new ResearchAdapter(getContext(), items, fiche_recette, adapter, databaseHelper, searchView, requireActivity(), position);
+        researchAdapter = new ResearchAdapter(getContext(), items, fiche_recette, adapter, searchView, requireActivity(), db,position);
         researchRecyclerView = view.findViewById(R.id.researchRecyclerView);
         researchRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         researchRecyclerView.setAdapter(researchAdapter);
@@ -273,14 +273,15 @@ public class Fiche_recette extends Fragment {
     public void loadSuggestions(SQLiteDatabase database, String query) {
         Vector<Item> filtereditems = new Vector<>();
 
-        filtereditems.add(new Item("+ Ajouter produit", false));
+        //Modif !!!
+        filtereditems.add(new Item(1025, false));
         String sqlQuery = "SELECT name FROM items WHERE name LIKE ?";
         Cursor cursor = database.rawQuery(sqlQuery, new String[]{"%" + query + "%"});
-
         if (cursor.moveToFirst()) {
             do {
-                String itemName = cursor.getString(0);
-                filtereditems.add(new Item(itemName, false));
+                //Modif !!!
+                int id = cursor.getInt(0);
+                filtereditems.add(new Item(id, false));
             } while (cursor.moveToNext());
         }
         cursor.close();

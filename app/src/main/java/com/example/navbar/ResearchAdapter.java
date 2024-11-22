@@ -46,19 +46,18 @@ public class ResearchAdapter extends RecyclerView.Adapter<ResearchViewHolder> {
     SQLiteDatabase db;
 
 
-    public ResearchAdapter(Context context, Vector<Item> items, Vector<Item> shopping_list, ShoppingListAdapter adapter, DatabaseHelper databaseHelper, SearchView searchView, FragmentActivity activity, SQLiteDatabase db){
+    public ResearchAdapter(Context context, Vector<Item> items, Vector<Item> shopping_list, ShoppingListAdapter adapter, SearchView searchView, FragmentActivity activity, SQLiteDatabase db){
 
         this.context = context;
         this.items = items;
         this.shopping_list = shopping_list;
         this.adapter = adapter;
-        this.databaseHelper = databaseHelper;
         this.searchView = searchView;
         this.activity = activity;
         this.db = db;
     }
 
-    public ResearchAdapter(Context context, Vector<Item> items, RecetteCard recette, FicheRecetteAdapter adapter, DatabaseHelper databaseHelper, SearchView searchView, FragmentActivity activity, int json_position){
+    public ResearchAdapter(Context context, Vector<Item> items, RecetteCard recette, FicheRecetteAdapter adapter, SearchView searchView, FragmentActivity activity, SQLiteDatabase db, int json_position){
 
         this.context = context;
         this.items = items;
@@ -66,10 +65,10 @@ public class ResearchAdapter extends RecyclerView.Adapter<ResearchViewHolder> {
         this.ingredients = recette.getIngredients();
         this.shopping_list = new Vector<>();
         this.recette_adapter = adapter;
-        this.databaseHelper = databaseHelper;
         this.searchView = searchView;
         this.activity = activity;
         this.json_position = json_position;
+        this.db = db;
     }
 
     @Override
@@ -111,29 +110,22 @@ public class ResearchAdapter extends RecyclerView.Adapter<ResearchViewHolder> {
                     searchView.setQuery("", false);
                     searchView.clearFocus();
 
-<<<<<<< app/src/main/java/com/example/navbar/ResearchAdapter.java
-                    databaseHelper.addItem(current_text);
-
                     if (recette_adapter == null){
-                        shopping_list.insertElementAt(new Item(current_text, false), 0);
+                        shopping_list.insertElementAt(new Item(id, false), 0);
                     } else {
+
                         ingredients.insertElementAt(current_text, 0);
                         editJSONRecettes(json_position, recette.getTitre(), recette.getIngredients(),recette.getInstructions());
                     }
-=======
-                    shopping_list.insertElementAt(new Item(id, false), 0);
-                    adapter.notifyItemInserted(0);
->>>>>>> app/src/main/java/com/example/navbar/ResearchAdapter.java
 
                 } else {
                     searchView.setQuery("", false);
                     searchView.clearFocus();
 
-<<<<<<< app/src/main/java/com/example/navbar/ResearchAdapter.java
                     if (recette_adapter == null){
-                        shopping_list.insertElementAt(new Item(currentItem.getName(), false), 0);
+                        shopping_list.insertElementAt(currentItem, 0);
                     } else {
-                        ingredients.insertElementAt(currentItem.getName(), 0);
+                        ingredients.insertElementAt(currentItem.getName(db), 0);
                         editJSONRecettes(json_position, recette.getTitre(), recette.getIngredients(),recette.getInstructions());
                     }
                 }
@@ -148,10 +140,6 @@ public class ResearchAdapter extends RecyclerView.Adapter<ResearchViewHolder> {
                     compteur.setText(stringCompteur);
                 } else {
                     recette_adapter.notifyItemInserted(0);
-=======
-                    shopping_list.insertElementAt(currentItem, 0);
-                    adapter.notifyItemInserted(0);
->>>>>>> app/src/main/java/com/example/navbar/ResearchAdapter.java
                 }
             }
         });
